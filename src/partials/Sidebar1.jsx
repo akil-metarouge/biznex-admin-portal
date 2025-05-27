@@ -82,7 +82,7 @@ function Sidebar1({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   ];
 
   return (
-    <div className="min-w-fit h-[100dvh] lg:p-5 ">
+    <div className="min-w-fit h-[100dvh] lg:p-5">
       {/* Sidebar backdrop (mobile only) */}
       <div
         className={`fixed inset-0 bg-gray-900/30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${
