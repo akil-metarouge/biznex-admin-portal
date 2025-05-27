@@ -82,7 +82,7 @@ function Sidebar1({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   ];
 
   return (
-    <div className="min-w-fit h-[100dvh] p-5 ">
+    <div className="min-w-fit h-[100dvh] lg:p-5 ">
       {/* Sidebar backdrop (mobile only) */}
       <div
         className={`fixed inset-0 bg-gray-900/30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${
@@ -101,15 +101,15 @@ function Sidebar1({ sidebarOpen, setSidebarOpen, variant = "default" }) {
             } ${
           variant === "v2"
             ? "border-r border-gray-200 dark:border-gray-700/60"
-            : "rounded-2xl shadow-xs"
+            : "lg:rounded-2xl rounded-r-2xl shadow-xs"
         }`}
       >
         {/* Sidebar header */}
-        <div className="flex justify-center  p-4 py-7 pr-3 sm:px-2 border-b border-white/10 ">
+        <div className="flex justify-between lg:justify-center  py-7  px-7 border-b border-white/10 ">
           {/* Close button */}
           <button
             ref={trigger}
-            className="lg:hidden text-gray-500 hover:text-gray-400"
+            className="lg:hidden text-gray-500 hover:text-gray-400 "
             onClick={() => setSidebarOpen(!sidebarOpen)}
             aria-controls="sidebar"
             aria-expanded={sidebarOpen}
@@ -195,27 +195,6 @@ function Sidebar1({ sidebarOpen, setSidebarOpen, variant = "default" }) {
               </button>
             </li>
           </ul>
-        </div>
-
-        {/* Expand / collapse button */}
-        <div className="p-4 pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto">
-          <div className="w-12 pl-4 pr-3 py-2">
-            <button
-              className="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
-              onClick={() => setSidebarExpanded(!sidebarExpanded)}
-            >
-              <span className="sr-only">Expand / collapse sidebar</span>
-              <svg
-                className="shrink-0 fill-current text-gray-400 dark:text-gray-500 sidebar-expanded:rotate-180"
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-              >
-                <path d="M15 16a1 1 0 0 1-1-1V1a1 1 0 1 1 2 0v14a1 1 0 0 1-1 1ZM8.586 7H1a1 1 0 1 0 0 2h7.586l-2.793 2.793a1 1 0 1 0 1.414 1.414l4.5-4.5A.997.997 0 0 0 12 8.01M11.924 7.617a.997.997 0 0 0-.217-.324l-4.5-4.5a1 1 0 0 0-1.414 1.414L8.586 7M12 7.99a.996.996 0 0 0-.076-.373Z" />
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
     </div>
