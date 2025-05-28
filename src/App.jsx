@@ -82,6 +82,11 @@ function App() {
     <>
       <Routes>
         <Route exact path="/" element={<Dashboard />} />
+        <Route exact path="/metadata" element={<Dashboard />} />
+        <Route exact path="/users" element={<Dashboard />} />
+        <Route exact path="/communities" element={<Dashboard />} />
+        <Route exact path="/events" element={<Dashboard />} />
+        <Route exact path="/reports" element={<Dashboard />} />
         <Route path="/dashboard/analytics" element={<Analytics />} />
         <Route path="/dashboard/fintech" element={<Fintech />} />
         <Route path="/ecommerce/customers" element={<Customers />} />
