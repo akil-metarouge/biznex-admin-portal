@@ -8,13 +8,13 @@ function SearchForm({ placeholder = "Search…" }) {
       </label>
       <input
         id="action-search"
-        className="form-input text-[16px] pl-9 bg-white dark:bg-gray-800 h-12 w-80 placeholder-gray-900/80"
+        className="form-input text-[16px] pl-11 bg-white dark:bg-gray-800 h-12 w-80 placeholder-gray-900/80 font-medium shadow-none"
         type="search"
         placeholder={placeholder}
       />
       <button className="absolute inset-0 right-auto group" aria-label="Search">
         <svg
-          className="shrink-0 fill-current text-gray-900/80 dark:text-gray-500 group-hover:text-gray-900/80 dark:group-hover:text-gray-400 ml-3 mr-2"
+          className="shrink-0 fill-current text-gray-900/80 dark:text-gray-500 group-hover:text-gray-900/80 dark:group-hover:text-gray-400 ml-4 mr-2"
           width="16"
           height="16"
           viewBox="0 0 16 16"
