@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import logo from "../images/logo.svg";
 import bgImage from "../images/login-bg-image.svg";
 
-function Signin() {
+function Login() {
   return (
     <main className="bg-gray-100">
       {/* Content */}
@@ -41,13 +41,13 @@ function Signin() {
                 <div className="mb-6 flex justify-end">
                   <Link
                     className="text-sm text-purple-800 hover:underline"
-                    to="/reset-password"
+                    to="/forgot-password"
                   >
                     Forgot Password?
                   </Link>
                 </div>
                 <Link
-                  className="btn w-full h-16 bg-violet-800 text-gray-50 text-md font-semibold"
+                  className="btn w-full h-16 bg-violet-800 text-gray-50 text-md font-semibold rounded-lg hover:shadow-lg transition-shadow duration-200 cursor-pointer"
                   to="/"
                 >
                   Login
@@ -75,4 +75,4 @@ function Signin() {
   );
 }
 
-export default Signin;
+export default Login;
