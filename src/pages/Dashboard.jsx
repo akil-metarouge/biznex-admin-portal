@@ -29,10 +29,27 @@ function Dashboard() {
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         {/*  Site header */}
-        <Header1 sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <Header1
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          title="Metadata"
+          count={148}
+          actionButton={true}
+          actionButtonText="Add Industry Types"
+          dropdown1={true}
+          dropdown1Label="Status"
+          dropdown1Options={[
+            { id: 0, label: "All" },
+            { id: 1, label: "Pending" },
+            { id: 2, label: "Resolved" },
+            { id: 3, label: "Rejected" },
+          ]}
+          searchField={true}
+          placeholder="Search Industry Types"
+        />
 
         <main className="grow">
-          <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-[96rem] mx-auto">
+          <div className="pr-5 w-full max-w-[96rem] mx-auto">
             {/* Dashboard actions */}
             <div className="sm:flex sm:justify-between sm:items-center mb-8">
               {/* Left: Title */}

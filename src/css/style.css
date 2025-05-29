@@ -26,7 +26,7 @@
   --color-gray-900: #111827;
   --color-gray-950: #030712;
 
-  --color-violet-50: #f1eeff;
+  --color-violet-50: #f4eff8; /* *Customized for Biznex */
   --color-violet-100: #e6e1ff;
   --color-violet-200: #d2cbff;
   --color-violet-300: #b7acff;
@@ -86,7 +86,8 @@
   --color-yellow-900: #4f3d0e;
   --color-yellow-950: #342809;
 
-  --color-black-800: #0a0e1a;
+  --color-black-800: #0a0e1a; /* *Customized for Biznex */
+  --color-orange-800: #ff6d5d; /* *Customized for Biznex */
 
   --font-inter: "Mulish", "Inter", "sans-serif";
 

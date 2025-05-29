@@ -1,33 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Transition from '../utils/Transition';
+import { useState, useRef, useEffect } from "react";
+import Transition from "../utils/Transition";
 
-function DropdownClassic() {
-
-  const options = [
-    {
-      id: 0,
-      period: 'Today'
-    },
-    {
-      id: 1,
-      period: 'Last 7 Days'
-    },
-    {
-      id: 2,
-      period: 'Last Month'
-    },
-    {
-      id: 3,
-      period: 'Last 12 Months'
-    },
-    {
-      id: 4,
-      period: 'All Time'
-    }
-  ];
-
+function DropdownClassic({ width = "w-44", label = "Status", options = [] }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selected, setSelected] = useState(2);
+  const [selected, setSelected] = useState(0);
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
@@ -36,11 +12,16 @@ function DropdownClassic() {
   useEffect(() => {
     const clickHandler = ({ target }) => {
       if (!dropdown.current) return;
-      if (!dropdownOpen || dropdown.current.contains(target) || trigger.current.contains(target)) return;
+      if (
+        !dropdownOpen ||
+        dropdown.current.contains(target) ||
+        trigger.current.contains(target)
+      )
+        return;
       setDropdownOpen(false);
     };
-    document.addEventListener('click', clickHandler);
-    return () => document.removeEventListener('click', clickHandler);
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
   });
 
   // close if the esc key is pressed
@@ -49,24 +30,36 @@ function DropdownClassic() {
       if (!dropdownOpen || keyCode !== 27) return;
       setDropdownOpen(false);
     };
-    document.addEventListener('keydown', keyHandler);
-    return () => document.removeEventListener('keydown', keyHandler);
+    document.addEventListener("keydown", keyHandler);
+    return () => document.removeEventListener("keydown", keyHandler);
   });
 
   return (
-    <div className="relative inline-flex">
+    <div className="relative inline-flex h-12">
+      <label
+        htmlFor="dropdown-classic"
+        className="absolute -top-3 left-[13px] text-sm bg-white px-1.5 rounded-xl font-medium cursor-pointer"
+      >
+        {label}
+      </label>
       <button
         ref={trigger}
-        className="btn justify-between min-w-44 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100"
+        className={`btn justify-between min-w-44 ${width}  bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-900/80  dark:text-gray-300 dark:hover:text-gray-100 px-[18px] shadow-none text-[16px] font-semibold cursor-pointer`}
         aria-label="Select date range"
         aria-haspopup="true"
         onClick={() => setDropdownOpen(!dropdownOpen)}
         aria-expanded={dropdownOpen}
+        id="dropdown-classic"
       >
         <span className="flex items-center">
-          <span>{options[selected].period}</span>
+          <span>{options[selected].label}</span>
         </span>
-        <svg className="shrink-0 ml-1 fill-current text-gray-400 dark:text-gray-500" width="11" height="7" viewBox="0 0 11 7">
+        <svg
+          className="shrink-0 ml-1 fill-current text-gray-900/80 dark:text-gray-500"
+          width="11"
+          height="7"
+          viewBox="0 0 11 7"
+        >
           <path d="M5.4 6.8L0 1.4 1.4 0l4 4 4-4 1.4 1.4z" />
         </svg>
       </button>
@@ -87,23 +80,33 @@ function DropdownClassic() {
           onFocus={() => setDropdownOpen(true)}
           onBlur={() => setDropdownOpen(false)}
         >
-          {
-            options.map(option => {
-              return (
-                <button
-                  key={option.id}
-                  tabIndex="0"
-                  className={`flex items-center w-full hover:bg-gray-50 dark:hover:bg-gray-700/20 py-1 px-3 cursor-pointer ${option.id === selected && 'text-violet-500'}`}
-                  onClick={() => { setSelected(option.id); setDropdownOpen(false); }}
+          {options.map((option) => {
+            return (
+              <button
+                key={option.id}
+                tabIndex="0"
+                className={`flex items-center w-full hover:bg-gray-50 dark:hover:bg-gray-700/20 py-1 px-3 cursor-pointer hover:text-violet-800/80 transition duration-300 text-[15px] ${
+                  option.id === selected && "text-violet-800"
+                }`}
+                onClick={() => {
+                  setSelected(option.id);
+                  setDropdownOpen(false);
+                }}
+              >
+                <svg
+                  className={`shrink-0 mr-2 fill-current text-violet-800 ${
+                    option.id !== selected && "invisible"
+                  }`}
+                  width="12"
+                  height="9"
+                  viewBox="0 0 12 9"
                 >
-                  <svg className={`shrink-0 mr-2 fill-current text-violet-500 ${option.id !== selected && 'invisible'}`} width="12" height="9" viewBox="0 0 12 9">
-                    <path d="M10.28.28L3.989 6.575 1.695 4.28A1 1 0 00.28 5.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28.28z" />
-                  </svg>
-                  <span>{option.period}</span>
-                </button>
-              )
-            })
-          }
+                  <path d="M10.28.28L3.989 6.575 1.695 4.28A1 1 0 00.28 5.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28.28z" />
+                </svg>
+                <span>{option.label}</span>
+              </button>
+            );
+          })}
         </div>
       </Transition>
     </div>

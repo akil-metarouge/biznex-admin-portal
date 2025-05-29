@@ -67,6 +67,7 @@ import AvatarPage from "./pages/component/AvatarPage";
 import TooltipPage from "./pages/component/TooltipPage";
 import AccordionPage from "./pages/component/AccordionPage";
 import IconsPage from "./pages/component/IconsPage";
+import Events from "./pages/events/Events";
 import ResetPassword from "./pages/ResetPassword";
 
 function App() {
@@ -85,7 +86,7 @@ function App() {
         <Route exact path="/metadata" element={<Dashboard />} />
         <Route exact path="/users" element={<Dashboard />} />
         <Route exact path="/communities" element={<Dashboard />} />
-        <Route exact path="/events" element={<Dashboard />} />
+        <Route exact path="/events" element={<Events />} />
         <Route exact path="/reports" element={<Dashboard />} />
         <Route path="/dashboard/analytics" element={<Analytics />} />
         <Route path="/dashboard/fintech" element={<Fintech />} />
