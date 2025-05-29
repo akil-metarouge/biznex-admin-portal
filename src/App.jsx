@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import "./css/style.css";
-
 // Import pages
 import Dashboard from "./pages/Dashboard";
 import Analytics from "./pages/Analytics";
@@ -48,9 +47,9 @@ import Roadmap from "./pages/utility/Roadmap";
 import Faqs from "./pages/utility/Faqs";
 import EmptyState from "./pages/utility/EmptyState";
 import PageNotFound from "./pages/utility/PageNotFound";
-import Signin from "./pages/Signin";
+import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import ResetPassword from "./pages/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword";
 import Onboarding01 from "./pages/Onboarding01";
 import Onboarding02 from "./pages/Onboarding02";
 import Onboarding03 from "./pages/Onboarding03";
@@ -69,6 +68,7 @@ import TooltipPage from "./pages/component/TooltipPage";
 import AccordionPage from "./pages/component/AccordionPage";
 import IconsPage from "./pages/component/IconsPage";
 import Events from "./pages/events/Events";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const location = useLocation();
@@ -134,8 +134,9 @@ function App() {
         <Route path="/utility/faqs" element={<Faqs />} />
         <Route path="/utility/empty-state" element={<EmptyState />} />
         <Route path="/utility/404" element={<PageNotFound />} />
-        <Route path="/signin" element={<Signin />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/onboarding-01" element={<Onboarding01 />} />
         <Route path="/onboarding-02" element={<Onboarding02 />} />

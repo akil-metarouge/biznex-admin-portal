@@ -1,0 +1,10 @@
+.custom-pin-input {
+  width: 4.2rem;
+  height: 4rem;
+}
+
+.custom-pin-input:focus {
+  border-color: #885cc1;
+  box-shadow: none;
+  border-width: 2px;
+}
