@@ -69,6 +69,7 @@ import AccordionPage from "./pages/component/AccordionPage";
 import IconsPage from "./pages/component/IconsPage";
 import Events from "./pages/events/Events";
 import ResetPassword from "./pages/ResetPassword";
+import Users from "./pages/users/Users";
 
 function App() {
   const location = useLocation();
@@ -84,7 +85,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Dashboard />} />
         <Route exact path="/metadata" element={<Dashboard />} />
-        <Route exact path="/users" element={<Dashboard />} />
+        <Route exact path="/users" element={<Users />} />
         <Route exact path="/communities" element={<Dashboard />} />
         <Route exact path="/events" element={<Events />} />
         <Route exact path="/reports" element={<Dashboard />} />
