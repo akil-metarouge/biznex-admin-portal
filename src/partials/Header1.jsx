@@ -9,9 +9,9 @@ function Header1({
   actionButton = true,
   actionButtonText = "Add Report Reason",
   backButton = false,
-  searchField = true,
+  searchField = false,
   placeholder = "Search Content Reasons",
-  dropdown1 = true,
+  dropdown1 = false,
   dropdown2 = false,
   dropdown1Label = "Status",
   dropdown2Label = "Report Category",
@@ -99,7 +99,7 @@ function Header1({
               {/* **************** Action Button **************** */}
               {actionButton && actionButtonText && (
                 <button className="ml-4.5 p-4 py-3.5 text-[16px] font-semibold btn bg-violet-800 text-white hover:bg-violet-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg">
-                  Add Report Reason
+                  {actionButtonText}
                 </button>
               )}
             </div>
