@@ -1,8 +1,45 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/logo.svg";
 import bgImage from "../images/login-bg-image.svg";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const apiURL = import.meta.env.VITE_BASE_URL;
+
+    fetch(`${apiURL}/api/admin/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Response data:", data);
+        if (data?.status === 1) {
+          // Save to localStorage
+          console.log("Login successful:", data);
+          localStorage.setItem("token", data?.token);
+          setError("");
+          navigate("/");
+        } else {
+          console.error("Login failed:", data);
+          setError(data?.error);
+        }
+      })
+      .catch((error) => {
+        setError("An error occurred while logging in.");
+      });
+  };
+
   return (
     <main className="bg-gray-100">
       {/* Content */}
@@ -17,7 +54,7 @@ function Login() {
               </p>
             </div>
             {/* Form */}
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="space-y-4">
                 <div>
                   <input
@@ -25,6 +62,10 @@ function Login() {
                     className="form-input w-full bg-gray-50 border-2 border-gray-300 focus:border-violet-500 focus:ring-violet-500 h-14"
                     type="email"
                     placeholder="Email ID"
+                    autoComplete="on"
+                    autoFocus
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div>
@@ -34,6 +75,8 @@ function Login() {
                     type="password"
                     placeholder="Password"
                     autoComplete="on"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>
@@ -46,14 +89,18 @@ function Login() {
                     Forgot Password?
                   </Link>
                 </div>
-                <Link
-                  className="btn w-full h-16 bg-violet-800 text-gray-50 text-md font-semibold rounded-lg hover:shadow-lg transition-shadow duration-200 cursor-pointer"
-                  to="/"
+                <button
+                  className="w-full h-16 bg-violet-800 text-gray-50 text-md font-semibold rounded-lg hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+                  type="submit"
                 >
                   Login
-                </Link>
+                </button>
               </div>
             </form>
+            {/* Error Message */}
+            {error && (
+              <p className="text-red-500 text-sm mt-4 text-center">{error}</p>
+            )}
           </div>
           <div className="z-10 bg-[#885CC1CC] px-4 py-8 rounded-r-2xl flex flex-col items-center justify-center text-center text-gray-50 px-24">
             <h2 className="text-3xl font-bold">
