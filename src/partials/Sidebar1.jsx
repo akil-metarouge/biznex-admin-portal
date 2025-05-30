@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 function Sidebar1({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   const location = useLocation();
   const { pathname } = location;
+  const navigate = useNavigate();
 
   const trigger = useRef(null);
   const sidebar = useRef(null);
@@ -12,6 +13,12 @@ function Sidebar1({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   // close on click outside
   useEffect(() => {
@@ -180,7 +187,10 @@ function Sidebar1({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                 "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
               }`}
             >
-              <button className="group block py-3 px-3.5 rounded-lg truncate transition duration-300 hover:bg-violet-800 text-gray-500 hover:text-white w-full cursor-pointer">
+              <button
+                className="group block py-3 px-3.5 rounded-lg truncate transition duration-300 hover:bg-violet-800 text-gray-500 hover:text-white w-full cursor-pointer"
+                onClick={handleLogout}
+              >
                 <div className="flex items-center">
                   <img
                     className={`h-6 w-6 
