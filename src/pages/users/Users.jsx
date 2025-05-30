@@ -66,7 +66,9 @@ function Users() {
     setEditingIndex(index);
   };
 
-  const handleDeleteUser = (index) => {
+  const handleDeleteUser = (e, index) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (window.confirm("Are you sure you want to delete this user?")) {
       const updatedUsers = users.filter((_, i) => i !== index);
       setUsers(updatedUsers);
@@ -345,7 +347,7 @@ function Users() {
                                 {/* Delete user button  */}
                                 <button
                                   className=" bg-transparent dark:hover:border-gray-600 cursor-pointer"
-                                  onClick={() => handleDeleteUser(index)}
+                                  onClick={(e) => handleDeleteUser(e, index)}
                                 >
                                   <Trash size="24" color="#FF6D5D" />
                                 </button>
