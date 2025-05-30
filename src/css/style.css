@@ -55,7 +55,7 @@
   --color-green-200: #8bf0b0;
   --color-green-300: #67e294;
   --color-green-400: #4bd37d;
-  --color-green-500: #3ec972;
+  --color-green-500: #00c875; /* *Customized for Biznex */
   --color-green-600: #34bd68;
   --color-green-700: #239f52;
   --color-green-800: #15773a;
@@ -66,9 +66,9 @@
   --color-red-100: #ffd1d1;
   --color-red-200: #ffb2b2;
   --color-red-300: #ff9494;
-  --color-red-400: #ff7474;
+  --color-red-400: #ff6d5d; /* *Customized for Biznex */
   --color-red-500: #ff5656;
-  --color-red-600: #fa4949;
+  --color-red-600: #f24848; /* *Customized for Biznex */
   --color-red-700: #e63939;
   --color-red-800: #c52727;
   --color-red-900: #941818;
@@ -86,6 +86,7 @@
   --color-yellow-900: #4f3d0e;
   --color-yellow-950: #342809;
 
+  --color-white: #fffffe; /* *Customized for Biznex */
   --color-black-800: #0a0e1a; /* *Customized for Biznex */
   --color-orange-800: #ff6d5d; /* *Customized for Biznex */
 

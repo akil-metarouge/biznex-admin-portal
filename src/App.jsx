@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Events from "./pages/events/Events";
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
+import CommunityTabs from "./pages/community/CommunityTabs";
 
 // Import utility components
 import ProtectedRoute from "./utils/ProtectedRoute";
@@ -57,7 +58,7 @@ function App() {
           path="/communities"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <CommunityTabs />
             </ProtectedRoute>
           }
         />
