@@ -4,227 +4,15 @@ import Image02 from "../../images/icon-02.svg";
 import Image03 from "../../images/icon-03.svg";
 import ActiveUsersTableItem from "./ActiveUsersTableItem";
 
-function ActiveUsersTable({ selectedItems }) {
-  const orders = [
-    {
-      id: "0",
-      image: Image01,
-      order: "#123567",
-      date: "22/01/2024",
-      customer: "Patricia Semklo",
-      total: "$129.00",
-      status: "Refunded",
-      items: "1",
-      location: "🇨🇳 Shanghai, CN",
-      type: "Subscription",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
-      id: "1",
-      image: Image01,
-      order: "#779912",
-      date: "22/01/2024",
-      customer: "Dominik Lamakani",
-      total: "$89.00",
-      status: "Approved",
-      items: "2",
-      location: "🇲🇽 Mexico City, MX",
-      type: "Subscription",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
-      id: "2",
-      image: Image02,
-      order: "#889924",
-      date: "22/01/2024",
-      customer: "Ivan Mesaros",
-      total: "$89.00",
-      status: "Approved",
-      items: "2",
-      location: "🇮🇹 Milan, IT",
-      type: "One-time",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
-      id: "3",
-      image: Image01,
-      order: "#897726",
-      date: "22/01/2024",
-      customer: "Maria Martinez",
-      total: "$59.00",
-      status: "Pending",
-      items: "1",
-      location: "🇮🇹 Bologna, IT",
-      type: "One-time",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
-      id: "4",
-      image: Image03,
-      order: "#123567",
-      date: "22/01/2024",
-      customer: "Vicky Jung",
-      total: "$39.00",
-      status: "Refunded",
-      items: "1",
-      location: "🇬🇧 London, UK",
-      type: "Subscription",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
-      id: "5",
-      image: Image01,
-      order: "#896644",
-      date: "21/01/2024",
-      customer: "Tisho Yanchev",
-      total: "$59.00",
-      status: "Approved",
-      items: "1",
-      location: "🇫🇷 Paris, FR",
-      type: "One-time",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
-      id: "6",
-      image: Image03,
-      order: "#136988",
-      date: "21/01/2024",
-      customer: "James Cameron",
-      total: "$89.00",
-      status: "Approved",
-      items: "1",
-      location: "🇫🇷 Marseille, FR",
-      type: "Subscription",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
-      id: "7",
-      image: Image03,
-      order: "#442206",
-      date: "21/01/2024",
-      customer: "Haruki Masuno",
-      total: "$129.00",
-      status: "Approved",
-      items: "2",
-      location: "🇺🇸 New York, USA",
-      type: "Subscription",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
-      id: "8",
-      image: Image02,
-      order: "#764321",
-      date: "21/01/2024",
-      customer: "Joe Huang",
-      total: "$89.00",
-      status: "Pending",
-      items: "2",
-      location: "🇨🇳 Shanghai, CN",
-      type: "One-time",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
-      id: "9",
-      image: Image01,
-      order: "#908764",
-      date: "21/01/2024",
-      customer: "Carolyn McNeail",
-      total: "$59.00",
-      status: "Refunded",
-      items: "1",
-      location: "🇬🇧 Sheffield, UK",
-      type: "Subscription",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-  ];
-
-  const users = [
-    {
-      id: 1,
-      name: "Nylah Whitehead",
-      email: "nylahwhitehead@gmail.com",
-      joinedOn: "18 Nov 2024",
-    },
-    {
-      id: 2,
-      name: "Alec Hess",
-      email: "alechess@526gmail.com",
-      joinedOn: "15 Nov 2024",
-    },
-    {
-      id: 3,
-      name: "Sarah Nieves",
-      email: "sarahnieves@gmail.com",
-      joinedOn: "15 Nov 2024",
-    },
-    {
-      id: 4,
-      name: "Hayes Mckenzie",
-      email: "hayesmckenzie@gmail.com",
-      joinedOn: "14 Nov 2024",
-    },
-    {
-      id: 5,
-      name: "Kane Raymond",
-      email: "kaneraymond19@gmail.com",
-      joinedOn: "10 Nov 2024",
-    },
-    {
-      id: 6,
-      name: "Luke Curtis",
-      email: "lukeurtis2255@gmail.com",
-      joinedOn: "10 Nov 2024",
-    },
-    {
-      id: 7,
-      name: "Zayden Orr",
-      email: "orrzayden627@gmail.com",
-      joinedOn: "09 Nov 2024",
-    },
-    {
-      id: 8,
-      name: "Coleman Levine",
-      email: "colemanlevine@gmail.com",
-      joinedOn: "02 Nov 2024",
-    },
-    {
-      id: 9,
-      name: "Gerardo Tillman",
-      email: "gerardotillman@gmail.com",
-      joinedOn: "30 Oct 2024",
-    },
-    {
-      id: 10,
-      name: "Jaime Mejia",
-      email: "jaimemejia1132@gmail.com",
-      joinedOn: "26 Oct 2024",
-    },
-    {
-      id: 11,
-      name: "Makenna Howe",
-      email: "makennahowe525@gmail.com",
-      joinedOn: "19 Oct 2024",
-    },
-  ];
-
+function ActiveUsersTable({ data, selectedItems }) {
   const [selectAll, setSelectAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
-  const [list, setList] = useState([]);
+  // const [list, setList] = useState([]);
 
-  useEffect(() => {
-    setList(orders);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   setList(orders);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -273,14 +61,15 @@ function ActiveUsersTable({ selectedItems }) {
               </tr>
             </thead>
             {/* Table body */}
-            {users.map((order) => {
+            {data.map((user) => {
               return (
                 <ActiveUsersTableItem
-                  key={order.id}
-                  id={order.id}
-                  name={order.name}
-                  email={order.email}
-                  joinedOn={order.joinedOn}
+                  key={user.reference}
+                  id={user.reference}
+                  firstName={user.first_name}
+                  lastName={user.last_name}
+                  email={user.email}
+                  joinedOn={user.date_invited}
                 />
               );
             })}

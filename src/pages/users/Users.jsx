@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Sidebar1 from "../../partials/Sidebar1";
 import Header1 from "../../partials/Header1";
 import ActiveUsersTable from "../../partials/users/ActiveusersTable";
@@ -10,14 +10,19 @@ import DocumentIcon from "../../assets/icons/document.svg";
 function Users() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [inviteUserModalOpen, setInviteUserModalOpen] = useState(false);
+  const [invitedUsers, setInvitedUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
+  const [error, setError] = useState("");
   const [userAddOption, setUserAddOption] = useState("manual"); // 'manual' or 'csv'
 
   const [users, setUsers] = useState([]);
+
+  console.log("error -> ", error);
 
   const openModal = (e) => {
     e.stopPropagation();
@@ -34,9 +39,9 @@ function Users() {
       // Update existing user
       const updatedUsers = [...users];
       updatedUsers[editingIndex] = {
-        firstName,
-        lastName,
-        email,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
       };
       setUsers(updatedUsers);
       setEditMode(false);
@@ -44,9 +49,9 @@ function Users() {
     } else {
       // Add new user
       const newUser = {
-        firstName,
-        lastName,
-        email,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
       };
       setUsers([...users, newUser]);
     }
@@ -59,8 +64,8 @@ function Users() {
 
   const handleEditUser = (index) => {
     const user = users[index];
-    setFirstName(user.firstName);
-    setLastName(user.lastName);
+    setFirstName(user.first_name);
+    setLastName(user.last_name);
     setEmail(user.email);
     setEditMode(true);
     setEditingIndex(index);
@@ -97,6 +102,76 @@ function Users() {
     fileInputRef.current.value = null;
   };
 
+  // ***************** Invite ******************
+  const handleInvite = () => {
+    if (userAddOption === "manual" && users.length === 0) {
+      alert("Please add at least one user manually.");
+      return;
+    }
+    const readyToSend = { users: users };
+
+    const apiURL = import.meta.env.VITE_BASE_URL;
+
+    fetch(`${apiURL}/api/admin/invite-multiple-users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(readyToSend),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data?.status === 1) {
+          console.log("Invited successfully: ", data);
+          setError("");
+          setInviteUserModalOpen(false);
+          setUsers([]); // Clear the users list
+          fetchInvitedUsers(); // Refresh the invited users list
+        } else {
+          console.error("Invitation failed:", data);
+          setError(data?.error);
+        }
+      })
+      .catch((error) => {
+        console.log("error from catch block: ", error);
+        setError("An error occurred");
+      });
+  };
+
+  const fetchInvitedUsers = async () => {
+    setIsLoading(true);
+    const apiURL = import.meta.env.VITE_BASE_URL;
+    try {
+      const response = await fetch(
+        `${apiURL}/api/admin/users/invited?limit=100`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      console.log("Fetched invited users:", data);
+      if (data?.status === 1) {
+        setInvitedUsers(data.data || []);
+      } else {
+        console.error("Failed to fetch invited users:", data);
+        setError("Failed to fetch invited users");
+      }
+    } catch (error) {
+      console.error("Error fetching invited users:", error);
+      setError("An error occurred while fetching invited users");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchInvitedUsers();
+  }, []);
+
   return (
     <div className="flex h-[100dvh] overflow-hidden">
       {/* Sidebar */}
@@ -119,11 +194,16 @@ function Users() {
 
         <main className="grow">
           <div className="pr-5  w-full max-w-[96rem] mx-auto mb-5">
-            <ActiveUsersTable
-              selectedItems={(selectedItem) => {
-                // console.log(selectedItem);
-              }}
-            />
+            {isLoading ? (
+              <div className="text-center py-8">Loading...</div>
+            ) : (
+              <ActiveUsersTable
+                data={invitedUsers}
+                selectedItems={(selectedItem) => {
+                  // console.log(selectedItem);
+                }}
+              />
+            )}
           </div>
         </main>
 
@@ -325,7 +405,7 @@ function Users() {
                             >
                               <div>
                                 <h6 className="text-base font-semibold text-[#252525] mb-1">
-                                  {user.firstName} {user.lastName}
+                                  {user.first_name} {user.last_name}
                                 </h6>
                                 <p className="text-sm font-semibold text-[#4E4E4E]">
                                   {" "}
@@ -361,7 +441,10 @@ function Users() {
                 </div>
               )}
               <div className="px-10 pt-6">
-                <button className="w-full  py-3.5 text-[16px] font-semibold btn bg-violet-800 text-white hover:bg-violet-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg">
+                <button
+                  onClick={handleInvite}
+                  className="w-full  py-3.5 text-[16px] font-semibold btn bg-violet-800 text-white hover:bg-violet-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
+                >
                   Invite
                 </button>
               </div>

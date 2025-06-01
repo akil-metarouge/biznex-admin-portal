@@ -1,20 +1,7 @@
-import React, { useState } from "react";
 import Avatar04 from "../../images/avatar-04.jpg";
+import dayjs from "dayjs";
 
 function ActiveUsersTableItem(props) {
-  const [descriptionOpen, setDescriptionOpen] = useState(false);
-
-  const statusColor = (status) => {
-    switch (status) {
-      case "Approved":
-        return "bg-green-500/20 text-green-700";
-      case "Refunded":
-        return "bg-yellow-500/20 text-yellow-700";
-      default:
-        return "bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400";
-    }
-  };
-
   return (
     <tbody className="text-sm border-[#dfdfdf] ">
       {/* Row */}
@@ -31,7 +18,7 @@ function ActiveUsersTableItem(props) {
               />
             </div>
             <div className="font-semibold text-[16px] text-black">
-              {props.name}
+              {props.firstName} {props.lastName}
             </div>
           </div>
         </td>
@@ -42,7 +29,7 @@ function ActiveUsersTableItem(props) {
         </td>
         <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
           <div className="font-semibold text-[16px] text-black">
-            {props.joinedOn}
+            {dayjs(props.joinedOn).format("D MMM YYYY")}
           </div>
         </td>
 
