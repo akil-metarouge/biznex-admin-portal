@@ -13,6 +13,7 @@ import CommunityTabs from "./pages/community/CommunityTabs";
 
 // Import utility components
 import ProtectedRoute from "./utils/ProtectedRoute";
+import Users from "./pages/users/Users";
 
 function App() {
   const location = useLocation();
@@ -49,7 +50,7 @@ function App() {
           path="/users"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <Users />
             </ProtectedRoute>
           }
         />

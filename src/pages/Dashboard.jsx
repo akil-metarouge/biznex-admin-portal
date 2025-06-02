@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 // import Sidebar from '../partials/Sidebar';
-import Header from "../partials/Header";
 import FilterButton from "../components/DropdownFilter";
 import Datepicker from "../components/Datepicker";
 import DashboardCard01 from "../partials/dashboard/DashboardCard01";
@@ -15,8 +14,8 @@ import DashboardCard08 from "../partials/dashboard/DashboardCard08";
 import DashboardCard09 from "../partials/dashboard/DashboardCard09";
 import DashboardCard10 from "../partials/dashboard/DashboardCard10";
 import DashboardCard11 from "../partials/dashboard/DashboardCard11";
-import Sidebar1 from "../partials/Sidebar1";
-import Header1 from "../partials/Header1";
+import Header from "../partials/Header";
+import Sidebar from "../partials/Sidebar";
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -24,12 +23,12 @@ function Dashboard() {
   return (
     <div className="flex h-[100dvh] overflow-hidden">
       {/* Sidebar */}
-      <Sidebar1 sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         {/*  Site header */}
-        <Header1
+        <Header
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
           title="Metadata"
