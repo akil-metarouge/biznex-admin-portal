@@ -22,8 +22,6 @@ function Users() {
 
   const [users, setUsers] = useState([]);
 
-  console.log("error -> ", error);
-
   const openModal = (e) => {
     e.stopPropagation();
     setInviteUserModalOpen(true);
@@ -82,12 +80,12 @@ function Users() {
 
   // ******************** for csv part ********************
   const fileInputRef = useRef(null);
-  const [fileName, setFileName] = useState(null);
+  const [csvFile, setCsvFile] = useState(null);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setFileName(file.name);
+      setCsvFile(file);
     }
   };
 
@@ -95,19 +93,72 @@ function Users() {
     fileInputRef.current.click();
   };
 
+  useEffect(() => {
+    if (csvFile) {
+      const reader = new FileReader();
+      reader.onload = handleFileRead;
+      reader.readAsText(csvFile);
+    }
+  }, [csvFile]);
+
+  const handleFileRead = (e) => {
+    const content = e.target.result;
+    const rows = content.split("\n").map((row) => row.split(","));
+
+    // Check for required headers
+    const requiredHeaders = ["First Name", "Last Name", "Email"];
+    const headers = rows[0].map((header) => header.trim());
+
+    // Find indexes of important headers
+    const headerIndexes = requiredHeaders.reduce((acc, header) => {
+      const index = headers.findIndex(
+        (h) => h.toLowerCase() === header.toLowerCase()
+      );
+      if (index !== -1) {
+        acc[header] = index;
+      }
+      return acc;
+    }, {});
+
+    // Check if all required headers are present
+    if (Object.keys(headerIndexes).length !== requiredHeaders.length) {
+      alert("Wrong CSV file format, please take a look at the sample CSV file");
+      return;
+    }
+
+    // Validate row lengths and collect valid rows
+    const validRows = rows.slice(1).filter((row) => {
+      return row[headerIndexes["Email"]];
+    });
+
+    if (validRows.length === 0) {
+      alert(
+        "Wrong CSV file format, please take a look at the sample CSV file",
+        "error"
+      );
+      return;
+    }
+
+    // Limit to the specified number of rows and map data to the desired format
+    const formattedData = validRows.slice(0, 500).map((row) => ({
+      first_name: row[headerIndexes["First Name"]]?.trim(),
+      last_name: row[headerIndexes["Last Name"]]?.trim(),
+      email: row[headerIndexes["Email"]].trim(),
+    }));
+
+    setUsers(formattedData);
+  };
+
   const handleRemoveFile = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setFileName(null);
+    setCsvFile(null);
+    setUsers([]);
     fileInputRef.current.value = null;
   };
 
   // ***************** Invite ******************
   const handleInvite = () => {
-    if (userAddOption === "manual" && users.length === 0) {
-      alert("Please add at least one user manually.");
-      return;
-    }
     const readyToSend = { users: users };
 
     const apiURL = import.meta.env.VITE_BASE_URL;
@@ -153,7 +204,6 @@ function Users() {
         }
       );
       const data = await response.json();
-      console.log("Fetched invited users:", data);
       if (data?.status === 1) {
         setInvitedUsers(data.data || []);
       } else {
@@ -232,7 +282,11 @@ function Users() {
                       name="method"
                       value="manual"
                       checked={userAddOption === "manual"}
-                      onChange={() => setUserAddOption("manual")}
+                      onChange={() => {
+                        setUserAddOption("manual");
+                        setCsvFile(null);
+                        setUsers([]);
+                      }}
                       className="peer hidden"
                     />
                     <div className="w-5 h-5 rounded-full border-[2px] border-violet-800 flex items-center justify-center peer-checked:bg-violet-800">
@@ -250,7 +304,11 @@ function Users() {
                       value="csv"
                       className="peer hidden"
                       checked={userAddOption === "csv"}
-                      onChange={() => setUserAddOption("csv")}
+                      onChange={() => {
+                        setUserAddOption("csv");
+                        setCsvFile(null);
+                        setUsers([]);
+                      }}
                     />
                     <div className="w-5 h-5 rounded-full border-[2px] border-violet-800 flex items-center justify-center peer-checked:bg-violet-800">
                       <div className="w-4 h-4 rounded-full  border-[3px] peer-checked:border-[3px] border-white  peer-checked:bg-violet-800" />
@@ -269,7 +327,7 @@ function Users() {
                     <input
                       type="file"
                       ref={fileInputRef}
-                      accept=".csv, .xls, .xlsx"
+                      accept=".csv"
                       onChange={handleFileChange}
                       className="hidden"
                     />
@@ -284,14 +342,14 @@ function Users() {
                     </div>
                   </div>
 
-                  {fileName && (
+                  {csvFile && (
                     <div className="mt-5 flex items-center justify-between bg-violet-800/5 p-4 rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className="bg-violet-800/15 rounded-full h-11 w-11 flex items-center justify-center">
                           <img src={DocumentIcon} className="h-6 w-6" alt="" />
                         </div>
                         <span className="text-sm font-medium text-gray-900">
-                          {fileName}
+                          {csvFile?.name}
                         </span>
                       </div>
                       <button
@@ -443,7 +501,8 @@ function Users() {
               <div className="px-10 pt-6">
                 <button
                   onClick={handleInvite}
-                  className="w-full  py-3.5 text-[16px] font-semibold btn bg-violet-800 text-white hover:bg-violet-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
+                  className="w-full  py-3.5 text-[16px] font-semibold btn bg-violet-800 text-white hover:bg-violet-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg disabled:bg-[#A6A6A6]"
+                  disabled={users.length === 0}
                 >
                   Invite
                 </button>
