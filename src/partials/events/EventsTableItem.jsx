@@ -29,7 +29,7 @@ function EventsTableItem(props) {
         <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap capitalize">
           <div className="text-left font-semibold">{props.status}</div>
         </td>
-        <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+        <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer">
           <div className="flex items-center">
             <svg className="w-8 h-8 fill-current" viewBox="0 0 32 32">
               <circle cx="16" cy="16" r="2" />
