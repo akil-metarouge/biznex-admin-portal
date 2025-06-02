@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import Sidebar1 from "../../partials/Sidebar1";
-import Header1 from "../../partials/Header1";
 import EventsTable from "../../partials/events/EventsTable";
+import Header from "../../partials/Header";
+import Sidebar from "../../partials/Sidebar";
 
 function Events() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -12,12 +12,12 @@ function Events() {
   return (
     <div className="flex h-[100dvh] overflow-hidden">
       {/* Sidebar */}
-      <Sidebar1 sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         {/*  Site header */}
-        <Header1
+        <Header
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
           title={"Event"}

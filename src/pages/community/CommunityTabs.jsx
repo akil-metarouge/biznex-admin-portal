@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import Sidebar from "../../partials/Sidebar";
-import Header from "../../partials/Header";
 import SearchForm from "../../partials/actions/SearchForm";
 import CommunityTabsCard from "../../partials/community/CommunityTabsCard";
 import PaginationNumeric from "../../components/PaginationNumeric";
@@ -18,8 +16,8 @@ import Image09 from "../../images/user-64-09.jpg";
 import Image10 from "../../images/user-64-10.jpg";
 import Image11 from "../../images/user-64-11.jpg";
 import Image12 from "../../images/user-64-12.jpg";
-import Header1 from "../../partials/Header1";
-import Sidebar1 from "../../partials/Sidebar1";
+import Header from "../../partials/Header";
+import Sidebar from "../../partials/Sidebar";
 
 function UsersTabs() {
   const items = [
@@ -142,12 +140,12 @@ function UsersTabs() {
   return (
     <div className="flex h-[100dvh] overflow-hidden">
       {/* Sidebar */}
-      <Sidebar1 sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         {/*  Site header */}
-        <Header1
+        <Header
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
           title={"Communities"}

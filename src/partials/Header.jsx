@@ -1,75 +1,147 @@
-import React, { useState } from 'react';
-
-import SearchModal from '../components/ModalSearch';
-import Notifications from '../components/DropdownNotifications';
-import Help from '../components/DropdownHelp';
-import UserMenu from '../components/DropdownProfile';
-import ThemeToggle from '../components/ThemeToggle';
+import DropdownClassic from "../components/DropdownClassic";
+import SearchForm from "./actions/SearchForm";
 
 function Header({
   sidebarOpen,
   setSidebarOpen,
-  variant = 'default',
+  title = "Metadata",
+  count = 148,
+  actionButton = true,
+  actionButtonText = "Add Report Reason",
+  actionButtonOnClick,
+  backButton = false,
+  searchField = false,
+  placeholder = "Search Content Reasons",
+  dropdown1 = false,
+  dropdown2 = false,
+  dropdown1Label = "Status",
+  dropdown2Label = "Report Category",
+  dropdown1Width = "w-44",
+  dropdown2Width = "w-64",
+  dropdown1Options = [
+    { id: 0, label: "All" },
+    { id: 1, label: "Pending" },
+    { id: 2, label: "Resolved" },
+    { id: 3, label: "Rejected" },
+  ],
+  dropdown2Options = [
+    { id: 0, label: "All" },
+    { id: 1, label: "Last 7 days" },
+    { id: 2, label: "Last 30 days" },
+    { id: 3, label: "Last 90 days" },
+    { id: 4, label: "Last 180 days" },
+    { id: 5, label: "Last 365 days" },
+  ],
+  dropdown1Selected = 0,
+  dropdown2Selected = 0,
+  removeButtons = false,
 }) {
-
-  const [searchModalOpen, setSearchModalOpen] = useState(false)
-
   return (
-    <header className={`sticky top-0 before:absolute before:inset-0 before:backdrop-blur-md max-lg:before:bg-white/90 dark:max-lg:before:bg-gray-800/90 before:-z-10 z-30 ${variant === 'v2' || variant === 'v3' ? 'before:bg-white after:absolute after:h-px after:inset-x-0 after:top-full after:bg-gray-200 dark:after:bg-gray-700/60 after:-z-10' : 'max-lg:shadow-xs lg:before:bg-gray-100/90 dark:lg:before:bg-gray-900/90'} ${variant === 'v2' ? 'dark:before:bg-gray-800' : ''} ${variant === 'v3' ? 'dark:before:bg-gray-900' : ''}`}>
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className={`flex items-center justify-between h-16 ${variant === 'v2' || variant === 'v3' ? '' : 'lg:border-b border-gray-200 dark:border-gray-700/60'}`}>
-
+    <header
+      className={`m-5 ml-0 rounded-2xl sticky top-5 inset-0 backdrop-blur-md bg-white/70  z-30 max-lg:shadow-xs `}
+    >
+      <div className="px-4  lg:px-6">
+        <div className={`flex items-center justify-between h-[90px]`}>
           {/* Header: Left side */}
           <div className="flex">
-
             {/* Hamburger button */}
             <button
               className="text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 lg:hidden"
               aria-controls="sidebar"
               aria-expanded={sidebarOpen}
-              onClick={(e) => { e.stopPropagation(); setSidebarOpen(!sidebarOpen); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSidebarOpen(!sidebarOpen);
+              }}
             >
               <span className="sr-only">Open sidebar</span>
-              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg
+                className="w-6 h-6 fill-current"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <rect x="4" y="5" width="16" height="2" />
                 <rect x="4" y="11" width="16" height="2" />
                 <rect x="4" y="17" width="16" height="2" />
               </svg>
             </button>
-
           </div>
 
           {/* Header: Right side */}
-          <div className="flex items-center space-x-3">
-            <div>
-              <button
-                className={`w-8 h-8 flex items-center justify-center hover:bg-gray-100 lg:hover:bg-gray-200 dark:hover:bg-gray-700/50 dark:lg:hover:bg-gray-800 rounded-full ml-3 ${searchModalOpen && 'bg-gray-200 dark:bg-gray-800'}`}
-                onClick={(e) => { e.stopPropagation(); setSearchModalOpen(true); }}
-                aria-controls="search-modal"
-              >
-                <span className="sr-only">Search</span>
-                <svg
-                  className="fill-current text-gray-500/80 dark:text-gray-400/80"
-                  width={16}
-                  height={16}
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
+          <div className="flex flex-grow items-center justify-between space-x-3">
+            <div className="flex items-center ">
+              {/* **************** Back Button **************** */}
+              {backButton && (
+                <button className="mr-4.5 p-4 py-3.5 text-sm font-semibold btn bg-violet-50 hover:bg-gray-100 text-violet-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg transition duration-300 flex items-center shadow-none">
+                  <svg
+                    className="shrink-0 mr-2 fill-current scale-110 text-violet-800 dark:text-gray-500 rotate-90"
+                    width="11"
+                    height="7"
+                    viewBox="0 0 11 7"
+                  >
+                    <path d="M5.4 6.8L0 1.4 1.4 0l4 4 4-4 1.4 1.4z" />
+                  </svg>
+                  <span> Back</span>
+                </button>
+              )}
+
+              {/* **************** Title without count **************** */}
+              {title && !count && (
+                <h2 className="text-2xl font-bold text-black">{title}</h2>
+              )}
+
+              {/* **************** Title with count **************** */}
+              {title && count && (
+                <h2 className="text-2xl font-bold text-black">
+                  {title} ({count})
+                </h2>
+              )}
+
+              {/* **************** Action Button **************** */}
+              {actionButton && actionButtonText && (
+                <button
+                  onClick={actionButtonOnClick}
+                  className="ml-4.5 p-4 py-3.5 text-[16px] font-semibold btn bg-violet-800 text-white hover:bg-violet-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
                 >
-                  <path d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7ZM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5Z" />
-                  <path d="m13.314 11.9 2.393 2.393a.999.999 0 1 1-1.414 1.414L11.9 13.314a8.019 8.019 0 0 0 1.414-1.414Z" />
-                </svg>
-              </button>
-              <SearchModal id="search-modal" searchId="search" modalOpen={searchModalOpen} setModalOpen={setSearchModalOpen} />
+                  {actionButtonText}
+                </button>
+              )}
             </div>
-            <Notifications align="right" />
-            <Help align="right" />
-            <ThemeToggle />
-            {/*  Divider */}
-            <hr className="w-px h-6 bg-gray-200 dark:bg-gray-700/60 border-none" />
-            <UserMenu align="right" />
+            <div className="flex items-center space-x-4">
+              {/* **************** Dropdowns **************** */}
+              {dropdown1 && (
+                <DropdownClassic
+                  width={dropdown1Width}
+                  label={dropdown1Label}
+                  options={dropdown1Options}
+                  selected={dropdown1Selected}
+                />
+              )}
+              {dropdown2 && (
+                <DropdownClassic
+                  width={dropdown2Width}
+                  label={dropdown2Label}
+                  options={dropdown2Options}
+                  selected={dropdown2Selected}
+                />
+              )}
 
+              {/* **************** Search Field **************** */}
+              {searchField && <SearchForm placeholder={placeholder} />}
+
+              {/* **************** Remove Buttons **************** */}
+              {removeButtons && (
+                <>
+                  <button className="w-[266px] p-6 py-3.5 text-[16px] font-semibold btn border-2 border-orange-800 text-orange-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg">
+                    Remove Post
+                  </button>
+                  <button className="w-[266px] py-3.5 text-[16px] font-semibold btn bg-orange-800 text-white hover:bg-orange-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg">
+                    Remove Post & Suspend User
+                  </button>
+                </>
+              )}
+            </div>
           </div>
-
         </div>
       </div>
     </header>

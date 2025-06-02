@@ -1,11 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-import Sidebar1 from "../../partials/Sidebar1";
-import Header1 from "../../partials/Header1";
 import ActiveUsersTable from "../../partials/users/ActiveusersTable";
 import ModalBasic from "../../components/ModalBasic";
 import { Add, AddCircle, Edit2, Trash } from "iconsax-reactjs";
 import UploadFileIcon from "../../assets/icons/upload-file.svg";
 import DocumentIcon from "../../assets/icons/document.svg";
+import Header from "../../partials/Header";
+import Sidebar from "../../partials/Sidebar";
 
 function Users() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -175,12 +175,12 @@ function Users() {
   return (
     <div className="flex h-[100dvh] overflow-hidden">
       {/* Sidebar */}
-      <Sidebar1 sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden pl-5 lg:pl-0">
         {/*  Site header */}
-        <Header1
+        <Header
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
           title={"Users"}
