@@ -8,6 +8,7 @@ function Header1({
   count = 148,
   actionButton = true,
   actionButtonText = "Add Report Reason",
+  onActionButtonClick,
   backButton = false,
   searchField = false,
   placeholder = "Search Content Reasons",
@@ -98,7 +99,10 @@ function Header1({
 
               {/* **************** Action Button **************** */}
               {actionButton && actionButtonText && (
-                <button className="ml-4.5 p-4 py-3.5 text-[16px] font-semibold btn bg-violet-800 text-white hover:bg-violet-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg">
+                <button
+                  onClick={onActionButtonClick}
+                  className="ml-4.5 p-4 py-3.5 text-[16px] font-semibold btn bg-violet-800 text-white hover:bg-violet-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
+                >
                   {actionButtonText}
                 </button>
               )}
