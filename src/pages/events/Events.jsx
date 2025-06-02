@@ -3,11 +3,20 @@ import { useState } from "react";
 import Sidebar1 from "../../partials/Sidebar1";
 import Header1 from "../../partials/Header1";
 import EventsTable from "../../partials/events/EventsTable";
+import { useNavigate } from "react-router-dom";
 
 function Events() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleSelectedItems = (selectedItems) => {};
+
+  const navigate = useNavigate();
+
+  const handleActionButtonClick = () => {
+    // Navigate to add-report route
+    console.log("i am clicked");
+    navigate("/create-events");
+  };
 
   return (
     <div className="flex h-[100dvh] overflow-hidden">
@@ -24,6 +33,7 @@ function Events() {
           count={32}
           actionButton={true}
           actionButtonText={"Create Event"}
+          onActionButtonClick={handleActionButtonClick}
           dropdown1={true}
           dropdown1Label="Status"
           dropdown1Options={[
