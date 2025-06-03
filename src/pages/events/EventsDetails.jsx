@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Sidebar1 from "../../partials/Sidebar1";
+import  Sidebar from "../../partials/Sidebar";
 import { useNavigate } from "react-router-dom";
 
 function EventsDetails() {
@@ -8,7 +8,7 @@ function EventsDetails() {
   return (
     <div className="flex h-[100dvh] overflow-hidden">
       {/* Sidebar */}
-      <Sidebar1 sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
