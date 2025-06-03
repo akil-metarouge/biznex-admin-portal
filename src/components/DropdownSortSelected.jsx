@@ -1,6 +1,25 @@
 import { useState, useRef, useEffect } from "react";
 import Transition from "../utils/Transition";
-import { Check } from "lucide-react"; // or any icon library you use
+import { Check } from "lucide-react";
+
+function darkenColor(color, percent) {
+  const num = parseInt(color.replace("#", ""), 16),
+    amt = Math.round(2.55 * percent * 100),
+    R = (num >> 16) - amt,
+    G = ((num >> 8) & 0x00ff) - amt,
+    B = (num & 0x0000ff) - amt;
+  return (
+    "#" +
+    (
+      0x1000000 +
+      (R < 255 ? (R < 0 ? 0 : R) : 255) * 0x10000 +
+      (G < 255 ? (G < 0 ? 0 : G) : 255) * 0x100 +
+      (B < 255 ? (B < 0 ? 0 : B) : 255)
+    )
+      .toString(16)
+      .slice(1)
+  );
+}
 
 function DropdownSortSelected({
   align = "left",
@@ -88,7 +107,21 @@ function DropdownSortSelected({
                     selectedValue === item.value
                       ? "text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 font-semibold"
                       : "text-gray-400"
-                  } hover:text-black dark:hover:text-gray-300 cursor-pointer`}
+                  } hover:text-black dark:hover:text-gray-300 cursor-pointer text-nowrap`}
+                  style={{
+                    color: item?.textColor || undefined,
+                  }}
+                  onMouseEnter={(e) => {
+                    if (item?.textColor)
+                      e.currentTarget.style.color = darkenColor(
+                        item.textColor,
+                        0.1
+                      );
+                  }}
+                  onMouseLeave={(e) => {
+                    if (item?.textColor)
+                      e.currentTarget.style.color = item.textColor;
+                  }}
                 >
                   {item.label}
                   {item.icon ? (

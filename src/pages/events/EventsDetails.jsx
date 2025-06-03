@@ -1,6 +1,7 @@
 import { useState } from "react";
-import  Sidebar from "../../partials/Sidebar";
+import Sidebar from "../../partials/Sidebar";
 import { useNavigate } from "react-router-dom";
+import EventDetailsPage from "./EventDetails";
 
 function EventsDetails() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -12,9 +13,10 @@ function EventsDetails() {
 
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-        <div className="mx-4">
+        <div className="mx-4 mb-10">
           {/*  Site header */}
           <BackButton />
+          <EventDetailsPage />
         </div>
       </div>
     </div>
