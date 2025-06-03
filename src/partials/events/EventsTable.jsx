@@ -1,184 +1,136 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import EventsTableItem from "./EventsTableItem";
-
-import Image01 from "../../images/icon-01.svg";
-import Image02 from "../../images/icon-02.svg";
-import Image03 from "../../images/icon-03.svg";
+import DropdownSortSelected from "../../components/DropdownSortSelected";
 
 function EventsTable({ selectedItems }) {
   const orders = [
     {
-      id: "0",
-      image: Image01,
-      order: "#123567",
-      date: "22/01/2024",
-      customer: "Patricia Semklo",
-      total: "$129.00",
-      status: "Refunded",
-      items: "1",
-      location: "🇨🇳 Shanghai, CN",
-      type: "Subscription",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    },
-    {
       id: "1",
-      image: Image01,
-      order: "#779912",
-      date: "22/01/2024",
-      customer: "Dominik Lamakani",
-      total: "$89.00",
-      status: "Approved",
-      items: "2",
-      location: "🇲🇽 Mexico City, MX",
-      type: "Subscription",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      name: "Visionary Talks",
+      category: "public",
+      scheduledOn: "12 Jun 2025, 5.00hrs",
+      customer: "Alice Johnson",
+      attendees: "45",
+      type: "online",
+      status: "upcoming",
     },
     {
       id: "2",
-      image: Image02,
-      order: "#889924",
-      date: "22/01/2024",
-      customer: "Ivan Mesaros",
-      total: "$89.00",
-      status: "Approved",
-      items: "2",
-      location: "🇮🇹 Milan, IT",
-      type: "One-time",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      name: "Leadership Bootcamp",
+      category: "NextGen Leaders",
+      scheduledOn: "20 Jul 2025, 3.30hrs",
+      customer: "Brian Adams",
+      attendees: "78",
+      type: "offline",
+      status: "live",
     },
     {
       id: "3",
-      image: Image01,
-      order: "#897726",
-      date: "22/01/2024",
-      customer: "Maria Martinez",
-      total: "$59.00",
-      status: "Pending",
-      items: "1",
-      location: "🇮🇹 Bologna, IT",
-      type: "One-time",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      name: "Innovation Summit",
+      category: "Crucible of Creativity",
+      scheduledOn: "05 Aug 2025, 1.00hrs",
+      customer: "Catherine West",
+      attendees: "102",
+      type: "online",
+      status: "completed",
     },
     {
       id: "4",
-      image: Image03,
-      order: "#123567",
-      date: "22/01/2024",
-      customer: "Vicky Jung",
-      total: "$39.00",
-      status: "Refunded",
-      items: "1",
-      location: "🇬🇧 London, UK",
-      type: "Subscription",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      name: "Growth Hacking 101",
+      category: "public",
+      scheduledOn: "15 Sep 2025, 4.00hrs",
+      customer: "David Moore",
+      attendees: "36",
+      type: "offline",
+      status: "upcoming",
     },
     {
       id: "5",
-      image: Image01,
-      order: "#896644",
-      date: "21/01/2024",
-      customer: "Tisho Yanchev",
-      total: "$59.00",
-      status: "Approved",
-      items: "1",
-      location: "🇫🇷 Paris, FR",
-      type: "One-time",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      name: "Creative Strategy Lab",
+      category: "Crucible of Creativity",
+      scheduledOn: "01 Oct 2025, 6.00hrs",
+      customer: "Emily Stone",
+      attendees: "67",
+      type: "online",
+      status: "live",
     },
     {
       id: "6",
-      image: Image03,
-      order: "#136988",
-      date: "21/01/2024",
-      customer: "James Cameron",
-      total: "$89.00",
-      status: "Approved",
-      items: "1",
-      location: "🇫🇷 Marseille, FR",
-      type: "Subscription",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      name: "Future Leaders Meetup",
+      category: "NextGen Leaders",
+      scheduledOn: "22 Oct 2025, 2.30hrs",
+      customer: "Franklin Reeves",
+      attendees: "51",
+      type: "offline",
+      status: "completed",
     },
     {
       id: "7",
-      image: Image03,
-      order: "#442206",
-      date: "21/01/2024",
-      customer: "Haruki Masuno",
-      total: "$129.00",
-      status: "Approved",
-      items: "2",
-      location: "🇺🇸 New York, USA",
-      type: "Subscription",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      name: "Marketing Minds",
+      category: "public",
+      scheduledOn: "10 Nov 2025, 5.30hrs",
+      customer: "Grace Lee",
+      attendees: "88",
+      type: "online",
+      status: "upcoming",
     },
     {
       id: "8",
-      image: Image02,
-      order: "#764321",
-      date: "21/01/2024",
-      customer: "Joe Huang",
-      total: "$89.00",
-      status: "Pending",
-      items: "2",
-      location: "🇨🇳 Shanghai, CN",
-      type: "One-time",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      name: "Design Thinking Jam",
+      category: "Crucible of Creativity",
+      scheduledOn: "18 Nov 2025, 3.00hrs",
+      customer: "Henry Black",
+      attendees: "74",
+      type: "offline",
+      status: "live",
     },
     {
       id: "9",
-      image: Image01,
-      order: "#908764",
-      date: "21/01/2024",
-      customer: "Carolyn McNeail",
-      total: "$59.00",
-      status: "Refunded",
-      items: "1",
-      location: "🇬🇧 Sheffield, UK",
-      type: "Subscription",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      name: "Strategic Insight Forum",
+      category: "NextGen Leaders",
+      scheduledOn: "25 Nov 2025, 4.30hrs",
+      customer: "Isabelle Grant",
+      attendees: "59",
+      type: "online",
+      status: "completed",
+    },
+    {
+      id: "10",
+      name: "Startup Kickoff",
+      category: "public",
+      scheduledOn: "30 Nov 2025, 1.30hrs",
+      customer: "Jack Nolan",
+      attendees: "40",
+      type: "offline",
+      status: "upcoming",
     },
   ];
 
-  const [selectAll, setSelectAll] = useState(false);
-  const [isCheck, setIsCheck] = useState([]);
   const [list, setList] = useState([]);
+  const [selected, setSelected] = useState("all");
+
+  const sortItems = [
+    {
+      label: "All",
+      value: "all",
+      onClick: () => setSelected("all"),
+    },
+    {
+      label: "Online",
+      value: "online",
+      onClick: () => setSelected("online"),
+    },
+    {
+      label: "Offline",
+      value: "offline",
+      onClick: () => setSelected("offline"),
+    },
+  ];
 
   useEffect(() => {
     setList(orders);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleSelectAll = () => {
-    setSelectAll(!selectAll);
-    setIsCheck(list.map((li) => li.id));
-    if (selectAll) {
-      setIsCheck([]);
-    }
-  };
-
-  const handleClick = (e) => {
-    const { id, checked } = e.target;
-    setSelectAll(false);
-    setIsCheck([...isCheck, id]);
-    if (!checked) {
-      setIsCheck(isCheck.filter((item) => item !== id));
-    }
-  };
-
-  useEffect(() => {
-    selectedItems(isCheck);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCheck]);
 
   return (
     <div className="bg-white dark:bg-gray-800 shadow-xs rounded-2xl relative ">
@@ -189,40 +141,31 @@ function EventsTable({ selectedItems }) {
             {/* Table header */}
             <thead className="text-[16px] font-semibold  text-[#545454] dark:text-gray-400 bg-gray-50 dark:bg-gray-900/20 border-t border-gray-100 dark:border-gray-700/60">
               <tr>
-                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap w-px">
-                  <div className="flex items-center">
-                    <label className="inline-flex">
-                      <span className="sr-only">Select all</span>
-                    </label>
+                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
+                  {" "}
+                  <div className="font-semibold text-left">Name</div>
+                </th>
+                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
+                  <div className="font-semibold text-left">Category</div>
+                </th>
+                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
+                  <div className="font-semibold text-left">Scheduled On</div>
+                </th>
+                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
+                  <div className="font-semibold text-left">Attendees</div>
+                </th>
+                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
+                  <div className="font-semibold flex items-center">
+                    <DropdownSortSelected
+                      align="right"
+                      label="Type"
+                      items={sortItems}
+                      selectedValue={selected}
+                    />
                   </div>
                 </th>
                 <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                  {" "}
-                  <div className="font-semibold text-left">Order</div>
-                </th>
-                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                  <div className="font-semibold text-left">Date</div>
-                </th>
-                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                  <div className="font-semibold text-left">Customer</div>
-                </th>
-                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                  <div className="font-semibold text-left">Total</div>
-                </th>
-                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                  <div className="font-semibold text-left">Status</div>
-                </th>
-                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                  <div className="font-semibold">Items</div>
-                </th>
-                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                  <div className="font-semibold text-left">Location</div>
-                </th>
-                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                  <div className="font-semibold text-left">Payment type</div>
-                </th>
-                <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                  <span className="sr-only">Menu</span>
+                  <div className="font-semibold text-left">status</div>
                 </th>
               </tr>
             </thead>
@@ -232,18 +175,13 @@ function EventsTable({ selectedItems }) {
                 <EventsTableItem
                   key={order.id}
                   id={order.id}
-                  image={order.image}
-                  order={order.order}
-                  date={order.date}
+                  name={order.name}
+                  category={order.category}
+                  scheduledOn={order.scheduledOn}
                   customer={order.customer}
-                  total={order.total}
-                  status={order.status}
-                  items={order.items}
-                  location={order.location}
+                  attendees={order.attendees}
                   type={order.type}
-                  description={order.description}
-                  handleClick={handleClick}
-                  isChecked={isCheck.includes(order.id)}
+                  status={order.status}
                 />
               );
             })}

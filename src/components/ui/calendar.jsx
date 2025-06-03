@@ -4,6 +4,7 @@ import * as React from "react"
 import { DayPicker } from "react-day-picker"
 
 import { cn } from "../../lib/utils"
+import 'react-day-picker/dist/style.css';
 
 function Calendar({
   className,
@@ -34,7 +35,7 @@ function Calendar({
         range_end: "day-range-end rounded-r-lg",
         selected:
           "bg-violet-500 text-white hover:bg-violet-500 hover:text-white focus:bg-violet-500 focus:text-white",
-        today: "bg-violet-500 text-white",
+        today: "bg-violet-200 text-white",
         outside:
           "day-outside text-gray-400 dark:text-gray-500 aria-selected:bg-violet-500/50 aria-selected:text-gray-400 dark:text-gray-500",
         disabled: "text-gray-400 dark:text-gray-500 opacity-50",
