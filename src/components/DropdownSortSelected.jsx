@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Transition from "../utils/Transition";
 import { Check } from "lucide-react"; // or any icon library you use
 
@@ -6,6 +6,7 @@ function DropdownSortSelected({
   align = "left",
   label = "Filter",
   selectedValue,
+  menuIcon,
   items,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -41,15 +42,25 @@ function DropdownSortSelected({
       <button
         ref={trigger}
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="inline-flex items-center text-sm text-[#545454] dark:text-gray-400 font-semibold"
+        className={`inline-flex items-center text-sm text-[#545454] dark:text-gray-400 font-semibold cursor-pointer ${
+          menuIcon ? "cursor-pointer" : ""
+        }`}
       >
         {label}
-        <svg
-          className="w-3 h-3 ml-1 fill-current text-gray-800 dark:text-gray-500 shrink-0"
-          viewBox="0 0 12 12"
-        >
-          <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
-        </svg>
+        {menuIcon ? (
+          <svg className="w-8 h-8 fill-current" viewBox="0 0 32 32">
+            <circle cx="16" cy="16" r="2" />
+            <circle cx="10" cy="16" r="2" />
+            <circle cx="22" cy="16" r="2" />
+          </svg>
+        ) : (
+          <svg
+            className="w-3 h-3 ml-1 fill-current text-gray-800 dark:text-gray-500 shrink-0"
+            viewBox="0 0 12 12"
+          >
+            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+          </svg>
+        )}
       </button>
 
       <Transition
@@ -77,11 +88,13 @@ function DropdownSortSelected({
                     selectedValue === item.value
                       ? "text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 font-semibold"
                       : "text-gray-400"
-                  } hover:text-black dark:hover:text-gray-300 `}
+                  } hover:text-black dark:hover:text-gray-300 cursor-pointer`}
                 >
                   {item.label}
-                  {selectedValue === item.value && (
-                    <Check className="w-4 h-4 text-violet-600" />
+                  {item.icon ? (
+                    <span className="ml-4">{item.icon}</span>
+                  ) : (
+                    <Check className="w-4 h-4 text-violet-600 ml-2" />
                   )}
                 </button>
                 {idx < items.length - 1 && (

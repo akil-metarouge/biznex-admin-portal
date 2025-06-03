@@ -1,9 +1,8 @@
 import { useState } from "react";
 import Sidebar1 from "../../partials/Sidebar1";
-import CreateEventForm from "./CreateEventForms";
 import { useNavigate } from "react-router-dom";
 
-function CreateEvents() {
+function EventsDetails() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -13,18 +12,16 @@ function CreateEvents() {
 
       {/* Content area */}
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-        <div className="mx-4 mb-10">
+        <div className="mx-4">
           {/*  Site header */}
           <BackButton />
-          {/* event create section */}
-          <CreateEventForm />
         </div>
       </div>
     </div>
   );
 }
 
-export default CreateEvents;
+export default EventsDetails;
 
 const BackButton = () => {
   const navigate = useNavigate();
@@ -47,7 +44,7 @@ const BackButton = () => {
         </svg>
         <span> Back</span>
       </button>
-      <h2 className="text-2xl font-bold text-black">Create Event</h2>
+      <h2 className="text-2xl font-bold text-black">Beyond Boundaries</h2>
     </div>
   );
 };

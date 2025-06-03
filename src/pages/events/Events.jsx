@@ -46,8 +46,8 @@ function Events() {
           placeholder="Search Event"
         />
 
-        <main className="grow">
-          <div className="pr-5 w-full max-w-[96rem] mx-auto mb-5">
+        <main className="grow mb-10">
+          <div className="mr-4">
             <EventsTable selectedItems={handleSelectedItems} />
           </div>
         </main>

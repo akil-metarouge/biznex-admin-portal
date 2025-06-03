@@ -14,6 +14,7 @@ import CommunityTabs from "./pages/community/CommunityTabs";
 // Import utility components
 import ProtectedRoute from "./utils/ProtectedRoute";
 import CreateEvents from "./pages/events/CreateEvents";
+import EventsDetails from "./pages/events/EventsDetails";
 
 function App() {
   const location = useLocation();
@@ -78,6 +79,15 @@ function App() {
           element={
             <ProtectedRoute>
               <CreateEvents />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/events-details/:id"
+          element={
+            <ProtectedRoute>
+              <EventsDetails />
             </ProtectedRoute>
           }
         />
