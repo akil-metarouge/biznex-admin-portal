@@ -1,16 +1,31 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import EventsTableItem from "./EventsTableItem";
 import DropdownSortSelected from "../../components/DropdownSortSelected";
 import Pagination from "../users/pagination";
 import moment from "moment";
 
 function EventsTable() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // ✅ Read from URL
+  const initialPage = parseInt(searchParams.get("page")) || 1;
+  const initialRowsPerPage = parseInt(searchParams.get("perPage")) || 10;
+
   const [selected, setSelected] = useState("all");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [events, setEvents] = useState({});
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(initialPage);
+  const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
+
+  // ✅ Update URL when page or perPage changes
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", page.toString());
+    params.set("perPage", rowsPerPage.toString());
+    setSearchParams(params);
+  }, [page, rowsPerPage]);
 
   const fetchUsers = async (limit = rowsPerPage, currentPage = page) => {
     setIsLoading(true);
