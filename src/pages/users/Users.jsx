@@ -6,21 +6,26 @@ import UploadFileIcon from "../../assets/icons/upload-file.svg";
 import DocumentIcon from "../../assets/icons/document.svg";
 import Header from "../../partials/Header";
 import Sidebar from "../../partials/Sidebar";
+import InvitedUsersTable from "../../partials/users/InvitedUsersTable";
+import SuspendedUsersTable from "../../partials/users/SuspendedUsersTable";
 
 function Users() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [inviteUserModalOpen, setInviteUserModalOpen] = useState(false);
-  const [invitedUsers, setInvitedUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
-  const [error, setError] = useState("");
   const [userAddOption, setUserAddOption] = useState("manual"); // 'manual' or 'csv'
-
   const [users, setUsers] = useState([]);
+  const [activeTab, setActiveTab] = useState("active");
+
+  const tabs = [
+    { id: "active", label: "Active Users", count: 2534 },
+    { id: "invited", label: "Invited Users", count: 673 },
+    { id: "suspended", label: "Suspended Users", count: 50 },
+  ];
 
   const openModal = (e) => {
     e.stopPropagation();
@@ -178,7 +183,6 @@ function Users() {
           setError("");
           setInviteUserModalOpen(false);
           setUsers([]); // Clear the users list
-          fetchInvitedUsers(); // Refresh the invited users list
         } else {
           console.error("Invitation failed:", data);
           setError(data?.error);
@@ -189,38 +193,6 @@ function Users() {
         setError("An error occurred");
       });
   };
-
-  const fetchInvitedUsers = async () => {
-    setIsLoading(true);
-    const apiURL = import.meta.env.VITE_BASE_URL;
-    try {
-      const response = await fetch(
-        `${apiURL}/api/admin/users/invited?limit=100`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      if (data?.status === 1) {
-        setInvitedUsers(data.data || []);
-      } else {
-        console.error("Failed to fetch invited users:", data);
-        setError("Failed to fetch invited users");
-      }
-    } catch (error) {
-      console.error("Error fetching invited users:", error);
-      setError("An error occurred while fetching invited users");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchInvitedUsers();
-  }, []);
 
   return (
     <div className="flex h-[100dvh] overflow-hidden">
@@ -244,19 +216,37 @@ function Users() {
 
         <main className="grow">
           <div className="pr-5  w-full max-w-[96rem] mx-auto mb-5">
-            {isLoading ? (
-              <div className="text-center py-8">Loading...</div>
-            ) : (
-              <ActiveUsersTable
-                data={invitedUsers}
-                selectedItems={(selectedItem) => {
-                  // console.log(selectedItem);
-                }}
-              />
-            )}
+            <div className="bg-white p-4  rounded-2xl mb-4">
+              <div className="flex space-x-4">
+                {tabs.map((tab) => {
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`p-4 rounded-lg transition font-bold cursor-pointer ${
+                        isActive
+                          ? "bg-[#E7DEF3] text-violet-800"
+                          : "text-[#1F1F1F]  hover:bg-[#E7DEF3] hover:text-violet-800 "
+                      }`}
+                    >
+                      {tab.label} ({tab.count})
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="pr-5  w-full max-w-[96rem] mx-auto mb-5">
+            <div>
+              {activeTab === "active" && <ActiveUsersTable data={[]} />}
+              {activeTab === "invited" && <InvitedUsersTable />}
+              {activeTab === "suspended" && <SuspendedUsersTable data={[]} />}
+            </div>
           </div>
         </main>
 
+        {/* =================================== Invite User Moda =================================== */}
         <div className="m-1.5">
           {/* Start */}
           <ModalBasic
