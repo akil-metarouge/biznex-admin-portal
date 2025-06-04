@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import SearchForm from "../../partials/actions/SearchForm";
-import CommunityTabsCard from "../../partials/community/CommunityTabsCard";
+import CommunityCard from "../../partials/community/CommunityCard";
 import PaginationNumeric from "../../components/PaginationNumeric";
 
 import Image01 from "../../images/user-64-01.jpg";
@@ -19,7 +19,7 @@ import Image12 from "../../images/user-64-12.jpg";
 import Header from "../../partials/Header";
 import Sidebar from "../../partials/Sidebar";
 
-function UsersTabs() {
+function CommunityListing() {
   const items = [
     {
       id: 0,
@@ -178,7 +178,7 @@ function UsersTabs() {
             <div className="grid grid-cols-12 gap-6">
               {items.map((item) => {
                 return (
-                  <CommunityTabsCard
+                  <CommunityCard
                     key={item.id}
                     id={item.id}
                     name={item.name}
@@ -204,4 +204,4 @@ function UsersTabs() {
   );
 }
 
-export default UsersTabs;
+export default CommunityListing;
