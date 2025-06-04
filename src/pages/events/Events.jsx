@@ -3,11 +3,20 @@ import { useState } from "react";
 import EventsTable from "../../partials/events/EventsTable";
 import Header from "../../partials/Header";
 import Sidebar from "../../partials/Sidebar";
+import { useNavigate } from "react-router-dom";
 
 function Events() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleSelectedItems = (selectedItems) => {};
+
+  const navigate = useNavigate();
+
+  const handleActionButtonClick = () => {
+    // Navigate to add-report route
+    console.log("i am clicked");
+    navigate("/create-events");
+  };
 
   return (
     <div className="flex h-[100dvh] overflow-hidden">
@@ -24,6 +33,7 @@ function Events() {
           count={32}
           actionButton={true}
           actionButtonText={"Create Event"}
+          actionButtonOnClick={handleActionButtonClick}
           dropdown1={true}
           dropdown1Label="Status"
           dropdown1Options={[
@@ -36,8 +46,8 @@ function Events() {
           placeholder="Search Event"
         />
 
-        <main className="grow">
-          <div className="pr-5 w-full max-w-[96rem] mx-auto mb-5">
+        <main className="grow mb-10">
+          <div className="mr-4">
             <EventsTable selectedItems={handleSelectedItems} />
           </div>
         </main>
