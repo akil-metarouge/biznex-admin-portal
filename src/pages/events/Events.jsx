@@ -8,8 +8,6 @@ import { useNavigate } from "react-router-dom";
 function Events() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const handleSelectedItems = (selectedItems) => {};
-
   const navigate = useNavigate();
 
   const handleActionButtonClick = () => {
@@ -48,7 +46,7 @@ function Events() {
 
         <main className="grow mb-10">
           <div className="mr-4">
-            <EventsTable selectedItems={handleSelectedItems} />
+            <EventsTable />
           </div>
         </main>
       </div>
