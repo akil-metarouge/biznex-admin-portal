@@ -6,23 +6,26 @@ import UploadFileIcon from "../../assets/icons/upload-file.svg";
 import DocumentIcon from "../../assets/icons/document.svg";
 import Header from "../../partials/Header";
 import Sidebar from "../../partials/Sidebar";
+import InvitedUsersTable from "../../partials/users/InvitedUsersTable";
+import SuspendedUsersTable from "../../partials/users/SuspendedUsersTable";
 
 function Users() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [inviteUserModalOpen, setInviteUserModalOpen] = useState(false);
-  const [invitedUsers, setInvitedUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
-  const [error, setError] = useState("");
   const [userAddOption, setUserAddOption] = useState("manual"); // 'manual' or 'csv'
-
   const [users, setUsers] = useState([]);
+  const [activeTab, setActiveTab] = useState("active");
 
-  console.log("error -> ", error);
+  const tabs = [
+    { id: "active", label: "Active Users", count: 2534 },
+    { id: "invited", label: "Invited Users", count: 673 },
+    { id: "suspended", label: "Suspended Users", count: 50 },
+  ];
 
   const openModal = (e) => {
     e.stopPropagation();
@@ -82,12 +85,12 @@ function Users() {
 
   // ******************** for csv part ********************
   const fileInputRef = useRef(null);
-  const [fileName, setFileName] = useState(null);
+  const [csvFile, setCsvFile] = useState(null);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setFileName(file.name);
+      setCsvFile(file);
     }
   };
 
@@ -95,19 +98,72 @@ function Users() {
     fileInputRef.current.click();
   };
 
+  useEffect(() => {
+    if (csvFile) {
+      const reader = new FileReader();
+      reader.onload = handleFileRead;
+      reader.readAsText(csvFile);
+    }
+  }, [csvFile]);
+
+  const handleFileRead = (e) => {
+    const content = e.target.result;
+    const rows = content.split("\n").map((row) => row.split(","));
+
+    // Check for required headers
+    const requiredHeaders = ["First Name", "Last Name", "Email"];
+    const headers = rows[0].map((header) => header.trim());
+
+    // Find indexes of important headers
+    const headerIndexes = requiredHeaders.reduce((acc, header) => {
+      const index = headers.findIndex(
+        (h) => h.toLowerCase() === header.toLowerCase()
+      );
+      if (index !== -1) {
+        acc[header] = index;
+      }
+      return acc;
+    }, {});
+
+    // Check if all required headers are present
+    if (Object.keys(headerIndexes).length !== requiredHeaders.length) {
+      alert("Wrong CSV file format, please take a look at the sample CSV file");
+      return;
+    }
+
+    // Validate row lengths and collect valid rows
+    const validRows = rows.slice(1).filter((row) => {
+      return row[headerIndexes["Email"]];
+    });
+
+    if (validRows.length === 0) {
+      alert(
+        "Wrong CSV file format, please take a look at the sample CSV file",
+        "error"
+      );
+      return;
+    }
+
+    // Limit to the specified number of rows and map data to the desired format
+    const formattedData = validRows.slice(0, 500).map((row) => ({
+      first_name: row[headerIndexes["First Name"]]?.trim(),
+      last_name: row[headerIndexes["Last Name"]]?.trim(),
+      email: row[headerIndexes["Email"]].trim(),
+    }));
+
+    setUsers(formattedData);
+  };
+
   const handleRemoveFile = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setFileName(null);
+    setCsvFile(null);
+    setUsers([]);
     fileInputRef.current.value = null;
   };
 
   // ***************** Invite ******************
   const handleInvite = () => {
-    if (userAddOption === "manual" && users.length === 0) {
-      alert("Please add at least one user manually.");
-      return;
-    }
     const readyToSend = { users: users };
 
     const apiURL = import.meta.env.VITE_BASE_URL;
@@ -127,7 +183,6 @@ function Users() {
           setError("");
           setInviteUserModalOpen(false);
           setUsers([]); // Clear the users list
-          fetchInvitedUsers(); // Refresh the invited users list
         } else {
           console.error("Invitation failed:", data);
           setError(data?.error);
@@ -138,39 +193,6 @@ function Users() {
         setError("An error occurred");
       });
   };
-
-  const fetchInvitedUsers = async () => {
-    setIsLoading(true);
-    const apiURL = import.meta.env.VITE_BASE_URL;
-    try {
-      const response = await fetch(
-        `${apiURL}/api/admin/users/invited?limit=100`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      console.log("Fetched invited users:", data);
-      if (data?.status === 1) {
-        setInvitedUsers(data.data || []);
-      } else {
-        console.error("Failed to fetch invited users:", data);
-        setError("Failed to fetch invited users");
-      }
-    } catch (error) {
-      console.error("Error fetching invited users:", error);
-      setError("An error occurred while fetching invited users");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchInvitedUsers();
-  }, []);
 
   return (
     <div className="flex h-[100dvh] overflow-hidden">
@@ -194,19 +216,37 @@ function Users() {
 
         <main className="grow">
           <div className="pr-5  w-full max-w-[96rem] mx-auto mb-5">
-            {isLoading ? (
-              <div className="text-center py-8">Loading...</div>
-            ) : (
-              <ActiveUsersTable
-                data={invitedUsers}
-                selectedItems={(selectedItem) => {
-                  // console.log(selectedItem);
-                }}
-              />
-            )}
+            <div className="bg-white p-4  rounded-2xl mb-4">
+              <div className="flex space-x-4">
+                {tabs.map((tab) => {
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`p-4 rounded-lg transition font-bold cursor-pointer ${
+                        isActive
+                          ? "bg-[#E7DEF3] text-violet-800"
+                          : "text-[#1F1F1F]  hover:bg-[#E7DEF3] hover:text-violet-800 "
+                      }`}
+                    >
+                      {tab.label} ({tab.count})
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+          <div className="pr-5  w-full max-w-[96rem] mx-auto mb-5">
+            <div>
+              {activeTab === "active" && <ActiveUsersTable data={[]} />}
+              {activeTab === "invited" && <InvitedUsersTable />}
+              {activeTab === "suspended" && <SuspendedUsersTable data={[]} />}
+            </div>
           </div>
         </main>
 
+        {/* =================================== Invite User Moda =================================== */}
         <div className="m-1.5">
           {/* Start */}
           <ModalBasic
@@ -232,7 +272,11 @@ function Users() {
                       name="method"
                       value="manual"
                       checked={userAddOption === "manual"}
-                      onChange={() => setUserAddOption("manual")}
+                      onChange={() => {
+                        setUserAddOption("manual");
+                        setCsvFile(null);
+                        setUsers([]);
+                      }}
                       className="peer hidden"
                     />
                     <div className="w-5 h-5 rounded-full border-[2px] border-violet-800 flex items-center justify-center peer-checked:bg-violet-800">
@@ -250,7 +294,11 @@ function Users() {
                       value="csv"
                       className="peer hidden"
                       checked={userAddOption === "csv"}
-                      onChange={() => setUserAddOption("csv")}
+                      onChange={() => {
+                        setUserAddOption("csv");
+                        setCsvFile(null);
+                        setUsers([]);
+                      }}
                     />
                     <div className="w-5 h-5 rounded-full border-[2px] border-violet-800 flex items-center justify-center peer-checked:bg-violet-800">
                       <div className="w-4 h-4 rounded-full  border-[3px] peer-checked:border-[3px] border-white  peer-checked:bg-violet-800" />
@@ -269,7 +317,7 @@ function Users() {
                     <input
                       type="file"
                       ref={fileInputRef}
-                      accept=".csv, .xls, .xlsx"
+                      accept=".csv"
                       onChange={handleFileChange}
                       className="hidden"
                     />
@@ -284,14 +332,14 @@ function Users() {
                     </div>
                   </div>
 
-                  {fileName && (
+                  {csvFile && (
                     <div className="mt-5 flex items-center justify-between bg-violet-800/5 p-4 rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className="bg-violet-800/15 rounded-full h-11 w-11 flex items-center justify-center">
                           <img src={DocumentIcon} className="h-6 w-6" alt="" />
                         </div>
                         <span className="text-sm font-medium text-gray-900">
-                          {fileName}
+                          {csvFile?.name}
                         </span>
                       </div>
                       <button
@@ -443,7 +491,8 @@ function Users() {
               <div className="px-10 pt-6">
                 <button
                   onClick={handleInvite}
-                  className="w-full  py-3.5 text-[16px] font-semibold btn bg-violet-800 text-white hover:bg-violet-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
+                  className="w-full  py-3.5 text-[16px] font-semibold btn bg-violet-800 text-white hover:bg-violet-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg disabled:bg-[#A6A6A6]"
+                  disabled={users.length === 0}
                 >
                   Invite
                 </button>

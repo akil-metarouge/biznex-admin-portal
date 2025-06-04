@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Image01 from "../../images/icon-01.svg";
-import Image02 from "../../images/icon-02.svg";
-import Image03 from "../../images/icon-03.svg";
-import ActiveUsersTableItem from "./ActiveUsersTableItem";
+import SuspendedUsersTableItem from "./SuspendedUsersTableItem";
 import Pagination from "./pagination";
 
-function ActiveUsersTable() {
+function SuspendedUsersTable() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [activeUsers, setActiveUsers] = useState({});
+  const [suspendedUsers, setSuspendedUsers] = useState({});
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -17,7 +14,7 @@ function ActiveUsersTable() {
     const apiURL = import.meta.env.VITE_BASE_URL;
     try {
       const response = await fetch(
-        `${apiURL}/api/admin/users/active?limit=${limit}&page=${currentPage}`,
+        `${apiURL}/api/admin/users/suspended?limit=${limit}&page=${currentPage}`,
         {
           method: "GET",
           headers: {
@@ -27,7 +24,7 @@ function ActiveUsersTable() {
       );
       const data = await response.json();
       if (data?.status === 1) {
-        setActiveUsers(data || {});
+        setSuspendedUsers(data || {});
       } else {
         console.error("Failed to fetch invited users:", data);
         setError("Failed to fetch invited users");
@@ -66,7 +63,9 @@ function ActiveUsersTable() {
                       <div className="font-semibold text-left">Email ID</div>
                     </th>
                     <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                      <div className="font-semibold text-left">Joined On</div>
+                      <div className="font-semibold text-left">
+                        Suspended On
+                      </div>
                     </th>
                     <th className="px-2 first:pl-5 last:pr-0 py-6 whitespace-nowrap">
                       <div className="font-semibold text-left"></div>
@@ -74,33 +73,33 @@ function ActiveUsersTable() {
                   </tr>
                 </thead>
                 {/* Table body */}
-                {activeUsers?.data?.length === 0 && (
+                {suspendedUsers?.data?.length === 0 && (
                   <tbody className="text-sm border-[#dfdfdf]">
                     <tr>
                       <td colSpan="4" className="px-2 py-6 text-center">
-                        No active users found.
+                        No suspended users found.
                       </td>
                     </tr>
                   </tbody>
                 )}
-                {activeUsers?.data?.map((user) => {
+                {suspendedUsers?.data?.map((user) => {
                   return (
-                    <ActiveUsersTableItem
+                    <SuspendedUsersTableItem
                       key={user.reference}
                       id={user.reference}
                       firstName={user.first_name}
                       lastName={user.last_name}
                       email={user.email}
-                      joinedOn={user.date_invited}
+                      date_invited={user.date_invited}
                     />
                   );
                 })}
               </table>
             </div>
-            {activeUsers?.data?.length > 0 && (
+            {suspendedUsers?.data?.length > 0 && (
               <div>
                 <Pagination
-                  totalItems={activeUsers?.meta?.total || 0}
+                  totalItems={suspendedUsers?.meta?.total || 0}
                   page={page}
                   rowsPerPage={rowsPerPage}
                   onPageChange={(newPage) => {
@@ -120,4 +119,4 @@ function ActiveUsersTable() {
   );
 }
 
-export default ActiveUsersTable;
+export default SuspendedUsersTable;

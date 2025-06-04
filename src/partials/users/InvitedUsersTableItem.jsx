@@ -1,7 +1,7 @@
 import Avatar04 from "../../images/avatar-04.jpg";
 import dayjs from "dayjs";
 
-function ActiveUsersTableItem(props) {
+function InvitedUsersTableItem(props) {
   return (
     <tbody className="text-sm border-[#dfdfdf] border-b">
       {/* Row */}
@@ -29,7 +29,7 @@ function ActiveUsersTableItem(props) {
         </td>
         <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
           <div className="font-semibold text-[16px] text-black">
-            {dayjs(props.joinedOn).format("D MMM YYYY")}
+            {dayjs(props.date_invited).format("D MMM YYYY")}
           </div>
         </td>
 
@@ -43,4 +43,4 @@ function ActiveUsersTableItem(props) {
   );
 }
 
-export default ActiveUsersTableItem;
+export default InvitedUsersTableItem;
