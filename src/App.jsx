@@ -9,11 +9,12 @@ import Login from "./pages/Login";
 import Events from "./pages/events/Events";
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
-import CommunityTabs from "./pages/community/CommunityTabs";
+import CommunityListing from "./pages/community/CommunityListing";
+import Users from "./pages/users/Users";
 
 // Import utility components
 import ProtectedRoute from "./utils/ProtectedRoute";
-import Users from "./pages/users/Users";
+import CommunityDetails from "./pages/community/CommunityDetails";
 import CreateEvents from "./pages/events/CreateEvents";
 import EventsDetails from "./pages/events/EventsDetails";
 
@@ -61,7 +62,16 @@ function App() {
           path="/communities"
           element={
             <ProtectedRoute>
-              <CommunityTabs />
+              <CommunityListing />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/communities/:id"
+          element={
+            <ProtectedRoute>
+              <CommunityDetails />
             </ProtectedRoute>
           }
         />

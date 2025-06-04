@@ -1,7 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import Transition from "../utils/Transition";
 
-function DropdownEditMenu({ children, align, ...rest }) {
+function DropdownEditMenu({
+  children,
+  align,
+  darkMode = false,
+  btnStyles,
+  ...rest
+}) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef(null);
@@ -37,13 +43,13 @@ function DropdownEditMenu({ children, align, ...rest }) {
     <div {...rest}>
       <button
         ref={trigger}
-        className={`rounded-full cursor-pointer ${
-          dropdownOpen
-            ? "bg-gray-100 dark:bg-gray-700/60 text-gray-500 dark:text-gray-400"
-            : "text-gray-100 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
-        }`}
+        className={`rounded-full cursor-pointer ${btnStyles}`}
         aria-haspopup="true"
-        onClick={() => setDropdownOpen(!dropdownOpen)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setDropdownOpen(!dropdownOpen);
+        }}
         aria-expanded={dropdownOpen}
       >
         <span className="sr-only">Menu</span>

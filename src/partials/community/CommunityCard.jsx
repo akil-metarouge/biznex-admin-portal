@@ -1,12 +1,29 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditMenu from "../../components/DropdownEditMenu";
 import bgImage from "./../../images/bg-image.png";
 
-function CommunityTabsCard(props) {
+function CommunityCard(props) {
+  const navigate = useNavigate();
   return (
     <div className="col-span-full sm:col-span-6 xl:col-span-3 bg-white shadow-xs rounded-xl">
-      <div className="flex flex-col h-80">
+      <div
+        className="flex flex-col h-80 cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out"
+        onClick={() => {
+          navigate(`/communities/${props.id}`, {
+            // state: {
+            //   id: props.id,
+            //   name: props.name,
+            //   image: props.image,
+            //   link: props.link,
+            //   location: props.location,
+            //   content: props.content,
+            //   status: props.status,
+            //   requests: props.requests,
+            // },
+          });
+        }}
+      >
         {/* Card top */}
         <div className="grow rounded-t-lg relative overflow-hidden">
           <img
@@ -28,11 +45,12 @@ function CommunityTabsCard(props) {
           <EditMenu
             align="right"
             className="absolute top-2 right-2 inline-flex"
+            btnStyles="text-gray-100 hover:text-gray-500"
           >
             <li>
               <Link
                 className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3"
-                to="#0"
+                // to="#0"
               >
                 Option 1
               </Link>
@@ -40,7 +58,7 @@ function CommunityTabsCard(props) {
             <li>
               <Link
                 className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3"
-                to="#0"
+                // to="#0"
               >
                 Option 2
               </Link>
@@ -48,7 +66,7 @@ function CommunityTabsCard(props) {
             <li>
               <Link
                 className="font-medium text-sm text-red-500 hover:text-red-600 flex py-1 px-3"
-                to="#0"
+                // to="#0"
               >
                 Remove
               </Link>
@@ -97,4 +115,4 @@ function CommunityTabsCard(props) {
   );
 }
 
-export default CommunityTabsCard;
+export default CommunityCard;
