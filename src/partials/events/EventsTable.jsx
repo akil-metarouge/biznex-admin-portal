@@ -1,113 +1,59 @@
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import EventsTableItem from "./EventsTableItem";
 import DropdownSortSelected from "../../components/DropdownSortSelected";
+import Pagination from "../users/pagination";
+import moment from "moment";
 
-function EventsTable({ selectedItems }) {
-  const orders = [
-    {
-      id: "1",
-      name: "Visionary Talks",
-      category: "public",
-      scheduledOn: "12 Jun 2025, 5.00hrs",
-      customer: "Alice Johnson",
-      attendees: "45",
-      type: "online",
-      status: "upcoming",
-    },
-    {
-      id: "2",
-      name: "Leadership Bootcamp",
-      category: "NextGen Leaders",
-      scheduledOn: "20 Jul 2025, 3.30hrs",
-      customer: "Brian Adams",
-      attendees: "78",
-      type: "offline",
-      status: "live",
-    },
-    {
-      id: "3",
-      name: "Innovation Summit",
-      category: "Crucible of Creativity",
-      scheduledOn: "05 Aug 2025, 1.00hrs",
-      customer: "Catherine West",
-      attendees: "102",
-      type: "online",
-      status: "completed",
-    },
-    {
-      id: "4",
-      name: "Growth Hacking 101",
-      category: "public",
-      scheduledOn: "15 Sep 2025, 4.00hrs",
-      customer: "David Moore",
-      attendees: "36",
-      type: "offline",
-      status: "upcoming",
-    },
-    {
-      id: "5",
-      name: "Creative Strategy Lab",
-      category: "Crucible of Creativity",
-      scheduledOn: "01 Oct 2025, 6.00hrs",
-      customer: "Emily Stone",
-      attendees: "67",
-      type: "online",
-      status: "live",
-    },
-    {
-      id: "6",
-      name: "Future Leaders Meetup",
-      category: "NextGen Leaders",
-      scheduledOn: "22 Oct 2025, 2.30hrs",
-      customer: "Franklin Reeves",
-      attendees: "51",
-      type: "offline",
-      status: "completed",
-    },
-    {
-      id: "7",
-      name: "Marketing Minds",
-      category: "public",
-      scheduledOn: "10 Nov 2025, 5.30hrs",
-      customer: "Grace Lee",
-      attendees: "88",
-      type: "online",
-      status: "upcoming",
-    },
-    {
-      id: "8",
-      name: "Design Thinking Jam",
-      category: "Crucible of Creativity",
-      scheduledOn: "18 Nov 2025, 3.00hrs",
-      customer: "Henry Black",
-      attendees: "74",
-      type: "offline",
-      status: "live",
-    },
-    {
-      id: "9",
-      name: "Strategic Insight Forum",
-      category: "NextGen Leaders",
-      scheduledOn: "25 Nov 2025, 4.30hrs",
-      customer: "Isabelle Grant",
-      attendees: "59",
-      type: "online",
-      status: "completed",
-    },
-    {
-      id: "10",
-      name: "Startup Kickoff",
-      category: "public",
-      scheduledOn: "30 Nov 2025, 1.30hrs",
-      customer: "Jack Nolan",
-      attendees: "40",
-      type: "offline",
-      status: "upcoming",
-    },
-  ];
+function EventsTable() {
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [list, setList] = useState([]);
+  // ✅ Read from URL
+  const initialPage = parseInt(searchParams.get("page")) || 1;
+  const initialRowsPerPage = parseInt(searchParams.get("perPage")) || 10;
+
   const [selected, setSelected] = useState("all");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [events, setEvents] = useState({});
+  const [page, setPage] = useState(initialPage);
+  const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
+
+  // ✅ Update URL when page or perPage changes
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", page.toString());
+    params.set("perPage", rowsPerPage.toString());
+    setSearchParams(params);
+  }, [page, rowsPerPage]);
+
+  const fetchUsers = async (limit = rowsPerPage, currentPage = page) => {
+    setIsLoading(true);
+    const apiURL = import.meta.env.VITE_BASE_URL;
+    try {
+      const response = await fetch(
+        `${apiURL}/api/admin/list-event?limit=${limit}&page=${currentPage}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const data = await response.json();
+      if (data?.status === 1) {
+        setEvents(data || {});
+      } else {
+        console.error("Failed to fetch events data:", data);
+        setError("Failed to fetch events data");
+      }
+    } catch (error) {
+      console.error("Error fetching events data:", error);
+      setError("An error occurred while fetching events data");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const sortItems = [
     {
@@ -128,9 +74,8 @@ function EventsTable({ selectedItems }) {
   ];
 
   useEffect(() => {
-    setList(orders);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    fetchUsers();
+  }, [page, rowsPerPage]); // Refetch when page or rowsPerPage changes
 
   return (
     <div className="bg-white dark:bg-gray-800 shadow-xs rounded-2xl relative ">
@@ -170,23 +115,46 @@ function EventsTable({ selectedItems }) {
               </tr>
             </thead>
             {/* Table body */}
-            {list.map((order) => {
+            {events?.data?.map((event) => {
               return (
                 <EventsTableItem
-                  key={order.id}
-                  id={order.id}
-                  name={order.name}
-                  category={order.category}
-                  scheduledOn={order.scheduledOn}
-                  customer={order.customer}
-                  attendees={order.attendees}
-                  type={order.type}
-                  status={order.status}
+                  key={event.id}
+                  id={event.id}
+                  name={event.event_name}
+                  category={"data missing"}
+                  scheduledOn={`${moment(event?.event_date).format(
+                    "DD MMM YYYY"
+                  )}, ${(
+                    moment(event?.end_date).diff(
+                      moment(event?.event_date),
+                      "minutes"
+                    ) / 60
+                  ).toFixed(2)}hrs`}
+                  customer={event.customer}
+                  attendees={event.attendees_count}
+                  type={event.is_online ? "Online" : "Offline"}
+                  status={"data missing"}
                 />
               );
             })}
           </table>
         </div>
+        {events?.data?.length > 0 && (
+          <div>
+            <Pagination
+              totalItems={events?.pagination?.totalItems || 0}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              onPageChange={(newPage) => {
+                setPage(newPage);
+              }}
+              onRowsPerPageChange={(newRowsPerPage) => {
+                setRowsPerPage(newRowsPerPage);
+                setPage(1);
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

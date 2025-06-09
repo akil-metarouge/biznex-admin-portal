@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import DropdownSortSelected from "../../components/DropdownSortSelected";
-import { Eye } from "lucide-react";
 import { LoginCurve } from "iconsax-react";
 
 function EventsTableItem(props) {
@@ -10,7 +9,10 @@ function EventsTableItem(props) {
     <tbody className="text-sm">
       {/* Row */}
       <tr>
-        <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+        <td
+          onClick={() => navigate(`/events-details/${props.id}`)}
+          className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer"
+        >
           <div className="text-gray-800 dark:text-gray-100 font-semibold">
             {props.name}
           </div>
@@ -36,7 +38,7 @@ function EventsTableItem(props) {
         <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap capitalize">
           <div className="text-left font-semibold">{props.status}</div>
         </td>
-        <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap capitalize">
+        <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap capitalize z-[100]">
           <DropdownSortSelected
             align="right"
             label=""
@@ -58,15 +60,6 @@ function EventsTableItem(props) {
             ]}
           />
         </td>
-        {/* <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer">
-          <div className="flex items-center">
-            <svg className="w-8 h-8 fill-current" viewBox="0 0 32 32">
-              <circle cx="16" cy="16" r="2" />
-              <circle cx="10" cy="16" r="2" />
-              <circle cx="22" cy="16" r="2" />
-            </svg>
-          </div>
-        </td> */}
       </tr>
     </tbody>
   );

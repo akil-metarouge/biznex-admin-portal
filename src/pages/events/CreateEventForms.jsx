@@ -181,7 +181,7 @@ export default function CreateEventForm() {
           <textarea
             rows={6}
             className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-violet-500"
-            defaultValue="The Profit Partners 2024 in Sydney is a prestigious event that celebrates excellence, innovation, and leadership in the business community. This annual event brings together top entrepreneurs, business leaders, and industry professionals from across Australia to honor outstanding achievements in various sectors."
+            defaultValue="The Profit Partners 2024 in Sydney is a prestigious event that celebrates excellence, innovation, and leadership in the business community. This annual event brings together top entrepreneurs, business leaders, and industry professionals from across Australia to honour outstanding achievements in various sectors."
           ></textarea>
         </div>
 

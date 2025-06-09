@@ -3,36 +3,40 @@ import { avatar, clockIcon, locationIcon } from "../../assets";
 import DropdownSortSelected from "../../components/DropdownSortSelected";
 import { Trash2 } from "lucide-react";
 import SearchForm from "../../partials/actions/SearchForm";
+import moment from "moment";
 
-const EventDetailsPage = () => {
+const EventDetailsPage = ({ data }) => {
   const attendees = Array(10).fill({
     name: "Thomas John Brown",
     avatar,
   });
 
+  console.log(data);
   return (
     <div className="min-h-screen">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Left section */}
         <div className="md:col-span-2 bg-white rounded-2xl shadow-sm overflow-hidden p-4 md:p-6">
           <img
-            src="https://images.unsplash.com/photo-1531058020387-3be344556be6"
+            src={data?.image_url}
             alt="Event"
             className="w-full aspect-[1070/580] object-cover rounded-xl"
           />
           <div className="pt-6 space-y-4">
             <h1 className="text-xl font-semibold text-[#1B1B1F]">
-              Beyond Boundaries 2024
+              {data?.event_name}
             </h1>
             <div className="flex items-baseline gap-4 text-sm text-[#5F5D6B]">
               <div className="flex flex-wrap items-center gap-4 text-sm text-[#5F5D6B]">
                 <span className="flex items-center gap-2 text-sm font-semibold">
                   <img src={locationIcon} alt="location-Icon" />
-                  International Convention Centre (ICC) Sydney, Australia
+                  {data?.location}
                 </span>
                 <span className="flex items-center gap-2 text-sm font-semibold">
                   <img src={clockIcon} alt="clock-Icon" />
-                  9:00 PM - 12:30 AM IST
+                  {/* 9:00 PM - 12:30 AM IST */}
+                  {moment(data?.event_date).format("h:mm A")} -{" "}
+                  {moment(data?.end_date).format("h:mm A")}
                 </span>
               </div>
               <button className="ml-auto">
@@ -49,25 +53,34 @@ const EventDetailsPage = () => {
                 <Calendar2 size="20" color="#885cc1" />
                 <p className="text-xs text-[#6B6B6B]">Date</p>
                 <p className="text-sm font-semibold text-black">
-                  12 Aug 2024 - 13 Aug 2024
+                  {moment(data?.event_date).format("DD MMM YYYY")} -{" "}
+                  {moment(data?.end_date).format("DD MMM YYYY")}
+                  {/* 12 Aug 2024 - 13 Aug 2024 */}
                 </p>
               </div>
               <div className="space-y-1.5 border-r border-gray-200 pr-4">
                 <User size="20" color="#885cc1" />
                 <p className="text-xs text-[#6B6B6B]">Attendees</p>
-                <p className="text-sm font-medium text-black">78/120</p>
+                <p className="text-sm font-medium text-black">
+                  {data?.participants_count}
+                  {`${
+                    data?.participants_limit
+                      ? `/${data?.participants_limit}`
+                      : ""
+                  }`}
+                </p>
               </div>
               <div className="space-y-1.5 border-r border-gray-200 pr-4">
                 <Category size="20" color="#885cc1" />
                 <p className="text-xs text-[#6B6B6B]">Community</p>
                 <p className="text-sm font-medium text-black">
-                  Crucible of Creativity
+                  {data?.community_details?.title || "N/A"}
                 </p>
               </div>
               <div className="space-y-1.5">
                 <Global size="20" color="#885cc1" />
                 <p className="text-xs text-[#6B6B6B]">Status</p>
-                <p className="text-sm font-medium text-black">Upcoming</p>
+                <p className="text-sm font-medium text-black">data missing</p>
               </div>
             </div>
 
@@ -76,27 +89,7 @@ const EventDetailsPage = () => {
                 About
               </h2>
               <p className="text-md text-[#5F5D6B] leading-relaxed">
-                The Beyond Boundaries 2024 in Sydney is a prestigious event that
-                celebrates excellence, innovation, and leadership in the
-                business community. This annual event brings together top
-                entrepreneurs, business leaders, and industry professionals from
-                across Australia to honor outstanding achievements in various
-                sectors.
-                <br />
-                <br />
-                Held at the iconic International Convention Centre (ICC) Sydney,
-                the awards ceremony recognizes companies and individuals who
-                have demonstrated exceptional success, creativity, and
-                resilience in the face of evolving market challenges. Categories
-                span across industries, including technology, finance, retail,
-                healthcare, and more, ensuring a diverse representation of
-                Australia’s thriving business. This prestigious event brings
-                together visionaries and trailblazers from across Australia,
-                celebrating remarkable achievements that push the boundaries of
-                innovation and redefine industry standards. From groundbreaking
-                startups to established market leaders, the awards highlight
-                those who have made an extraordinary impact on their sectors and
-                inspired progress within their communities.
+                {data?.about}
               </p>
             </div>
           </div>
