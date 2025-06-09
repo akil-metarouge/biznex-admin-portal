@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import InvitedUsersTableItem from "./InvitedUsersTableItem";
 import Pagination from "./pagination";
+import BlockedUsersTableItem from "./BlockedUsersTableItem";
 
-function InvitedUsersTable() {
+function BlockedUsersTable() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [invitedUsers, setInvitedUsers] = useState({});
+  const [blockedUsers, setBlockedUsers] = useState({});
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -24,7 +24,7 @@ function InvitedUsersTable() {
       );
       const data = await response.json();
       if (data?.status === 1) {
-        setInvitedUsers(data || {});
+        setBlockedUsers(data || {});
       } else {
         console.error("Failed to fetch invited users:", data);
         setError("Failed to fetch invited users");
@@ -58,47 +58,36 @@ function InvitedUsersTable() {
                   <tr>
                     <th className="px-2 first:pl-0 last:pr-5 py-6 whitespace-nowrap">
                       {" "}
-                      <div className="font-semibold text-left">Name</div>
-                    </th>
-                    <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                      <div className="font-semibold text-left">Email ID</div>
-                    </th>
-                    <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                      <div className="font-semibold text-left">Invited On</div>
-                    </th>
-                    <th className="px-2 first:pl-5 last:pr-0 py-6 whitespace-nowrap">
-                      <div className="font-semibold text-left"></div>
+                      <div className="font-semibold text-left">Users</div>
                     </th>
                   </tr>
                 </thead>
                 {/* Table body */}
-                {invitedUsers?.data?.length === 0 && (
+                {blockedUsers?.data?.length === 0 && (
                   <tbody className="text-sm border-[#dfdfdf]">
                     <tr>
                       <td colSpan="4" className="px-2 py-6 text-center">
-                        No invited users found.
+                        No blocked users found.
                       </td>
                     </tr>
                   </tbody>
                 )}
-                {invitedUsers?.data?.map((user) => {
+                {blockedUsers?.data?.map((user) => {
                   return (
-                    <InvitedUsersTableItem
+                    <BlockedUsersTableItem
                       key={user.reference}
                       id={user.reference}
                       firstName={user.first_name}
                       lastName={user.last_name}
-                      email={user.email}
-                      date_invited={user.date_invited}
                     />
                   );
                 })}
               </table>
             </div>
-            {invitedUsers?.data?.length > 0 && (
+            {blockedUsers?.data?.length > 0 && (
               <div>
                 <Pagination
-                  totalItems={invitedUsers?.meta?.total || 0}
+                  totalItems={blockedUsers?.meta?.total || 0}
                   page={page}
                   rowsPerPage={rowsPerPage}
                   onPageChange={(newPage) => {
@@ -118,4 +107,4 @@ function InvitedUsersTable() {
   );
 }
 
-export default InvitedUsersTable;
+export default BlockedUsersTable;

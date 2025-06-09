@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import InvitedUsersTableItem from "./InvitedUsersTableItem";
 import Pagination from "./pagination";
+import ReportedUsersTableItem from "./ReportedUsersTableItem";
 
-function InvitedUsersTable() {
+function ReportedUsersTable() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [invitedUsers, setInvitedUsers] = useState({});
@@ -48,7 +49,7 @@ function InvitedUsersTable() {
           <div className="w-8 h-8 border-4 border-violet-800 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-800  rounded-2xl relative ">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl relative shadow-none">
           <div>
             {/* Table */}
             <div className="overflow-x-auto rounded-2xl px-7">
@@ -58,16 +59,13 @@ function InvitedUsersTable() {
                   <tr>
                     <th className="px-2 first:pl-0 last:pr-5 py-6 whitespace-nowrap">
                       {" "}
-                      <div className="font-semibold text-left">Name</div>
+                      <div className="font-semibold text-left">Users</div>
                     </th>
                     <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                      <div className="font-semibold text-left">Email ID</div>
+                      <div className="font-semibold text-left">Reason</div>
                     </th>
                     <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                      <div className="font-semibold text-left">Invited On</div>
-                    </th>
-                    <th className="px-2 first:pl-5 last:pr-0 py-6 whitespace-nowrap">
-                      <div className="font-semibold text-left"></div>
+                      <div className="font-semibold text-left">Reported On</div>
                     </th>
                   </tr>
                 </thead>
@@ -83,7 +81,7 @@ function InvitedUsersTable() {
                 )}
                 {invitedUsers?.data?.map((user) => {
                   return (
-                    <InvitedUsersTableItem
+                    <ReportedUsersTableItem
                       key={user.reference}
                       id={user.reference}
                       firstName={user.first_name}
@@ -118,4 +116,4 @@ function InvitedUsersTable() {
   );
 }
 
-export default InvitedUsersTable;
+export default ReportedUsersTable;

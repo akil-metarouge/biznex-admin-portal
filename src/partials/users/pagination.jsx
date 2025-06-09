@@ -49,7 +49,7 @@ const Pagination = ({
   }, []);
 
   return (
-    <div className="flex items-center justify-end space-x-2 p-7  text-base bg-white rounded-md shadow-sm w-full text-black">
+    <div className="flex items-center justify-end space-x-2 p-7  text-base bg-white rounded-md shadow-none w-full text-black">
       {/* Dropdown */}
       <div className="relative" ref={dropdownRef}>
         <div className="flex items-center">
@@ -70,7 +70,7 @@ const Pagination = ({
         </div>
 
         {isDropdownOpen && (
-          <div className="absolute z-10 mt-1 w-full rounded-md bg-white shadow-lg border border-gray-200">
+          <div className="absolute z-10 mt-1 w-full rounded-md bg-white shadow-none border border-gray-200">
             {options.map((option) => (
               <div
                 key={option}

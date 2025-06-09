@@ -17,6 +17,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import CommunityDetails from "./pages/community/CommunityDetails";
 import CreateEvents from "./pages/events/CreateEvents";
 import EventsDetails from "./pages/events/EventsDetails";
+import UserDetails from "./pages/users/UserDetails";
 
 function App() {
   const location = useLocation();
@@ -54,6 +55,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Users />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/user-details"
+          element={
+            <ProtectedRoute>
+              <UserDetails />
             </ProtectedRoute>
           }
         />
