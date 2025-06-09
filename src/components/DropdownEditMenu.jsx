@@ -17,6 +17,7 @@ function DropdownEditMenu({
   useEffect(() => {
     const clickHandler = ({ target }) => {
       if (!dropdown.current) return;
+      console.log(target);
       if (
         !dropdownOpen ||
         dropdown.current.contains(target) ||

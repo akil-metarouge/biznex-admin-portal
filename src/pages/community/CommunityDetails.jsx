@@ -11,6 +11,11 @@ import CommunityDescription from "../../partials/community/CommunityDescription"
 import EditMenu from "../../components/DropdownEditMenu";
 import SearchForm from "../../partials/actions/SearchForm";
 import { Link } from "react-router-dom";
+import CommunityPost from "../../partials/community/CommunityPost";
+import PostUserImg from "./../../images/post-img.svg";
+import PostImg from "./../../images/post-image.svg";
+import EventImg from "./../../images/event.svg";
+import CommunityEvent from "../../partials/community/CommunityEvent";
 
 function CommunityDetails() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -221,7 +226,80 @@ function CommunityDetails() {
         },
       ],
     },
+    posts: [
+      {
+        id: 1,
+        name: "Biznex",
+        image: PostUserImg,
+        postImage: PostImg,
+        time: "2025-06-04T10:34:06Z",
+        accessibility: "Public",
+        description:
+          "Entrepreneurship is a constantly evolving journey, requiring individuals to embrace innovation, adapt to market trends, and seize emerging opportunities.",
+        likes: 856,
+        comments: {
+          meta: {
+            total: 29,
+          },
+          data: [
+            {
+              id: 1,
+              user: "Braylon Coleman",
+              time: "2025-06-04T10:34:06Z",
+              image: Image01,
+              position: "CEO at Vertex IT Systems",
+              comment:
+                "Absolutely! Staying current with the latest trends in app development is essential for creating innovative and competitive applications.",
+              commentLikes: 10,
+              repliesCount: 2,
+            },
+            {
+              id: 2,
+              user: "Braylon Coleman",
+              time: "2025-06-04T10:34:06Z",
+              image: Image01,
+              position: "CEO at Vertex IT Systems",
+              comment:
+                "Absolutely! Staying current with the latest trends in app development is essential for creating innovative and competitive applications.",
+              commentLikes: 10,
+              repliesCount: 2,
+            },
+          ],
+        },
+      },
+    ],
+    events: [
+      {
+        id: 1,
+        name: "Business Awards 2024",
+        image: EventImg,
+        time: "2025-06-14T10:34:06Z",
+        location: "Sydney",
+        attendees: 262,
+        status: "Upcoming",
+      },
+      {
+        id: 2,
+        name: "Tech Transformation Expo",
+        image: EventImg,
+        time: "2025-06-14T10:34:06Z",
+        location: "Sydney",
+        attendees: 262,
+        status: "Completed",
+      },
+      {
+        id: 3,
+        name: "Business Innovation Week",
+        image: EventImg,
+        time: "2025-06-14T10:34:06Z",
+        location: "Sydney",
+        attendees: 262,
+        status: "Cancelled",
+      },
+    ],
   });
+
+  const [showPosts, setShowPosts] = useState(true);
 
   return (
     <div className="flex h-[100dvh] overflow-hidden">
@@ -256,6 +334,68 @@ function CommunityDetails() {
                   accessibility={communityDetails?.accessibility}
                   description={communityDetails?.description}
                 />
+
+                {/* Posts and Events Section */}
+                <div className="w-full bg-white my-6 py-2 px-4 rounded-2xl flex">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowPosts(true);
+                    }}
+                    className={`px-5 py-4 text-sm rounded-lg cursor-pointer ${
+                      showPosts && "bg-violet-50 text-violet-800 font-bold"
+                    }`}
+                  >
+                    Posts
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowPosts(false);
+                    }}
+                    className={`px-5 py-4 text-sm rounded-lg cursor-pointer ${
+                      !showPosts && "bg-violet-50 text-violet-800 font-bold"
+                    }`}
+                  >
+                    Events
+                  </button>
+                </div>
+
+                {/* Posts */}
+
+                {showPosts &&
+                  communityDetails?.posts?.length > 0 &&
+                  communityDetails.posts.map((post) => {
+                    return (
+                      <CommunityPost
+                        key={post.id}
+                        name={post.name}
+                        image={post.image}
+                        postImage={post.postImage}
+                        time={post.time}
+                        accessibility={post.accessibility}
+                        description={post.description}
+                        postLikes={post.likes}
+                        comments={post.comments}
+                      />
+                    );
+                  })}
+
+                {/* Events */}
+                {!showPosts &&
+                  communityDetails?.events?.length > 0 &&
+                  communityDetails.events.map((event) => {
+                    return (
+                      <CommunityEvent
+                        name={event.name}
+                        image={event.image}
+                        time={event.time}
+                        location={event.location}
+                        attendees={event.attendees}
+                        status={event.status}
+                      />
+                    );
+                  })}
               </div>
 
               {/* Right Section */}
