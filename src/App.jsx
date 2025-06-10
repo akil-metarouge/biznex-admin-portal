@@ -95,6 +95,15 @@ function App() {
         />
         <Route
           exact
+          path="/update-events/:id/edit"
+          element={
+            <ProtectedRoute>
+              <CreateEvents />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
           path="/events-details/:id"
           element={
             <ProtectedRoute>

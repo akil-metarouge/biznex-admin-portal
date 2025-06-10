@@ -38,11 +38,10 @@ function EventsTableItem(props) {
         <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap capitalize">
           <div className="text-left font-semibold">{props.status}</div>
         </td>
-        <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap capitalize z-[100]">
+        <td className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3">
           <DropdownSortSelected
             align="right"
             label=""
-            selectedValue={"view-details"}
             menuIcon={true}
             items={[
               {
@@ -56,6 +55,18 @@ function EventsTableItem(props) {
                   />
                 ),
                 onClick: () => navigate(`/events-details/${props.id}`),
+              },
+              {
+                label: "Update Events",
+                value: "update-events",
+                icon: (
+                  <LoginCurve
+                    className="w-5 h-5 text-blue-600"
+                    size="32"
+                    color="#885cc1"
+                  />
+                ),
+                onClick: () => navigate(`/update-events/${props.id}/edit`),
               },
             ]}
           />
