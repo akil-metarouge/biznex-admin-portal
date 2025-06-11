@@ -17,6 +17,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import CommunityDetails from "./pages/community/CommunityDetails";
 import CreateEvents from "./pages/events/CreateEvents";
 import EventsDetails from "./pages/events/EventsDetails";
+import { ToastProvider } from "../contexts/ToastContext";
 
 function App() {
   const location = useLocation();
@@ -27,108 +28,41 @@ function App() {
     document.querySelector("html").style.scrollBehavior = "";
   }, [location.pathname]); // triggered on route change
 
+  const protectedRoutes = [
+    { path: "/", element: <Dashboard /> },
+    { path: "/metadata", element: <Dashboard /> },
+    { path: "/reports", element: <Dashboard /> },
+    { path: "/users", element: <Users /> },
+    { path: "/communities", element: <CommunityListing /> },
+    { path: "/communities/:id", element: <CommunityDetails /> },
+    { path: "/events", element: <Events /> },
+    { path: "/create-events", element: <CreateEvents /> },
+    { path: "/update-events/:id/edit", element: <CreateEvents /> },
+    { path: "/events-details/:id", element: <EventsDetails /> },
+  ];
+
   return (
     <>
-      <Routes>
-        {/* Protected Routes */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="/metadata"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="/users"
-          element={
-            <ProtectedRoute>
-              <Users />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="/communities"
-          element={
-            <ProtectedRoute>
-              <CommunityListing />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="/communities/:id"
-          element={
-            <ProtectedRoute>
-              <CommunityDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="/events"
-          element={
-            <ProtectedRoute>
-              <Events />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="/create-events"
-          element={
-            <ProtectedRoute>
-              <CreateEvents />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="/update-events/:id/edit"
-          element={
-            <ProtectedRoute>
-              <CreateEvents />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="/events-details/:id"
-          element={
-            <ProtectedRoute>
-              <EventsDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="/reports"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+      <ToastProvider>
+        <Routes>
+          {/* Protected Routes */}
+          {protectedRoutes.map(({ path, element }) => (
+            <Route
+              key={path}
+              path={path}
+              element={<ProtectedRoute>{element}</ProtectedRoute>}
+            />
+          ))}
 
-        {/* Authentication Routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+          {/* Authentication Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* Fallback */}
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
+          {/* Fallback */}
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </ToastProvider>
     </>
   );
 }
