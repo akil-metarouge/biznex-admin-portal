@@ -9,6 +9,7 @@ import BlockedUsersTable from "../../partials/users/BlockedUsersTable";
 
 function UserDetails() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("personal"); // Add state for active section
 
   const companies = [
     {
@@ -89,17 +90,36 @@ function UserDetails() {
             {/* Sidebar */}
             <div className="w-full h-fit max-w-80 bg-white rounded-2xl  p-6  text-gray-800">
               <div className="border-b border-[#D4D4D4] ">
-                <h2 className="text-violet-800 font-bold text-base  cursor-pointer flex items-center justify-between pb-4">
+                <h2
+                  onClick={() => setActiveSection("personal")}
+                  className={`${
+                    activeSection === "personal"
+                      ? "text-violet-800 font-bold"
+                      : "text-gray-800"
+                  } text-base cursor-pointer flex items-center justify-between pb-4 transition-all duration-200`}
+                >
                   Personal Details
-                  <span className="text-violet-800">
-                    {" "}
-                    <ArrowRight2 color="#885cc1" className="h-4.5 w-4.5 " />
+                  <span
+                    className={`${
+                      activeSection === "personal"
+                        ? "text-violet-800"
+                        : "text-gray-600"
+                    }`}
+                  >
+                    <ArrowRight2
+                      color={
+                        activeSection === "personal" ? "#885cc1" : "#6A6A6A"
+                      }
+                      className="h-4.5 w-4.5 "
+                    />
                   </span>
                 </h2>
               </div>
 
               <div>
-                <h3 className="text-base font-medium py-4 border-b border-[#D4D4D4]">
+                <h3
+                  className={`text-base  flex items-center justify-between py-4 border-b border-[#D4D4D4]`}
+                >
                   Company Details
                 </h3>
 
@@ -107,7 +127,12 @@ function UserDetails() {
                   {companies.map((company, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center justify-between cursor-pointer  py-4  border-b border-[#E1E1E1] last:border-[#D4D4D4]"
+                      onClick={() => setActiveSection("company")}
+                      className={`flex items-center justify-between cursor-pointer transition-all duration-200 py-4  border-b border-[#E1E1E1] last:border-[#D4D4D4] ${
+                        activeSection === "company"
+                          ? "text-violet-800 font-bold"
+                          : ""
+                      }`}
                     >
                       <div className="flex items-center gap-3 text-sm ">
                         <img
@@ -118,8 +143,12 @@ function UserDetails() {
                         <span className="font-medium">{company.name}</span>
                       </div>
                       <span>
-                        {" "}
-                        <ArrowRight2 color="#6A6A6A" className="h-4.5 w-4.5" />
+                        <ArrowRight2
+                          color={
+                            activeSection === "company" ? "#885cc1" : "#6A6A6A"
+                          }
+                          className="h-4.5 w-4.5"
+                        />
                       </span>
                     </div>
                   ))}
@@ -127,28 +156,44 @@ function UserDetails() {
               </div>
 
               <div className="">
-                {reportStats.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex items-center text-base justify-between cursor-pointer  py-4 ${
-                      idx !== reportStats.length - 1
-                        ? "border-b border-[#D4D4D4]"
-                        : "pb-0"
-                    }`}
-                  >
-                    <span>{`${item.label} (${item.count})`}</span>
-                    <span>
-                      <ArrowRight2 color="#6A6A6A" className="h-4.5 w-4.5" />
-                    </span>
-                  </div>
-                ))}
+                {reportStats.map((item, idx) => {
+                  const section =
+                    item.label === "Reported User By"
+                      ? "reportedUsers"
+                      : item.label === "Reported Content By"
+                      ? "reportedContent"
+                      : "blockedUsers";
+                  return (
+                    <div
+                      key={idx}
+                      onClick={() => setActiveSection(section)}
+                      className={`flex items-center text-base justify-between cursor-pointer py-4 transition-all duration-200 ${
+                        idx !== reportStats.length - 1
+                          ? "border-b border-[#D4D4D4]"
+                          : "pb-0"
+                      } ${
+                        activeSection === section
+                          ? "text-violet-800 font-bold"
+                          : ""
+                      }`}
+                    >
+                      <span>{`${item.label} (${item.count})`}</span>
+                      <span>
+                        <ArrowRight2
+                          color={
+                            activeSection === section ? "#885cc1" : "#6A6A6A"
+                          }
+                          className="h-4.5 w-4.5"
+                        />
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-
             {/* Main Content */}
-
-            {/* ********************* This is the personal details portion ********************  */}
-            {!true && (
+            {/* Personal Details Section */}
+            {activeSection === "personal" && (
               <main className="flex-1 space-y-6 pb-5">
                 {/* Card: User Info + Details */}
                 <div className="bg-white rounded-2xl overflow-hidden flex flex-col md:flex-row">
@@ -336,9 +381,8 @@ function UserDetails() {
                 </div>
               </main>
             )}
-
-            {/* ********************* This is the company details portion ********************  */}
-            {!true && (
+            {/* Company Details Section */}
+            {activeSection === "company" && (
               <main className="flex-1 space-y-6 pb-5">
                 {/* Card: User Info + Details */}
                 <div className="bg-white rounded-2xl overflow-hidden flex flex-col md:flex-row">
@@ -450,23 +494,20 @@ function UserDetails() {
                 </div>
               </main>
             )}
-
-            {/* ********************* This is the Reported Users portion ********************  */}
-            {!true && (
+            {/* Reported Users Section */}
+            {activeSection === "reportedUsers" && (
               <main className="flex-1 space-y-6 pb-5">
                 <ReportedUsersTable />
               </main>
             )}
-
-            {/* ********************* This is the Reported Content portion ********************  */}
-            {!true && (
+            {/* Reported Content Section */}
+            {activeSection === "reportedContent" && (
               <main className="flex-1 space-y-6 pb-5">
                 <ReportedContentTable />
               </main>
             )}
-
-            {/* ********************* This is the Blocked Users portion ********************  */}
-            {!true && (
+            {/* Blocked Users Section */}
+            {activeSection === "blockedUsers" && (
               <main className="flex-1 space-y-6 pb-5">
                 <BlockedUsersTable />
               </main>

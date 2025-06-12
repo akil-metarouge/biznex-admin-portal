@@ -18,6 +18,8 @@ import CommunityDetails from "./pages/community/CommunityDetails";
 import CreateEvents from "./pages/events/CreateEvents";
 import EventsDetails from "./pages/events/EventsDetails";
 import UserDetails from "./pages/users/UserDetails";
+import UserReportedPostDetails from "./pages/users/UserReportedPostDetails";
+import ReportManagement from "./pages/ReportManagement";
 
 function App() {
   const location = useLocation();
@@ -69,6 +71,15 @@ function App() {
         />
         <Route
           exact
+          path="/user-reported-post-details"
+          element={
+            <ProtectedRoute>
+              <UserReportedPostDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
           path="/communities"
           element={
             <ProtectedRoute>
@@ -96,6 +107,15 @@ function App() {
         />
         <Route
           exact
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <ReportManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
           path="/create-events"
           element={
             <ProtectedRoute>
@@ -109,15 +129,6 @@ function App() {
           element={
             <ProtectedRoute>
               <EventsDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          exact
-          path="/reports"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
             </ProtectedRoute>
           }
         />

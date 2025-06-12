@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect } from "react";
-import ActiveUsersTable from "../../partials/users/ActiveusersTable";
 import ModalBasic from "../../components/ModalBasic";
 import { Add, AddCircle, Edit2, Trash } from "iconsax-reactjs";
 import UploadFileIcon from "../../assets/icons/upload-file.svg";
@@ -8,6 +7,7 @@ import Header from "../../partials/Header";
 import Sidebar from "../../partials/Sidebar";
 import InvitedUsersTable from "../../partials/users/InvitedUsersTable";
 import SuspendedUsersTable from "../../partials/users/SuspendedUsersTable";
+import ActiveUsersTable from "../../partials/users/ActiveUsersTable";
 
 function Users() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -180,17 +180,17 @@ function Users() {
       .then((data) => {
         if (data?.status === 1) {
           console.log("Invited successfully: ", data);
-          setError("");
+          // setError("");
           setInviteUserModalOpen(false);
           setUsers([]); // Clear the users list
         } else {
           console.error("Invitation failed:", data);
-          setError(data?.error);
+          // setError(data?.error);
         }
       })
       .catch((error) => {
         console.log("error from catch block: ", error);
-        setError("An error occurred");
+        // setError("An error occurred");
       });
   };
 
