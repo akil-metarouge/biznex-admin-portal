@@ -11,6 +11,7 @@
   "dependencies": {
     "@radix-ui/react-popover": "^1.1.5",
     "@tailwindcss/forms": "^0.5.10",
+    "autosuggest-highlight": "^3.3.4",
     "chart.js": "^4.4.7",
     "chartjs-adapter-moment": "^1.0.1",
     "clsx": "^2.1.1",

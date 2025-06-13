@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../../partials/Sidebar";
 import CreateEventForm from "./CreateEventForms";
 import { useNavigate } from "react-router-dom";
 
 function CreateEvents() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [editEvent, setEditEvent] = useState(false);
+
+  useEffect(() => {
+    if (window.location.pathname.includes("edit")) {
+      setEditEvent(true);
+    }
+  }, []);
 
   return (
     <div className="flex h-[100dvh] overflow-hidden">
@@ -15,7 +22,7 @@ function CreateEvents() {
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         <div className="mx-4 mb-10">
           {/*  Site header */}
-          <BackButton />
+          <BackButton editEvent={editEvent} />
           {/* event create section */}
           <CreateEventForm />
         </div>
@@ -26,7 +33,7 @@ function CreateEvents() {
 
 export default CreateEvents;
 
-const BackButton = () => {
+const BackButton = ({ editEvent }) => {
   const navigate = useNavigate();
 
   return (
@@ -47,7 +54,9 @@ const BackButton = () => {
         </svg>
         <span> Back</span>
       </button>
-      <h2 className="text-2xl font-bold text-black">Create Event</h2>
+      <h2 className="text-2xl font-bold text-black">
+        {editEvent ? "Edit Event" : "Create Event"}
+      </h2>
     </div>
   );
 };

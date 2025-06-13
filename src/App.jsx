@@ -18,6 +18,7 @@ import CommunityDetails from "./pages/community/CommunityDetails";
 import CreateEvents from "./pages/events/CreateEvents";
 import EventsDetails from "./pages/events/EventsDetails";
 import { ToastProvider } from "../contexts/ToastContext";
+import MetaData from "./pages/metadata/Metadata";
 
 function App() {
   const location = useLocation();
@@ -30,7 +31,7 @@ function App() {
 
   const protectedRoutes = [
     { path: "/", element: <Dashboard /> },
-    { path: "/metadata", element: <Dashboard /> },
+    { path: "/metadata", element: <MetaData /> },
     { path: "/reports", element: <Dashboard /> },
     { path: "/users", element: <Users /> },
     { path: "/communities", element: <CommunityListing /> },
