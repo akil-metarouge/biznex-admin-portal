@@ -2,44 +2,16 @@ import { useState, useEffect } from "react";
 import Pagination from "../../users/pagination";
 import ReportUserReasonsTableItem from "./ReportUserReasonsTableItem";
 
-function ReportUserReasonsTable() {
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  const [activeUsers, setActiveUsers] = useState({});
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+function ReportUserReasonsTable({
+  isLoading,
+  data,
+  page,
+  setPage,
+  rowsPerPage,
+  setRowsPerPage,
+}) {
+  console.log("data", data);
 
-  const fetchUsers = async (limit = rowsPerPage, currentPage = page) => {
-    setIsLoading(true);
-    const apiURL = import.meta.env.VITE_BASE_URL;
-    try {
-      const response = await fetch(
-        `${apiURL}/api/admin/users/active?limit=${limit}&page=${currentPage}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      if (data?.status === 1) {
-        setActiveUsers(data || {});
-      } else {
-        console.error("Failed to fetch invited users:", data);
-        setError("Failed to fetch invited users");
-      }
-    } catch (error) {
-      console.error("Error fetching invited users:", error);
-      setError("An error occurred while fetching invited users");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, [page, rowsPerPage]); // Refetch when page or rowsPerPage changes
   return (
     <div>
       {isLoading ? (
@@ -56,15 +28,10 @@ function ReportUserReasonsTable() {
                 <thead className="text-[16px] font-semibold  text-[#545454] dark:text-gray-400 bg-gray-50 dark:bg-gray-900/20 border-[#dfdfdf]">
                   <tr>
                     <th className="px-2 first:pl-0 last:pr-5 py-6 whitespace-nowrap">
-                      <div className="font-semibold text-left">
-                        Industry Type
-                      </div>
+                      <div className="font-semibold text-left">Reason</div>
                     </th>
                     <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
                       <div className="font-semibold text-left">Status</div>
-                    </th>
-                    <th className="px-2 first:pl-5 last:pr-5 py-6 whitespace-nowrap">
-                      <div className="font-semibold text-left">Joined On</div>
                     </th>
                     <th className="px-2 first:pl-5 last:pr-0 py-6 whitespace-nowrap">
                       <div className="font-semibold text-left"></div>
@@ -72,33 +39,31 @@ function ReportUserReasonsTable() {
                   </tr>
                 </thead>
                 {/* Table body */}
-                {activeUsers?.data?.length === 0 && (
+                {data?.data?.length === 0 && (
                   <tbody className="text-sm border-[#dfdfdf]">
                     <tr>
                       <td colSpan="4" className="px-2 py-6 text-center">
-                        No active users found.
+                        No Reason found.
                       </td>
                     </tr>
                   </tbody>
                 )}
-                {activeUsers?.data?.map((user) => {
+                {data?.data?.map((dt) => {
                   return (
                     <ReportUserReasonsTableItem
-                      key={user.reference}
-                      id={user.reference}
-                      firstName={user.first_name}
-                      lastName={user.last_name}
-                      email={user.email}
-                      joinedOn={user.date_invited}
+                      key={dt?.id}
+                      id={dt?.id}
+                      reason={dt?.reason}
+                      status={dt?.active}
                     />
                   );
                 })}
               </table>
             </div>
-            {activeUsers?.data?.length > 0 && (
+            {data?.data?.length > 0 && (
               <div>
                 <Pagination
-                  totalItems={activeUsers?.meta?.total || 0}
+                  totalItems={data?.pagination?.total || 0}
                   page={page}
                   rowsPerPage={rowsPerPage}
                   onPageChange={(newPage) => {
