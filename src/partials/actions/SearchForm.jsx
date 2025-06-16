@@ -1,4 +1,4 @@
-function SearchForm({ placeholder = "Search…", fullWidth }) {
+function SearchForm({ placeholder = "Search…", fullWidth, value, onChange }) {
   return (
     <div className="relative">
       <label htmlFor="action-search" className="sr-only">
@@ -11,6 +11,8 @@ function SearchForm({ placeholder = "Search…", fullWidth }) {
         }`}
         type="search"
         placeholder={placeholder}
+        value={value}
+        onChange={onChange}
       />
       <button className="absolute inset-0 right-auto group" aria-label="Search">
         <svg

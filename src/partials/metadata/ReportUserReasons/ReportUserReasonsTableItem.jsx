@@ -38,7 +38,10 @@ function ReportUserReasonsTableItem(props) {
                       color="#000"
                     />
                   ),
-                  onClick: () => navigate(`/events-details/${props.id}`),
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    props.onEditClick();
+                  },
                 },
                 {
                   label: "Delete",
@@ -48,7 +51,10 @@ function ReportUserReasonsTableItem(props) {
                   icon: (
                     <Trash2 className="w-5 h-5 " size="32" color="#FF6D5D" />
                   ),
-                  onClick: () => navigate(`/update-events/${props.id}/edit`),
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    props.onDeleteClick();
+                  },
                 },
               ]}
             />

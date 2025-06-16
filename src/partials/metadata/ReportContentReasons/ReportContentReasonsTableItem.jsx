@@ -10,7 +10,7 @@ function ReportContentReasonsTableItem(props) {
         <td className="px-2 first:pl-0 last:pr-5 py-3.5 whitespace-nowrap">
           <div className="flex items-center text-gray-800">
             <div className="font-semibold text-[16px] text-black">
-              {props.reason} {props.lastName}
+              {props.reason}
             </div>
           </div>
         </td>

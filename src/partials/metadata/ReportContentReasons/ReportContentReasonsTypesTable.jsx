@@ -2,6 +2,7 @@ import { useState } from "react";
 import ModalBasic from "../../../components/ModalBasic";
 import Pagination from "../../users/pagination";
 import ReportContentReasonsTableItem from "./ReportContentReasonsTableItem";
+import ReportContentReasonsModal from "./ReportContentReasonsModal";
 
 function ReportContentReasonsTable({
   isLoading,
@@ -132,65 +133,12 @@ function ReportContentReasonsTable({
             )}
 
             {/* Edit Modal */}
-            <ModalBasic
-              id="edit-industry-type-modal"
+            <ReportContentReasonsModal
+              mode="edit"
+              item={selectedItem}
               modalOpen={editModalOpen}
               setModalOpen={setEditModalOpen}
-              title="Edit Industry Type"
-            >
-              <div className="py-9 px-10 text-sm">
-                <h2 className="text-[20px] font-bold text-center text-black mb-6">
-                  Add Report User Reason
-                </h2>
-
-                <div className="space-y-3 mb-6">
-                  <label className="block">
-                    <span className="text-[16px] font-semibold mb-1 block">
-                      Reason
-                    </span>
-                    <input
-                      type="text"
-                      value={editedReason}
-                      onChange={(e) => setEditedReason(e.target.value)}
-                      className="block w-full h-[50px] border border-[#B5B5B5] px-4 py-3 rounded-md text-black focus:outline-none"
-                    />
-                  </label>
-                </div>
-
-                <div className="flex items-center gap-8">
-                  {["active", "inactive"].map((val) => (
-                    <label
-                      key={val}
-                      className="flex items-center gap-2 cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        name="status"
-                        value={val}
-                        checked={editedStatus === val}
-                        onChange={() => setEditedStatus(val)}
-                        className="peer hidden"
-                      />
-                      <div className="w-5 h-5 rounded-full border-2 border-violet-800 flex items-center justify-center peer-checked:bg-violet-800">
-                        <div className="w-4 h-4 rounded-full border-2 border-white peer-checked:bg-violet-800" />
-                      </div>
-                      <span className="text-[16px] font-semibold capitalize">
-                        {val}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-
-                <div className="pt-6">
-                  <button
-                    onClick={handleSave}
-                    className="w-full py-3.5 text-[16px] font-semibold bg-violet-800 text-white hover:bg-violet-800/90 rounded-lg"
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
-            </ModalBasic>
+            />
 
             {/* Delete Confirmation Modal */}
             <ModalBasic
@@ -201,7 +149,9 @@ function ReportContentReasonsTable({
             >
               <div className="py-6 px-8 text-center text-black text-[18px]">
                 <div>Are you sure you want to delete the reason</div>
-                <strong>{itemToDelete?.reason}</strong>?
+                <div>
+                  <strong>{itemToDelete?.reason}</strong>?
+                </div>
               </div>
               <div className="flex justify-center gap-6 pb-6">
                 <button

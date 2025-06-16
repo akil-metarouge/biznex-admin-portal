@@ -7,8 +7,15 @@ import ServiceTable from "../../partials/metadata/Service/ServiceTypesTable";
 import ReportContentReasonsTable from "../../partials/metadata/ReportContentReasons/ReportContentReasonsTypesTable";
 import ReportUserReasonsTable from "../../partials/metadata/ReportUserReasons/ReportUserReasonsTypesTable";
 import { useSearchParams } from "react-router-dom";
+import IndustryTypesModal from "../../partials/metadata/Industry/IndustryTypesModal";
+import ReportUserReasonsModal from "../../partials/metadata/ReportUserReasons/ReportUserReasonsModal";
+import ReportContentReasonsModal from "../../partials/metadata/ReportContentReasons/ReportContentReasonsModal";
+import InterestsModal from "../../partials/metadata/Interests/InterestsModal";
+import ServicesModal from "../../partials/metadata/Service/ServiceModal";
 
 function MetaData() {
+  const [searchValue, setSearchValue] = useState("");
+  const [openAddModal, setOpenAddModal] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("industry-types");
 
@@ -31,12 +38,17 @@ function MetaData() {
     setSearchParams(params);
   }, [page, rowsPerPage]);
 
-  const fetchMetaData = async (limit = rowsPerPage, currentPage = page) => {
+  const fetchMetaData = async (
+    limit = rowsPerPage,
+    currentPage = page,
+    keyword = searchValue
+  ) => {
     setIsLoading(true);
     const apiURL = import.meta.env.VITE_BASE_URL;
+    const menuItem = tabs.find((item) => item.id === activeTab);
     try {
       const response = await fetch(
-        `${apiURL}/api/admin/report-content-reasons?limit=${limit}&page=${currentPage}`,
+        `${apiURL}/api${menuItem?.endpoint}?limit=${limit}&page=${currentPage}&search=${keyword}`,
         {
           method: "GET",
           headers: {
@@ -60,20 +72,63 @@ function MetaData() {
   };
 
   useEffect(() => {
-    fetchMetaData();
-  }, [page, rowsPerPage]); // Refetch when page or rowsPerPage changes
+    fetchMetaData(rowsPerPage, page, searchValue);
+  }, [page, rowsPerPage, activeTab]);
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      fetchMetaData(rowsPerPage, page, searchValue);
+    }, 500); // 500ms debounce
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchValue]);
 
   const tabs = [
-    { id: "industry-types", label: "Industry Types", count: 34 },
-    { id: "interests", label: "Interests", count: 66 },
-    { id: "services", label: "Services", count: 38 },
-    { id: "report-user-reasons", label: "Report User Reasons", count: 10 },
+    {
+      id: "industry-types",
+      label: "Industry Types",
+      endpoint: "/admin/industry-types",
+      count: 34,
+      actionButtonText: "Add Industry Type",
+      placeholder: "Search Industry Types",
+    },
+    {
+      id: "interests",
+      label: "Interests",
+      endpoint: "/admin/interests",
+      count: 66,
+      actionButtonText: "Add Interest",
+      placeholder: "Search Interests",
+    },
+    {
+      id: "services",
+      label: "Services",
+      endpoint: "/admin/services",
+      count: 38,
+      actionButtonText: "Add Service",
+      placeholder: "Search Services",
+    },
+    {
+      id: "report-user-reasons",
+      label: "Report User Reasons",
+      endpoint: "/admin/report-content-reasons",
+      count: 10,
+      actionButtonText: "Add User Report Reason",
+      placeholder: "Search Report User Reasons",
+    },
     {
       id: "report-content-Reasons",
       label: "Report Content Reasons",
+      endpoint: "/admin/report-content-Reasons",
       count: 16,
+      actionButtonText: "Add Content Report Reason",
+      placeholder: "Search Report Content Reasons",
     },
   ];
+
+  const activeTabConfig = tabs.find((tab) => tab.id === activeTab);
+
+  console.log("openAddModal", openAddModal);
 
   return (
     <div className="flex h-[100dvh] overflow-hidden">
@@ -86,12 +141,18 @@ function MetaData() {
         <Header
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
-          title={"Metadata"}
+          title="Metadata"
           count={148}
           actionButton={true}
-          actionButtonText={"Add Industry Types "}
+          actionButtonText={activeTabConfig?.actionButtonText}
+          actionButtonOnClick={(e) => {
+            e.stopPropagation();
+            setOpenAddModal(true);
+          }}
           searchField={true}
-          placeholder="Search Industry Types "
+          placeholder={activeTabConfig?.placeholder}
+          searchValue={searchValue}
+          onSearchChange={(e) => setSearchValue(e.target.value)}
         />
 
         <main className="grow mb-10">
@@ -172,6 +233,41 @@ function MetaData() {
               )}
             </div>
           </div>
+          {activeTab === "industry-types" && (
+            <IndustryTypesModal
+              mode="add"
+              modalOpen={openAddModal}
+              setModalOpen={() => setOpenAddModal(false)}
+            />
+          )}
+          {activeTab === "interests" && (
+            <InterestsModal
+              mode="add"
+              modalOpen={openAddModal}
+              setModalOpen={() => setOpenAddModal(false)}
+            />
+          )}
+          {activeTab === "services" && (
+            <ServicesModal
+              mode="add"
+              modalOpen={openAddModal}
+              setModalOpen={() => setOpenAddModal(false)}
+            />
+          )}
+          {activeTab === "report-user-reasons" && (
+            <ReportUserReasonsModal
+              mode="add"
+              modalOpen={openAddModal}
+              setModalOpen={() => setOpenAddModal(false)}
+            />
+          )}
+          {activeTab === "report-content-Reasons" && (
+            <ReportContentReasonsModal
+              mode="add"
+              modalOpen={openAddModal}
+              setModalOpen={() => setOpenAddModal(false)}
+            />
+          )}
         </main>
       </div>
     </div>

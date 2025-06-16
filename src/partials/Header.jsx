@@ -35,6 +35,8 @@ function Header({
   dropdown1Selected = 0,
   dropdown2Selected = 0,
   removeButtons = false,
+  searchValue,
+  onSearchChange,
 }) {
   return (
     <header
@@ -127,7 +129,13 @@ function Header({
               )}
 
               {/* **************** Search Field **************** */}
-              {searchField && <SearchForm placeholder={placeholder} />}
+              {searchField && (
+                <SearchForm
+                  onChange={onSearchChange}
+                  placeholder={placeholder}
+                  value={searchValue}
+                />
+              )}
 
               {/* **************** Remove Buttons **************** */}
               {removeButtons && (
