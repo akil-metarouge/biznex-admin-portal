@@ -18,7 +18,7 @@ function MetaData() {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("industry-types");
-
+  const [statusFilter, setStatusFilter] = useState(0);
   // ✅ Read from URL
   const [searchParams, setSearchParams] = useSearchParams();
   const initialPage = parseInt(searchParams.get("page")) || 1;
@@ -41,14 +41,18 @@ function MetaData() {
   const fetchMetaData = async (
     limit = rowsPerPage,
     currentPage = page,
-    keyword = searchValue
+    keyword = searchValue,
+    status = statusFilter
   ) => {
     setIsLoading(true);
     const apiURL = import.meta.env.VITE_BASE_URL;
     const menuItem = tabs.find((item) => item.id === activeTab);
+    const statusParam =
+      status === 1 ? "active" : status === 2 ? "inactive" : "";
+
     try {
       const response = await fetch(
-        `${apiURL}/api${menuItem?.endpoint}?limit=${limit}&page=${currentPage}&search=${keyword}`,
+        `${apiURL}/api${menuItem?.endpoint}?limit=${limit}&page=${currentPage}&search=${keyword}&status=${statusParam}`,
         {
           method: "GET",
           headers: {
@@ -72,8 +76,8 @@ function MetaData() {
   };
 
   useEffect(() => {
-    fetchMetaData(rowsPerPage, page, searchValue);
-  }, [page, rowsPerPage, activeTab]);
+    fetchMetaData(rowsPerPage, page, searchValue, statusFilter);
+  }, [page, rowsPerPage, activeTab, statusFilter]);
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
@@ -128,7 +132,7 @@ function MetaData() {
 
   const activeTabConfig = tabs.find((tab) => tab.id === activeTab);
 
-  console.log("openAddModal", openAddModal);
+  console.log("statusFilter", statusFilter);
 
   return (
     <div className="flex h-[100dvh] overflow-hidden">
@@ -148,6 +152,19 @@ function MetaData() {
           actionButtonOnClick={(e) => {
             e.stopPropagation();
             setOpenAddModal(true);
+          }}
+          dropdown1={true}
+          dropdown1Label="Status"
+          dropdown1Options={[
+            { id: 0, label: "All" },
+            { id: 1, label: "Active" },
+            { id: 2, label: "InActive" },
+          ]}
+          dropdown1Selected={statusFilter}
+          dropdown1OnChange={(id) => {
+            setStatusFilter(id);
+            setPage(1); // Optional: reset to first page on filter change
+            fetchMetaData(rowsPerPage, 1, searchValue, id);
           }}
           searchField={true}
           placeholder={activeTabConfig?.placeholder}

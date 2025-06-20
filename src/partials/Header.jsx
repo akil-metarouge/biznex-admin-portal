@@ -24,6 +24,7 @@ function Header({
     { id: 2, label: "Resolved" },
     { id: 3, label: "Rejected" },
   ],
+  dropdown1OnChange,
   dropdown2Options = [
     { id: 0, label: "All" },
     { id: 1, label: "Last 7 days" },
@@ -117,6 +118,7 @@ function Header({
                   label={dropdown1Label}
                   options={dropdown1Options}
                   selected={dropdown1Selected}
+                  onChange={dropdown1OnChange}
                 />
               )}
               {dropdown2 && (
