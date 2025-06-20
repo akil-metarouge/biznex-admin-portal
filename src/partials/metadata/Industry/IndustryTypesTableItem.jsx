@@ -51,7 +51,10 @@ function IndustryTypesTableItem(props) {
                   icon: (
                     <Trash2 className="w-5 h-5 " size="32" color="#FF6D5D" />
                   ),
-                  onClick: () => console.log("Delete clicked"),
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    props.onDeleteClick();
+                  },
                 },
               ]}
             />

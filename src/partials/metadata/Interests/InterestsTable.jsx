@@ -1,4 +1,7 @@
+import { useState } from "react";
+import ModalBasic from "../../../components/ModalBasic";
 import Pagination from "../../users/pagination";
+import InterestsModal from "./InterestsModal";
 import InterestsTableItem from "./InterestsTableItem";
 
 function InterestsTable({
@@ -10,6 +13,51 @@ function InterestsTable({
   setRowsPerPage,
 }) {
   console.log("data", data);
+
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [editedReason, setEditedReason] = useState("");
+  const [editedStatus, setEditedStatus] = useState("active");
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+
+  const handleEditClick = (item) => {
+    setSelectedItem(item);
+    setEditedReason(item.interests);
+    setEditedStatus(item.active ? "active" : "inactive");
+    setEditModalOpen(true);
+  };
+
+  const handleSave = () => {
+    const payload = {
+      id: selectedItem.id,
+      interests: editedReason,
+      active: editedStatus === "active",
+    };
+
+    // API call or state update here for saving edits
+
+    setEditModalOpen(false);
+  };
+
+  const handleDeleteClick = (item) => {
+    console.log("Delete clicked for item:", item);
+    setItemToDelete(item);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    console.log("Confirm delete called", itemToDelete);
+    if (itemToDelete) {
+      console.log(itemToDelete);
+      // Call API
+
+      // Close modal and reset itemToDelete
+      setDeleteModalOpen(false);
+      setItemToDelete(null);
+    }
+  };
 
   return (
     <div>
@@ -54,6 +102,20 @@ function InterestsTable({
                       id={dt?.id}
                       interests={dt?.interests}
                       status={dt?.active}
+                      onEditClick={() =>
+                        handleEditClick({
+                          id: dt.id,
+                          services: dt.interests,
+                          active: dt.active,
+                        })
+                      }
+                      onDeleteClick={() =>
+                        handleDeleteClick({
+                          id: dt.id,
+                          interests: dt.interests,
+                          active: dt.active,
+                        })
+                      }
                     />
                   );
                 })}
@@ -75,6 +137,43 @@ function InterestsTable({
                 />
               </div>
             )}
+            {/* Edit Modal */}
+            <InterestsModal
+              mode="edit"
+              item={selectedItem}
+              modalOpen={editModalOpen}
+              setModalOpen={setEditModalOpen}
+            />
+
+            {/* Delete Confirmation Modal */}
+            <ModalBasic
+              id="delete-confirmation-modal"
+              modalOpen={deleteModalOpen}
+              setModalOpen={setDeleteModalOpen}
+              title="Confirm Delete"
+            >
+              <div className="py-6 px-8 text-center text-black text-[18px]">
+                <div>Are you sure you want to delete the reason</div>
+                <div>
+                  <strong>{itemToDelete?.interests}</strong>
+                  {itemToDelete?.interests ? "?" : ""}
+                </div>
+              </div>
+              <div className="flex justify-center gap-6 pb-6">
+                <button
+                  onClick={() => setDeleteModalOpen(false)}
+                  className="py-2 px-6 rounded-md border border-gray-400 hover:bg-gray-100 cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="py-2 px-6 rounded-md bg-red-600 text-white hover:bg-red-700 cursor-pointer"
+                >
+                  Delete
+                </button>
+              </div>
+            </ModalBasic>
           </div>
         </div>
       )}

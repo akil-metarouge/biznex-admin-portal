@@ -150,7 +150,8 @@ function ReportContentReasonsTable({
               <div className="py-6 px-8 text-center text-black text-[18px]">
                 <div>Are you sure you want to delete the reason</div>
                 <div>
-                  <strong>{itemToDelete?.reason}</strong>?
+                  <strong>{itemToDelete?.reason}</strong>
+                  {itemToDelete?.reason ? "?" : ""}
                 </div>
               </div>
               <div className="flex justify-center gap-6 pb-6">

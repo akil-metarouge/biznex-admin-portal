@@ -2,6 +2,7 @@ import { useState } from "react";
 import IndustryTypesTableItem from "./IndustryTypesTableItem";
 import Pagination from "../../users/pagination";
 import ModalBasic from "../../../components/ModalBasic";
+import IndustryTypesModal from "./IndustryTypesModal";
 
 function IndustryTypesTable({
   isLoading,
@@ -15,6 +16,9 @@ function IndustryTypesTable({
   const [selectedItem, setSelectedItem] = useState(null);
   const [editedIndustryType, setEditedIndustryType] = useState("");
   const [editedStatus, setEditedStatus] = useState("active");
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const handleEditClick = (item) => {
     console.log("Editing item:", item);
@@ -35,8 +39,23 @@ function IndustryTypesTable({
     setEditModalOpen(false);
   };
 
-  console.log("editModalOpen:", editModalOpen);
-  // console.log("Rendering IndustryTypesTable with data:", data);
+  const handleDeleteClick = (item) => {
+    console.log("Delete clicked for item:", item);
+    setItemToDelete(item);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    console.log("Confirm delete called", itemToDelete);
+    if (itemToDelete) {
+      console.log(itemToDelete);
+      // Call API
+
+      // Close modal and reset itemToDelete
+      setDeleteModalOpen(false);
+      setItemToDelete(null);
+    }
+  };
 
   return (
     <div>
@@ -83,6 +102,13 @@ function IndustryTypesTable({
                       active: dt.active,
                     })
                   }
+                  onDeleteClick={() =>
+                    handleDeleteClick({
+                      id: dt.id,
+                      industryType: dt.industryType,
+                      active: dt.active,
+                    })
+                  }
                 />
               ))}
             </table>
@@ -101,63 +127,41 @@ function IndustryTypesTable({
             />
           )}
 
-          <ModalBasic
-            id="edit-industry-type-modal"
+          {/* Edit Modal */}
+          <IndustryTypesModal
+            mode="edit"
+            item={selectedItem}
             modalOpen={editModalOpen}
             setModalOpen={setEditModalOpen}
-            title="Edit Industry Type"
+          />
+
+          {/* Delete Confirmation Modal */}
+          <ModalBasic
+            id="delete-confirmation-modal"
+            modalOpen={deleteModalOpen}
+            setModalOpen={setDeleteModalOpen}
+            title="Confirm Delete"
           >
-            <div className="py-9 px-10 text-sm">
-              <h2 className="text-[20px] font-bold text-center text-black mb-6">
-                Edit Industry Type
-              </h2>
-
-              <div className="space-y-3 mb-6">
-                <label className="block">
-                  <span className="text-[16px] font-semibold mb-1 block">
-                    Industry Type
-                  </span>
-                  <input
-                    type="text"
-                    value={editedIndustryType}
-                    onChange={(e) => setEditedIndustryType(e.target.value)}
-                    className="block w-full h-[50px] border border-[#B5B5B5] px-4 py-3 rounded-md text-black focus:outline-none"
-                  />
-                </label>
+            <div className="py-6 px-8 text-center text-black text-[18px]">
+              <div>Are you sure you want to delete the reason</div>
+              <div>
+                <strong>{itemToDelete?.services}</strong>
+                {itemToDelete?.services ? "?" : ""}
               </div>
-
-              <div className="flex items-center gap-8">
-                {["active", "inactive"].map((val) => (
-                  <label
-                    key={val}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <input
-                      type="radio"
-                      name="status"
-                      value={val}
-                      checked={editedStatus === val}
-                      onChange={() => setEditedStatus(val)}
-                      className="peer hidden"
-                    />
-                    <div className="w-5 h-5 rounded-full border-2 border-violet-800 flex items-center justify-center peer-checked:bg-violet-800">
-                      <div className="w-4 h-4 rounded-full border-2 border-white peer-checked:bg-violet-800" />
-                    </div>
-                    <span className="text-[16px] font-semibold capitalize">
-                      {val}
-                    </span>
-                  </label>
-                ))}
-              </div>
-
-              <div className="pt-6">
-                <button
-                  onClick={handleSave}
-                  className="w-full py-3.5 text-[16px] font-semibold bg-violet-800 text-white hover:bg-violet-800/90 rounded-lg"
-                >
-                  Save
-                </button>
-              </div>
+            </div>
+            <div className="flex justify-center gap-6 pb-6">
+              <button
+                onClick={() => setDeleteModalOpen(false)}
+                className="py-2 px-6 rounded-md border border-gray-400 hover:bg-gray-100 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="py-2 px-6 rounded-md bg-red-600 text-white hover:bg-red-700 cursor-pointer"
+              >
+                Delete
+              </button>
             </div>
           </ModalBasic>
         </div>

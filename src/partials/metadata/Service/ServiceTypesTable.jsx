@@ -1,5 +1,8 @@
+import ModalBasic from "../../../components/ModalBasic";
 import Pagination from "../../users/pagination";
 import ServiceTableItem from "./ServiceTableItem";
+import ServicesModal from "./ServiceModal";
+import { useState } from "react";
 
 function ServiceTable({
   isLoading,
@@ -10,6 +13,50 @@ function ServiceTable({
   setRowsPerPage,
 }) {
   console.log("data", data);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [editedReason, setEditedReason] = useState("");
+  const [editedStatus, setEditedStatus] = useState("active");
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+
+  const handleEditClick = (item) => {
+    setSelectedItem(item);
+    setEditedReason(item.services);
+    setEditedStatus(item.active ? "active" : "inactive");
+    setEditModalOpen(true);
+  };
+
+  const handleSave = () => {
+    const payload = {
+      id: selectedItem.id,
+      services: editedReason,
+      active: editedStatus === "active",
+    };
+
+    // API call or state update here for saving edits
+
+    setEditModalOpen(false);
+  };
+
+  const handleDeleteClick = (item) => {
+    console.log("Delete clicked for item:", item);
+    setItemToDelete(item);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    console.log("Confirm delete called", itemToDelete);
+    if (itemToDelete) {
+      console.log(itemToDelete);
+      // Call API
+
+      // Close modal and reset itemToDelete
+      setDeleteModalOpen(false);
+      setItemToDelete(null);
+    }
+  };
 
   return (
     <div>
@@ -54,6 +101,20 @@ function ServiceTable({
                       id={dt?.id}
                       services={dt?.services}
                       status={dt?.active}
+                      onEditClick={() =>
+                        handleEditClick({
+                          id: dt.id,
+                          services: dt.services,
+                          active: dt.active,
+                        })
+                      }
+                      onDeleteClick={() =>
+                        handleDeleteClick({
+                          id: dt.id,
+                          services: dt.services,
+                          active: dt.active,
+                        })
+                      }
                     />
                   );
                 })}
@@ -75,6 +136,43 @@ function ServiceTable({
                 />
               </div>
             )}
+            {/* Edit Modal */}
+            <ServicesModal
+              mode="edit"
+              item={selectedItem}
+              modalOpen={editModalOpen}
+              setModalOpen={setEditModalOpen}
+            />
+
+            {/* Delete Confirmation Modal */}
+            <ModalBasic
+              id="delete-confirmation-modal"
+              modalOpen={deleteModalOpen}
+              setModalOpen={setDeleteModalOpen}
+              title="Confirm Delete"
+            >
+              <div className="py-6 px-8 text-center text-black text-[18px]">
+                <div>Are you sure you want to delete the reason</div>
+                <div>
+                  <strong>{itemToDelete?.services}</strong>
+                  {itemToDelete?.services ? "?" : ""}
+                </div>
+              </div>
+              <div className="flex justify-center gap-6 pb-6">
+                <button
+                  onClick={() => setDeleteModalOpen(false)}
+                  className="py-2 px-6 rounded-md border border-gray-400 hover:bg-gray-100 cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="py-2 px-6 rounded-md bg-red-600 text-white hover:bg-red-700 cursor-pointer"
+                >
+                  Delete
+                </button>
+              </div>
+            </ModalBasic>
           </div>
         </div>
       )}
