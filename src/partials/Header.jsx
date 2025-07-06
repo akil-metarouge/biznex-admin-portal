@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import DropdownClassic from "../components/DropdownClassic";
 import SearchForm from "./actions/SearchForm";
 
@@ -35,7 +36,11 @@ function Header({
   dropdown1Selected = 0,
   dropdown2Selected = 0,
   removeButtons = false,
+  removePostAction,
+  removePostAndSuspendUserAction,
 }) {
+  const navigate = useNavigate();
+
   return (
     <header
       className={`m-5 ml-0 rounded-2xl sticky top-5 inset-0 backdrop-blur-md bg-white/70  z-30 max-lg:shadow-xs `}
@@ -72,7 +77,10 @@ function Header({
             <div className="flex items-center ">
               {/* **************** Back Button **************** */}
               {backButton && (
-                <button className="mr-4.5 p-4 py-3.5 text-sm font-semibold btn bg-violet-50 hover:bg-gray-100 text-violet-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg transition duration-300 flex items-center shadow-none">
+                <button
+                  onClick={() => navigate(-1)}
+                  className="mr-4.5 p-4 py-3.5 text-sm font-semibold btn bg-violet-50 hover:bg-gray-100 text-violet-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg transition duration-300 flex items-center shadow-none"
+                >
                   <svg
                     className="shrink-0 mr-2 fill-current scale-110 text-violet-800 dark:text-gray-500 rotate-90"
                     width="11"
@@ -81,7 +89,7 @@ function Header({
                   >
                     <path d="M5.4 6.8L0 1.4 1.4 0l4 4 4-4 1.4 1.4z" />
                   </svg>
-                  <span> Back</span>
+                  <span>Back</span>
                 </button>
               )}
 
@@ -132,10 +140,16 @@ function Header({
               {/* **************** Remove Buttons **************** */}
               {removeButtons && (
                 <>
-                  <button className="w-[266px] p-6 py-3.5 text-[16px] font-semibold btn border-2 border-orange-800 text-orange-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg">
+                  <button
+                    onClick={removePostAction}
+                    className="w-[266px] p-6 py-3.5 text-[16px] font-semibold btn border-2 border-orange-800 text-orange-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
+                  >
                     Remove Post
                   </button>
-                  <button className="w-[266px] py-3.5 text-[16px] font-semibold btn bg-orange-800 text-white hover:bg-orange-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg">
+                  <button
+                    onClick={removePostAndSuspendUserAction}
+                    className="w-[266px] py-3.5 text-[16px] font-semibold btn bg-orange-800 text-white hover:bg-orange-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
+                  >
                     Remove Post & Suspend User
                   </button>
                 </>

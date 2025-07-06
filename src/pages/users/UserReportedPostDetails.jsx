@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Sidebar from "../../partials/Sidebar";
 import Header from "../../partials/Header";
-import { Like1, MessageText1, More } from "iconsax-reactjs";
+import { More } from "iconsax-reactjs";
 import PeopleIcon from "../../assets/icons/people.svg";
 import LikeIcon from "../../assets/icons/like.svg";
 import CommentIcon from "../../assets/icons/comment.svg";
+import ModalBlank from "../../components/ModalBlank";
 
 const ReportCard = ({ name, date, reason, avatar }) => (
   <div className="flex items-center justify-between py-4 border-b last:border-none">
@@ -62,7 +63,19 @@ const Comment = ({ name, title, comment, avatar }) => (
 );
 
 function UserReportedPostDetails() {
+  const [removePostModal, setRemovePostModal] = useState(false);
+  const [removePostAndSuspendUserModal, setRemovePostAndSuspendUserModal] =
+    useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const openRemovePostModal = (e) => {
+    e.stopPropagation();
+    setRemovePostModal(true);
+  };
+  const openRemovePostAndSuspendUserModal = (e) => {
+    e.stopPropagation();
+    setRemovePostAndSuspendUserModal(true);
+  };
 
   return (
     <div className="flex h-[100dvh] overflow-hidden">
@@ -78,6 +91,9 @@ function UserReportedPostDetails() {
           title="Report Post"
           backButton={true}
           actionButton={false}
+          removeButtons={true}
+          removePostAction={openRemovePostModal}
+          removePostAndSuspendUserAction={openRemovePostAndSuspendUserModal}
         />
 
         <main className="grow">
@@ -197,6 +213,62 @@ function UserReportedPostDetails() {
             </div>
           </div>
         </main>
+        <div className="m-1.5">
+          {/* Start */}
+          {/* Remove Post Modal */}
+          <ModalBlank
+            id="remove-post-modal"
+            modalOpen={removePostModal}
+            setModalOpen={setRemovePostModal}
+          >
+            <div className="text-center flex flex-col items-center gap-2.5">
+              <h3 className="text-[20px] font-bold text-[#0A0A0A]">
+                Remove Post Only
+              </h3>
+              <p className="max-w-[240px] text-base font-medium text-[#0A0A0A]">
+                Are you sure you want to remove this post?
+              </p>
+              <div className="w-full flex justify-between gap-3">
+                <button
+                  onClick={() => setRemovePostModal(false)}
+                  className="w-1/2 p-6 py-3.5 text-base font-semibold btn border border-violet-800 text-violet-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button className="w-1/2 py-3.5 text-base font-semibold btn bg-orange-800 text-white hover:bg-orange-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg">
+                  Remove
+                </button>
+              </div>
+            </div>
+          </ModalBlank>
+          {/* Remove Post and Suspend User Modal */}
+          <ModalBlank
+            id="remove-post-and-suspend-user-modal"
+            modalOpen={removePostAndSuspendUserModal}
+            setModalOpen={setRemovePostAndSuspendUserModal}
+            modalWidth="min-w-[489px]"
+          >
+            <div className="text-center flex flex-col items-center gap-2.5">
+              <h3 className="text-[20px] font-bold text-[#0A0A0A]">
+                Remove Post
+              </h3>
+              <p className="max-w-[287px] text-base font-medium text-[#0A0A0A]">
+                Are you sure you want to remove this post and suspend user?
+              </p>
+              <div className="w-full flex justify-between gap-3">
+                <button
+                  onClick={() => setRemovePostAndSuspendUserModal(false)}
+                  className="w-1/2 p-6 py-3.5 text-base font-semibold btn border border-violet-800 text-violet-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
+                >
+                  Cancel
+                </button>
+                <button className="w-1/2 py-3.5 text-base font-semibold btn bg-orange-800 text-white hover:bg-orange-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg">
+                  Remove & Suspend User
+                </button>
+              </div>
+            </div>
+          </ModalBlank>
+        </div>
       </div>
     </div>
   );

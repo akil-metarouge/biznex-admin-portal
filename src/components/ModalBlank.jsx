@@ -1,23 +1,23 @@
-import React, { useRef, useEffect } from 'react';
-import Transition from '../utils/Transition';
+import React, { useRef, useEffect } from "react";
+import Transition from "../utils/Transition";
 
 function ModalBlank({
   children,
   id,
   modalOpen,
-  setModalOpen
+  setModalOpen,
+  modalWidth = "min-w-[364px]",
 }) {
-
   const modalContent = useRef(null);
 
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }) => {
-      if (!modalOpen || modalContent.current.contains(target)) return
+      if (!modalOpen || modalContent.current.contains(target)) return;
       setModalOpen(false);
     };
-    document.addEventListener('click', clickHandler);
-    return () => document.removeEventListener('click', clickHandler);
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
   });
 
   // close if the esc key is pressed
@@ -26,15 +26,15 @@ function ModalBlank({
       if (!modalOpen || keyCode !== 27) return;
       setModalOpen(false);
     };
-    document.addEventListener('keydown', keyHandler);
-    return () => document.removeEventListener('keydown', keyHandler);
+    document.addEventListener("keydown", keyHandler);
+    return () => document.removeEventListener("keydown", keyHandler);
   });
 
   return (
     <>
       {/* Modal backdrop */}
       <Transition
-        className="fixed inset-0 bg-gray-900/30 z-50 transition-opacity"
+        className="fixed inset-0 bg-gray-900/30 z-50 transition-opacity "
         show={modalOpen}
         enter="transition ease-out duration-200"
         enterStart="opacity-0"
@@ -47,7 +47,7 @@ function ModalBlank({
       {/* Modal dialog */}
       <Transition
         id={id}
-        className="fixed inset-0 z-50 overflow-hidden flex items-center my-4 justify-center px-4 sm:px-6"
+        className="fixed inset-0 z-50 overflow-hidden flex items-center my-4 justify-center px-4 sm:px-6 "
         role="dialog"
         aria-modal="true"
         show={modalOpen}
@@ -58,7 +58,10 @@ function ModalBlank({
         leaveStart="opacity-100 translate-y-0"
         leaveEnd="opacity-0 translate-y-4"
       >
-        <div ref={modalContent} className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-auto max-w-lg w-full max-h-full">
+        <div
+          ref={modalContent}
+          className={`bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-auto max-w-lg  max-h-full p-7 ${modalWidth}`}
+        >
           {children}
         </div>
       </Transition>
