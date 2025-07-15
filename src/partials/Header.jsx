@@ -7,7 +7,7 @@ function Header({
   setSidebarOpen,
   title = "Metadata",
   count,
-  actionButton = true,
+  actionButton = false,
   actionButtonText = "Add Report Reason",
   actionButtonOnClick,
   backButton = false,

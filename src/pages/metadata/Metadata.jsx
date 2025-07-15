@@ -115,7 +115,7 @@ function MetaData() {
     {
       id: "report-user-reasons",
       label: "Report User Reasons",
-      endpoint: "/admin/report-content-reasons",
+      endpoint: "/admin/report-user-reasons",
       count: 10,
       actionButtonText: "Add User Report Reason",
       placeholder: "Search Report User Reasons",

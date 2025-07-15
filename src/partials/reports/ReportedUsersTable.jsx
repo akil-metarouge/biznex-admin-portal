@@ -2,125 +2,14 @@ import { useState, useEffect } from "react";
 import ReportedUsersTableItem from "./ReportedUsersTableItem";
 import Pagination from "../users/pagination";
 
-function ReportedUsersTable() {
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [reportedusers, setReportedusers] = useState({});
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const userReportData = [
-    {
-      id: 1,
-      user: "Nylah Whitehead",
-      reports: 4,
-      lastReported: "26 Nov 2024",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      user: "Alec Hess",
-      reports: 5,
-      lastReported: "22 Nov 2024",
-      status: "Suspended",
-    },
-    {
-      id: 3,
-      user: "Sarah Nieves",
-      reports: 2,
-      lastReported: "18 Nov 2024",
-      status: "Suspended",
-    },
-    {
-      id: 4,
-      user: "Hayes Mckenzie",
-      reports: 1,
-      lastReported: "16 Nov 2024",
-      status: "Pending",
-    },
-    {
-      id: 5,
-      user: "Kane Raymond",
-      reports: 6,
-      lastReported: "16 Nov 2024",
-      status: "Pending",
-    },
-    {
-      id: 6,
-      user: "Luke Curtis",
-      reports: 2,
-      lastReported: "15 Nov 2024",
-      status: "Pending",
-    },
-    {
-      id: 7,
-      user: "Zayden Orr",
-      reports: 3,
-      lastReported: "29 Oct 2024",
-      status: "Pending",
-    },
-    {
-      id: 8,
-      user: "Coleman Levine",
-      reports: 4,
-      lastReported: "20 Oct 2024",
-      status: "Pending",
-    },
-    {
-      id: 9,
-      user: "Gerardo Tillman",
-      reports: 2,
-      lastReported: "10 Oct 2024",
-      status: "Suspended",
-    },
-    {
-      id: 10,
-      user: "Jaime Mejia",
-      reports: 8,
-      lastReported: "02 Oct 2024",
-      status: "Pending",
-    },
-    {
-      id: 11,
-      user: "Makenna Howe",
-      reports: 10,
-      lastReported: "06 Sep 2024",
-      status: "Suspended",
-    },
-  ];
-
-  //   const fetchUsers = async (limit = rowsPerPage, currentPage = page) => {
-  //     setIsLoading(true);
-  //     const apiURL = import.meta.env.VITE_BASE_URL;
-  //     try {
-  //       const response = await fetch(
-  //         `${apiURL}/api/admin/users/invited?limit=${limit}&page=${currentPage}`,
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //           },
-  //         }
-  //       );
-  //       const data = await response.json();
-  //       if (data?.status === 1) {
-  //         setInvitedUsers(data || {});
-  //       } else {
-  //         console.error("Failed to fetch invited users:", data);
-  //         setError("Failed to fetch invited users");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching invited users:", error);
-  //       setError("An error occurred while fetching invited users");
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  useEffect(() => {
-    // fetchUsers();
-  }, [page, rowsPerPage]); // Refetch when page or rowsPerPage changes
-
+function ReportedUsersTable({
+  isLoading,
+  data,
+  page,
+  setPage,
+  rowsPerPage,
+  setRowsPerPage,
+}) {
   return (
     <div>
       {isLoading ? (
@@ -155,7 +44,7 @@ function ReportedUsersTable() {
                   </tr>
                 </thead>
                 {/* Table body */}
-                {userReportData?.length === 0 && (
+                {data?.data?.length === 0 && (
                   <tbody className="text-sm border-[#dfdfdf]">
                     <tr>
                       <td colSpan="4" className="px-2 py-6 text-center">
@@ -164,7 +53,7 @@ function ReportedUsersTable() {
                     </tr>
                   </tbody>
                 )}
-                {userReportData?.map((content) => {
+                {data?.data?.map((content) => {
                   return (
                     <ReportedUsersTableItem
                       key={content.id}
@@ -178,22 +67,19 @@ function ReportedUsersTable() {
                 })}
               </table>
             </div>
-            {userReportData?.length > 0 && (
-              <div>
-                <Pagination
-                  totalItems={reportedusers?.meta?.total || 0}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                  // @ts-ignore
-                  onPageChange={(newPage) => {
-                    setPage(newPage);
-                  }}
-                  onRowsPerPageChange={(newRowsPerPage) => {
-                    setRowsPerPage(newRowsPerPage);
-                    setPage(1); // Reset to first page when changing rows per page
-                  }}
-                />
-              </div>
+            {data?.data?.length > 0 && (
+              <Pagination
+                totalItems={data?.pagination?.total || 0}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                onPageChange={(newPage) => {
+                  setPage(newPage);
+                }}
+                onRowsPerPageChange={(newRowsPerPage) => {
+                  setRowsPerPage(newRowsPerPage);
+                  setPage(1); // Reset to first page when changing rows per page
+                }}
+              />
             )}
           </div>
         </div>
