@@ -19,6 +19,9 @@ import CreateEvents from "./pages/events/CreateEvents";
 import EventsDetails from "./pages/events/EventsDetails";
 import { ToastProvider } from "../contexts/ToastContext";
 import MetaData from "./pages/metadata/Metadata";
+import UserDetails from "./pages/users/UserDetails";
+import UserReportedPostDetails from "./pages/users/UserReportedPostDetails";
+import ReportManagement from "./pages/ReportManagement";
 
 function App() {
   const location = useLocation();
@@ -32,14 +35,16 @@ function App() {
   const protectedRoutes = [
     { path: "/", element: <Dashboard /> },
     { path: "/metadata", element: <MetaData /> },
-    { path: "/reports", element: <Dashboard /> },
     { path: "/users", element: <Users /> },
+    { path: "/user-details", element: <UserDetails /> },
+    { path: "/user-reported-post-details", element: <UserReportedPostDetails /> },
     { path: "/communities", element: <CommunityListing /> },
     { path: "/communities/:id", element: <CommunityDetails /> },
     { path: "/events", element: <Events /> },
+    { path: "/reports", element: <ReportManagement /> },
     { path: "/create-events", element: <CreateEvents /> },
-    { path: "/update-events/:id/edit", element: <CreateEvents /> },
     { path: "/events-details/:id", element: <EventsDetails /> },
+    { path: "/update-events/:id/edit", element: <CreateEvents /> },
   ];
 
   return (

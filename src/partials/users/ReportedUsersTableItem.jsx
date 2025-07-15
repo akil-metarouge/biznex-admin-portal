@@ -1,9 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import Avatar04 from "../../images/avatar-04.jpg";
 import dayjs from "dayjs";
 
-function InvitedUsersTableItem(props) {
-  const navigate = useNavigate();
+function ReportedUsersTableItem(props) {
   return (
     <tbody className="text-sm border-[#dfdfdf] border-b">
       {/* Row */}
@@ -34,18 +32,9 @@ function InvitedUsersTableItem(props) {
             {dayjs(props.date_invited).format("D MMM YYYY")}
           </div>
         </td>
-
-        <td className="px-2 first:pl-5 last:pr-0 py-3.5 whitespace-nowrap flex items-center place-content-end">
-          <button
-            onClick={() => navigate("/user-details")}
-            className="btn h-10 rounded-lg bg-white dark:bg-gray-800 border-violet-800 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-violet-800 hover:text-gray-600 cursor-pointer font-semibold"
-          >
-            View Profile
-          </button>
-        </td>
       </tr>
     </tbody>
   );
 }
 
-export default InvitedUsersTableItem;
+export default ReportedUsersTableItem;

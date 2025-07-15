@@ -47,7 +47,7 @@ function SuspendedUsersTable() {
           <div className="w-8 h-8 border-4 border-violet-800 border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-800 shadow-xs rounded-2xl relative ">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl relative ">
           <div>
             {/* Table */}
             <div className="overflow-x-auto rounded-2xl px-7">
