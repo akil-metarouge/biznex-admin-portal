@@ -133,19 +133,19 @@ function ReportManagement() {
         />
 
         <main className="grow">
-          <div className="pr-5  w-full max-w-[96rem] mx-auto mb-5">
-            <div className="bg-white p-4  rounded-2xl mb-4">
-              <div className="flex space-x-4">
+          <div className="pr-5 w-full mx-auto mb-5">
+            <div className="bg-white p-4 rounded-2xl mb-4">
+              <div className="flex gap-3 overflow-x-auto whitespace-nowrap scrollbar-hide">
                 {tabs.map((tab) => {
                   const isActive = activeTab === tab.id;
                   return (
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`p-4 rounded-lg transition font-bold cursor-pointer ${
+                      className={`flex-shrink-0 px-4 py-2 rounded-lg transition font-bold cursor-pointer ${
                         isActive
                           ? "bg-[#E7DEF3] text-violet-800"
-                          : "text-[#1F1F1F]  hover:bg-[#E7DEF3] hover:text-violet-800 "
+                          : "text-[#1F1F1F] hover:bg-[#E7DEF3] hover:text-violet-800"
                       }`}
                     >
                       {tab.label} ({tab.count})

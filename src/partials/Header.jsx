@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import DropdownClassic from "../components/DropdownClassic";
 import SearchForm from "./actions/SearchForm";
+import { useState } from "react";
 
 function Header({
   sidebarOpen,
@@ -43,15 +44,18 @@ function Header({
   removePostAndSuspendUserAction,
 }) {
   const navigate = useNavigate();
+  const [showMobileDropdowns, setShowMobileDropdowns] = useState(false);
 
   return (
     <header
-      className={`m-5 ml-0 rounded-2xl sticky top-5 inset-0 backdrop-blur-md bg-white/70  z-30 max-lg:shadow-xs `}
+      className={`m-5 md:ml-0 rounded-2xl sticky top-5 inset-0 backdrop-blur-md bg-white/70  z-30 max-lg:shadow-xs `}
     >
-      <div className="px-4  lg:px-6">
-        <div className={`flex items-center justify-between h-[90px]`}>
+      <div className="px-4 lg:px-6">
+        <div
+          className={`flex items-start md:items-center justify-between py-4`}
+        >
           {/* Header: Left side */}
-          <div className="flex">
+          <div className="flex mt-1 mr-3">
             {/* Hamburger button */}
             <button
               className="text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 lg:hidden"
@@ -76,49 +80,76 @@ function Header({
           </div>
 
           {/* Header: Right side */}
-          <div className="flex flex-grow items-center justify-between space-x-3">
-            <div className="flex items-center ">
+          <div className="flex flex-col md:flex-row gap-y-4 flex-grow items-start md:items-center justify-between space-x-3">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               {/* **************** Back Button **************** */}
-              {backButton && (
+              <div className="flex items-end md:items-center justify-between space-x-4">
+                <div className="flex items-start md:items-center space-x-4">
+                  {backButton && (
+                    <button
+                      onClick={() => navigate(-1)}
+                      className="mr-2 md:mr-4.5 p-4 py-3.5 text-sm font-semibold btn bg-violet-50 hover:bg-gray-100 text-violet-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg transition duration-300 flex items-center shadow-none"
+                    >
+                      <svg
+                        className="shrink-0 mr-2 fill-current scale-110 text-violet-800 dark:text-gray-500 rotate-90"
+                        width="11"
+                        height="7"
+                        viewBox="0 0 11 7"
+                      >
+                        <path d="M5.4 6.8L0 1.4 1.4 0l4 4 4-4 1.4 1.4z" />
+                      </svg>
+                      <span className="hidden md:inline-block">Back</span>
+                    </button>
+                  )}
+
+                  {/* **************** Title without count **************** */}
+                  {title && !count && (
+                    <h2 className="text-2xl font-bold text-black">{title}</h2>
+                  )}
+
+                  {/* **************** Title with count **************** */}
+                  {title && count && (
+                    <h2 className="text-2xl font-bold text-black text-nowrap">
+                      {title} ({count})
+                    </h2>
+                  )}
+                </div>
+
+                {/* show and hidden Dropdowns in mobile mode  */}
                 <button
-                  onClick={() => navigate(-1)}
-                  className="mr-4.5 p-4 py-3.5 text-sm font-semibold btn bg-violet-50 hover:bg-gray-100 text-violet-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg transition duration-300 flex items-center shadow-none"
+                  onClick={() => setShowMobileDropdowns((prev) => !prev)}
+                  className="p-3 text-sm font-semibold btn bg-violet-50 hover:bg-gray-100 text-violet-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-full transition duration-300 flex items-center md:hidden"
                 >
                   <svg
-                    className="shrink-0 mr-2 fill-current scale-110 text-violet-800 dark:text-gray-500 rotate-90"
+                    className={`shrink-0 fill-current scale-110 transition-transform duration-300 ${
+                      showMobileDropdowns ? "rotate-180" : "rotate-0"
+                    }`}
                     width="11"
                     height="7"
                     viewBox="0 0 11 7"
                   >
                     <path d="M5.4 6.8L0 1.4 1.4 0l4 4 4-4 1.4 1.4z" />
                   </svg>
-                  <span>Back</span>
                 </button>
-              )}
-
-              {/* **************** Title without count **************** */}
-              {title && !count && (
-                <h2 className="text-2xl font-bold text-black">{title}</h2>
-              )}
-
-              {/* **************** Title with count **************** */}
-              {title && count && (
-                <h2 className="text-2xl font-bold text-black">
-                  {title} ({count})
-                </h2>
-              )}
+              </div>
 
               {/* **************** Action Button **************** */}
               {actionButton && actionButtonText && (
                 <button
                   onClick={actionButtonOnClick}
-                  className="ml-4.5 p-4 py-3.5 text-[16px] font-semibold btn bg-violet-800 text-white hover:bg-violet-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
+                  className={`p-4 py-3.5 text-[16px] font-semibold btn bg-violet-800 text-white hover:bg-violet-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg ${
+                    showMobileDropdowns ? "block" : "hidden"
+                  }`}
                 >
                   {actionButtonText}
                 </button>
               )}
             </div>
-            <div className="flex items-center space-x-4">
+            <div
+              className={`flex-col md:flex-row items-start md:items-center gap-y-3.5 space-x-4 mt-2.5 ${
+                showMobileDropdowns ? "flex" : "hidden"
+              } md:flex`}
+            >
               {/* **************** Dropdowns **************** */}
               {dropdown1 && (
                 <DropdownClassic
@@ -144,6 +175,7 @@ function Header({
                   onChange={onSearchChange}
                   placeholder={placeholder}
                   value={searchValue}
+                  fullWidth={true}
                 />
               )}
 
@@ -152,7 +184,7 @@ function Header({
                 <>
                   <button
                     onClick={removePostAction}
-                    className="w-[266px] p-6 py-3.5 text-[16px] font-semibold btn border-2 border-orange-800 text-orange-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
+                    className="w-[266px] p-6 py-3.5 text-[16px] font-semibold btn border-2 border-orange-800 text-orange-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
                   >
                     Remove Post
                   </button>
