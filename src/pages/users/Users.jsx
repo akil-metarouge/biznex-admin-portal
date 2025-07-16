@@ -237,7 +237,7 @@ function Users() {
               </div>
             </div>
           </div>
-          <div className="pr-5  w-full max-w-[96rem] mx-auto mb-5">
+          <div className="pr-5 w-full mx-auto mb-5">
             <div>
               {activeTab === "active" && <ActiveUsersTable data={[]} />}
               {activeTab === "invited" && <InvitedUsersTable />}

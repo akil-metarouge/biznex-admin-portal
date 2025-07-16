@@ -155,7 +155,7 @@ function ReportManagement() {
               </div>
             </div>
           </div>
-          <div className="pr-5  w-full max-w-[96rem] mx-auto mb-5">
+          <div className="pr-5 w-full mx-auto mb-5">
             <div>
               {activeTab === "users" && (
                 <ReportedUsersTable
