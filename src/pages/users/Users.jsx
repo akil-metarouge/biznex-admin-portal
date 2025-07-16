@@ -224,7 +224,7 @@ function Users() {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`flex-shrink-0 px-4 py-2 rounded-lg transition font-bold cursor-pointer ${
+                      className={`flex-shrink-0 px-4 py-2 md:py-4 rounded-lg transition font-bold cursor-pointer ${
                         isActive
                           ? "bg-[#E7DEF3] text-violet-800"
                           : "text-[#1F1F1F] hover:bg-[#E7DEF3] hover:text-violet-800"
