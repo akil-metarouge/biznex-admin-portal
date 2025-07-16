@@ -20,6 +20,7 @@ import EventsDetails from "./pages/events/EventsDetails";
 import UserDetails from "./pages/users/UserDetails";
 import UserReportedPostDetails from "./pages/users/UserReportedPostDetails";
 import ReportManagement from "./pages/ReportManagement";
+import PostManagement from "./pages/PostManagement";
 
 function App() {
   const location = useLocation();
@@ -102,6 +103,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Events />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          exact
+          path="/post-management"
+          element={
+            <ProtectedRoute>
+              <PostManagement />
             </ProtectedRoute>
           }
         />

@@ -82,6 +82,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
       path: "/events",
     },
     {
+      name: "Post Management",
+      icon: "/src/assets/icons/mike.svg",
+      path: "/post-management",
+    },
+    {
       name: "Reports Management",
       icon: "/src/assets/icons/reports.svg",
       path: "/reports",
