@@ -10,9 +10,11 @@ import CommunityDescription from "../../partials/community/CommunityDescription"
 import EditMenu from "../../components/DropdownEditMenu";
 import SearchForm from "../../partials/actions/SearchForm";
 import { Link } from "react-router-dom";
+import ModalBlank from "../../components/ModalBlank";
 
 function CommunityDetails() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const [communityDetails, setCommunityDetails] = useState({
     id: 1,
     name: "Entrepreneurship Nexus",

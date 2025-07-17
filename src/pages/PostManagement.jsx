@@ -16,51 +16,6 @@ import EditMenu from "../components/DropdownEditMenu";
 
 function PostManagement() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const topContributors = [
-    {
-      name: "John Alexander",
-      title: "Chairman at Clouds Technologies",
-      connections: 728,
-      image: "https://i.pravatar.cc/150?img=1",
-    },
-    {
-      name: "Bobby Shields",
-      title: "CEO at Smartcity Technologies",
-      connections: 361,
-      image: "https://i.pravatar.cc/150?img=2",
-    },
-    {
-      name: "Cale Stafford",
-      title: "CSO at Nova Nexus Communications",
-      connections: 526,
-      image: "https://i.pravatar.cc/150?img=3",
-    },
-  ];
-
-  const recentUsers = [
-    ["Beckham Mcdaniel", "beckhammcdaniel@gmail.com", "26 Nov 2024"],
-    ["Audriana English", "audrianaenglish@gmail.com", "23 Nov 2024"],
-    ["Drake Ashley", "drakeashley123@gmail.com", "20 Nov 2024"],
-    ["Chana Herrera", "chanaherrera019@gmail.com", "16 Nov 2024"],
-    ["Tori Skinner", "toriskinner077@gmail.com", "30 Oct 2024"],
-    ["Aria Fisher", "iamariafisher@gmail.com", "19 Oct 2024"],
-    ["Janiyah Dorsey", "janiyahdorseymaingmail.com", "01 Oct 2024"],
-    ["Arnav Chase", "thisisarnavchase@gmail.com", "30 Oct 2024"],
-    ["Christopher Morrow", "christophermorrow@gmail.com", "19 Oct 2024"],
-    ["Maria Hancock", "mariahancock1010@gmail.com", "01 Oct 2024"],
-  ];
-
-  const joinRequests = [
-    "Jerry Ayala",
-    "Gideon Roberson",
-    "Kailee Barrera",
-    "Arjun Mccarty",
-    "Raphael Savage",
-    "Aileen Vega",
-    "Vance Munoz",
-    "Olive Trevino",
-  ];
-
   const [communityDetails, setCommunityDetails] = useState({
     id: 1,
     name: "Entrepreneurship Nexus",
