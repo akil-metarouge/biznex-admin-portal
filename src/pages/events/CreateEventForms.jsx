@@ -306,8 +306,6 @@ export default function CreateEventForm() {
     }
   };
 
-  showToast("Event updated successfully", "info");
-
   console.log("eventDetails", eventDetails);
 
   return (

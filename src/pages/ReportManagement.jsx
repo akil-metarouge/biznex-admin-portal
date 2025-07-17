@@ -92,7 +92,7 @@ function ReportManagement() {
       label: "Reported Contents",
       endpoint: "/admin/report/content",
       count: 66,
-      placeholder: "Search User",
+      placeholder: "Search Report",
     },
   ];
 

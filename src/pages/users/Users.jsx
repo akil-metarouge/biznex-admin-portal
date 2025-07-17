@@ -211,7 +211,7 @@ function Users() {
           actionButtonText={"Invite User"}
           actionButtonOnClick={openModal}
           searchField={true}
-          placeholder="Search Event"
+          placeholder="Search User"
         />
 
         <main className="grow">

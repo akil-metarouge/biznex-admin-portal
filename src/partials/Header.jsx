@@ -88,7 +88,7 @@ function Header({
                   {backButton && (
                     <button
                       onClick={() => navigate(-1)}
-                      className="mr-2 md:mr-4.5 p-4 py-3.5 text-sm font-semibold btn bg-violet-50 hover:bg-gray-100 text-violet-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg transition duration-300 flex items-center shadow-none"
+                      className="mr-2 md:mr-4 ps-3.5 pe-2.5 py-3.5 text-sm font-semibold btn bg-violet-50 hover:bg-gray-100 text-violet-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg transition duration-300 flex items-center justify-center shadow-none"
                     >
                       <svg
                         className="shrink-0 mr-2 fill-current scale-110 text-violet-800 dark:text-gray-500 rotate-90"
@@ -116,21 +116,26 @@ function Header({
                 </div>
 
                 {/* show and hidden Dropdowns in mobile mode  */}
-                <button
-                  onClick={() => setShowMobileDropdowns((prev) => !prev)}
-                  className="p-3 text-sm font-semibold btn bg-violet-50 hover:bg-gray-100 text-violet-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-full transition duration-300 flex items-center md:hidden"
-                >
-                  <svg
-                    className={`shrink-0 fill-current scale-110 transition-transform duration-300 ${
-                      showMobileDropdowns ? "rotate-180" : "rotate-0"
-                    }`}
-                    width="11"
-                    height="7"
-                    viewBox="0 0 11 7"
-                  >
-                    <path d="M5.4 6.8L0 1.4 1.4 0l4 4 4-4 1.4 1.4z" />
-                  </svg>
-                </button>
+                {dropdown1 ||
+                  dropdown2 ||
+                  searchField ||
+                  (removeButtons && (
+                    <button
+                      onClick={() => setShowMobileDropdowns((prev) => !prev)}
+                      className="p-3 text-sm font-semibold btn bg-violet-50 hover:bg-gray-100 text-violet-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-full transition duration-300 flex items-center md:hidden"
+                    >
+                      <svg
+                        className={`shrink-0 fill-current scale-110 transition-transform duration-300 ${
+                          showMobileDropdowns ? "rotate-180" : "rotate-0"
+                        }`}
+                        width="11"
+                        height="7"
+                        viewBox="0 0 11 7"
+                      >
+                        <path d="M5.4 6.8L0 1.4 1.4 0l4 4 4-4 1.4 1.4z" />
+                      </svg>
+                    </button>
+                  ))}
               </div>
 
               {/* **************** Action Button **************** */}

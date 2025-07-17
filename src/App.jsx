@@ -36,8 +36,11 @@ function App() {
     { path: "/", element: <Dashboard /> },
     { path: "/metadata", element: <MetaData /> },
     { path: "/users", element: <Users /> },
-    { path: "/user-details", element: <UserDetails /> },
-    { path: "/user-reported-post-details", element: <UserReportedPostDetails /> },
+    { path: "/user-details/:userId/*", element: <UserDetails /> },
+    {
+      path: "/user-reported-post-details",
+      element: <UserReportedPostDetails />,
+    },
     { path: "/communities", element: <CommunityListing /> },
     { path: "/communities/:id", element: <CommunityDetails /> },
     { path: "/events", element: <Events /> },

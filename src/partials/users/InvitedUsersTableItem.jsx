@@ -37,7 +37,7 @@ function InvitedUsersTableItem(props) {
 
         <td className="px-2 first:pl-5 last:pr-0 py-3.5 whitespace-nowrap flex items-center place-content-end">
           <button
-            onClick={() => navigate("/user-details")}
+            onClick={() => navigate(`/user-details/${props.id}`)}
             className="btn h-10 rounded-lg bg-white dark:bg-gray-800 border-violet-800 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-violet-800 hover:text-gray-600 cursor-pointer font-semibold"
           >
             View Profile
