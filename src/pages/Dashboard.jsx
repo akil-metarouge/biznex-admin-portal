@@ -4,6 +4,7 @@ import Sidebar from "../partials/Sidebar";
 import iconImg from "../assets/icons/user.svg";
 import globeIcon from "../assets/icons/globe.svg";
 import lockIcon from "../assets/icons/lock.svg";
+import DashboardRecentlyJoinedTable from "../partials/dashboard/DashboardRecentlyJoinedTable";
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -177,27 +178,7 @@ function Dashboard() {
 
               {/* Recently Joined */}
               <div>
-                <h2 className="text-xl font-semibold mb-4">Recently Joined</h2>
-                <div className="bg-white rounded-xl shadow overflow-x-auto">
-                  <table className="table-auto w-full text-left">
-                    <thead>
-                      <tr className="bg-gray-100">
-                        <th className="px-4 py-2">Name</th>
-                        <th className="px-4 py-2">Email</th>
-                        <th className="px-4 py-2">Joined On</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {recentUsers.map(([name, email, date], idx) => (
-                        <tr key={idx} className="border-t">
-                          <td className="px-4 py-2">{name}</td>
-                          <td className="px-4 py-2">{email}</td>
-                          <td className="px-4 py-2">{date}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                <DashboardRecentlyJoinedTable />
               </div>
             </div>
 
