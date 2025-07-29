@@ -24,12 +24,200 @@ import { Add } from "iconsax-react";
 
 function CommunityListing() {
   const [createPostModal, setCreatePostModal] = useState(false);
+  const [communityOption, setCommunityOption] = useState("public");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Form state
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    accessibility: "public",
+    coverImage: null,
+    profileImage: null,
+  });
+
+  const [formErrors, setFormErrors] = useState({});
+  const [imagePreview, setImagePreview] = useState({
+    cover: null,
+    profile: null,
+  });
+
   const openCreatePostModal = (e) => {
-    console.log("hitted lasdlkfj");
     e.stopPropagation();
     setCreatePostModal(true);
+    // Reset form when opening modal
+    setFormData({
+      name: "",
+      description: "",
+      accessibility: "public",
+      coverImage: null,
+      profileImage: null,
+    });
+    setFormErrors({});
+    setImagePreview({ cover: null, profile: null });
+    setCommunityOption("public");
   };
-  const [communityOption, setCommunityOption] = useState("public");
+
+  const closeModal = () => {
+    setCreatePostModal(false);
+    setFormData({
+      name: "",
+      description: "",
+      accessibility: "public",
+      coverImage: null,
+      profileImage: null,
+    });
+    setFormErrors({});
+    setImagePreview({ cover: null, profile: null });
+    setCommunityOption("public");
+  };
+
+  // Handle image upload
+  const handleImageUpload = (type, event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        setFormErrors((prev) => ({
+          ...prev,
+          [type]: "Please select a valid image file",
+        }));
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setFormErrors((prev) => ({
+          ...prev,
+          [type]: "Image size should be less than 5MB",
+        }));
+        return;
+      }
+
+      // Clear any previous errors for this field
+      setFormErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[type];
+        return newErrors;
+      });
+
+      // Update form data
+      setFormData((prev) => ({
+        ...prev,
+        [type === "cover" ? "coverImage" : "profileImage"]: file,
+      }));
+
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview((prev) => ({
+          ...prev,
+          [type]: e.target.result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Handle form input changes
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+
+    // Clear error for this field
+    if (formErrors[field]) {
+      setFormErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+  };
+
+  // Handle accessibility change
+  const handleAccessibilityChange = (value) => {
+    setCommunityOption(value);
+    setFormData((prev) => ({
+      ...prev,
+      accessibility: value,
+    }));
+  };
+
+  // Validate form
+  const validateForm = () => {
+    const errors = {};
+
+    if (!formData.name.trim()) {
+      errors.name = "Community name is required";
+    }
+
+    if (!formData.description.trim()) {
+      errors.description = "Description is required";
+    }
+
+    return errors;
+  };
+
+  // Handle form submission
+  const handleSubmit = async () => {
+    const errors = validateForm();
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Create FormData for file upload
+      const submitData = new FormData();
+      submitData.append("name", formData.name.trim());
+      submitData.append("description", formData.description.trim());
+      submitData.append("accessibility", formData.accessibility);
+
+      if (formData.coverImage) {
+        submitData.append("coverImage", formData.coverImage);
+      }
+
+      if (formData.profileImage) {
+        submitData.append("profileImage", formData.profileImage);
+      }
+
+      // TODO: Replace with your actual API endpoint
+      // const response = await fetch('/api/communities', {
+      //   method: 'POST',
+      //   body: submitData,
+      // });
+
+      // if (!response.ok) {
+      //   throw new Error('Failed to create community');
+      // }
+
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      console.log("Community created:", {
+        name: formData.name,
+        description: formData.description,
+        accessibility: formData.accessibility,
+        coverImage: formData.coverImage?.name,
+        profileImage: formData.profileImage?.name,
+      });
+
+      // Success - close modal and reset form
+      closeModal();
+    } catch (error) {
+      console.error("Error creating community:", error);
+      setFormErrors({
+        submit: "Failed to create community. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   const items = [
     {
       id: 0,
@@ -217,66 +405,119 @@ function CommunityListing() {
         <ModalBlank
           id="create-post-modal"
           modalOpen={createPostModal}
-          setModalOpen={openCreatePostModal}
+          setModalOpen={setCreatePostModal}
           modalWidth={"min-w-[618px]"}
         >
-          <div className="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-[20px] p-8 w-full max-w-[618px]">
-              <h2 className="text-center text-2xl font-semibold mb-6">
+          <div className="fixed inset-0  flex items-center justify-center z-50">
+            <div className="bg-white rounded-[20px] p-8 w-full max-w-[618px] max-h-[90vh] overflow-y-auto">
+              <h2 className="text-center text-2xl font-bold mb-6 text-[#1F1F1F]">
                 Create Community
               </h2>
 
-              {/* Cover Image Upload */}
-              <div className="relative bg-[#F5F5F5] rounded-xl h-[200px] mb-6 flex items-center justify-center">
-                <div className="flex flex-col items-center">
-                  <div className="w-14 h-14 rounded-full flex items-center justify-center relative">
-                    <img
-                      src={ImagePlaceholder}
-                      alt=""
-                      className="w-[60px] opacity-70"
-                    />
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-violet-800 rounded-full text-white text-xs flex items-center justify-center">
-                      <Add size="16" color="#FFFFFF" />
-                    </div>
-                  </div>
-                  <p className="text-gray-600 mt-2 text-sm">Upload Image</p>
+              {/* Error Message */}
+              {formErrors.submit && (
+                <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                  {formErrors.submit}
                 </div>
+              )}
+
+              {/* Cover Image Upload */}
+              <div className="relative bg-[#F5F5F5] rounded-xl h-[200px] mb-6 flex items-center justify-center overflow-hidden">
+                {imagePreview.cover ? (
+                  <img
+                    src={imagePreview.cover}
+                    alt="Cover preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center relative">
+                      <img
+                        src={ImagePlaceholder}
+                        alt=""
+                        className="w-[60px] opacity-70"
+                      />
+                      <div className="absolute -bottom-1 -right-2 w-5 h-5 bg-violet-800 rounded-full text-white text-xs flex items-center justify-center">
+                        <Add size="16" color="#FFFFFF" />
+                      </div>
+                    </div>
+                    <p className="text-gray-600 mt-2 text-sm">
+                      Upload Cover Image
+                    </p>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageUpload("cover", e)}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
               </div>
+              {formErrors.cover && (
+                <p className="text-red-500 text-sm -mt-4 mb-4">
+                  {formErrors.cover}
+                </p>
+              )}
 
               {/* Profile Image Circle */}
-              <div className="relative w-[130px] h-[130px] -mt-16 mb-4 ml-4">
+              <div className="relative w-[130px] h-[130px] -mt-[90px] mb-6 ml-4">
                 <div className="absolute w-full h-full rounded-full bg-[#EEEEEE] flex items-center justify-center ">
-                  <img src={ImagePlaceholder} alt="" className="w-12 h-12 " />
-                  <div className="absolute bottom-0 right-0 w-7 h-7 bg-violet-800 rounded-full text-white text-xs flex items-center justify-center">
+                  {imagePreview.profile ? (
+                    <img
+                      src={imagePreview.profile}
+                      alt="Profile preview"
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  ) : (
+                    <img src={ImagePlaceholder} alt="" className="w-12 h-12" />
+                  )}
+                  <div className="absolute bottom-1 right-1 w-7 h-7 bg-violet-800 rounded-full text-white text-xs flex items-center justify-center cursor-pointer z-10">
                     <Add size="22" color="#FFFFFF" />
                   </div>
                 </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageUpload("profile", e)}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer rounded-full"
+                />
               </div>
+              {formErrors.profile && (
+                <p className="text-red-500 text-sm -mt-4 mb-4">
+                  {formErrors.profile}
+                </p>
+              )}
 
               {/* Community Name Input */}
-              <input
-                type="text"
-                placeholder="Community Name"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
+              <div className="mb-6">
+                <input
+                  type="text"
+                  placeholder="Community Name"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange("name", e.target.value)}
+                  className={`w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-800 ${
+                    formErrors.name ? "border-red-500" : "border-gray-300"
+                  }`}
+                  maxLength={50}
+                />
+                {formErrors.name && (
+                  <p className="text-red-500 text-sm mt-1">{formErrors.name}</p>
+                )}
+              </div>
 
               {/* Public / Private Radio */}
-              <div className="flex items-center gap-8 mb-4">
+              <div className="flex items-center gap-8 mb-6">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="radio"
-                    name="method"
-                    value="manual"
+                    name="accessibility"
+                    value="public"
                     checked={communityOption === "public"}
-                    onChange={() => {
-                      setCommunityOption("public");
-                      // setCsvFile(null);
-                      // setUsers([]);
-                    }}
+                    onChange={() => handleAccessibilityChange("public")}
                     className="peer hidden"
                   />
                   <div className="w-5 h-5 rounded-full border-[2px] border-violet-800 flex items-center justify-center peer-checked:bg-violet-800">
-                    <div className="w-4 h-4 rounded-full  border-[3px] peer-checked:border-[3px] border-white  peer-checked:bg-violet-800" />
+                    <div className="w-4 h-4 rounded-full border-[3px] peer-checked:border-[3px] border-white peer-checked:bg-violet-800" />
                   </div>
                   <span className="text-[16px] font-semibold">Public</span>
                 </label>
@@ -284,62 +525,67 @@ function CommunityListing() {
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="radio"
-                    name="method"
-                    value="csv"
+                    name="accessibility"
+                    value="private"
                     className="peer hidden"
                     checked={communityOption === "private"}
-                    onChange={() => {
-                      setCommunityOption("private");
-                      // setCsvFile(null);
-                      // setUsers([]);
-                    }}
+                    onChange={() => handleAccessibilityChange("private")}
                   />
                   <div className="w-5 h-5 rounded-full border-[2px] border-violet-800 flex items-center justify-center peer-checked:bg-violet-800">
-                    <div className="w-4 h-4 rounded-full  border-[3px] peer-checked:border-[3px] border-white  peer-checked:bg-violet-800" />
+                    <div className="w-4 h-4 rounded-full border-[3px] peer-checked:border-[3px] border-white peer-checked:bg-violet-800" />
                   </div>
-                  <span className="ext-[16px] font-semibold">Private</span>
+                  <span className="text-[16px] font-semibold">Private</span>
                 </label>
               </div>
 
               {/* About Community */}
-              <textarea
-                placeholder="About Community"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 h-24 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 mb-6"
-              />
+              <div className="mb-6">
+                <textarea
+                  placeholder="About Community"
+                  value={formData.description}
+                  onChange={(e) =>
+                    handleInputChange("description", e.target.value)
+                  }
+                  className={`w-full border rounded-lg px-4 py-2 h-24 resize-none focus:outline-none focus:ring-2 focus:ring-violet-800 ${
+                    formErrors.description
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }`}
+                  maxLength={500}
+                />
+                {formErrors.description && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {formErrors.description}
+                  </p>
+                )}
+              </div>
 
               {/* Buttons */}
               <div className="flex gap-4">
                 <button
-                  onClick={() => setCreatePostModal(false)}
-                  className="bg-purple-100 text-purple-700 px-6 py-2 rounded-lg hover:bg-purple-200 transition"
+                  onClick={closeModal}
+                  disabled={isSubmitting}
+                  className="bg-violet-800/20 text-violet-800 px-6 py-2 rounded-lg hover:bg-purple-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Cancel
                 </button>
-                <button className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition">
-                  Submit
+                <button
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="bg-violet-800 text-white px-6 py-2 rounded-lg hover:bg-violet-800/90 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Creating...
+                    </>
+                  ) : (
+                    "Submit"
+                  )}
                 </button>
               </div>
             </div>
           </div>
-          {/* <div className="text-center flex flex-col items-center gap-2.5">
-            <h3 className="text-[20px] font-bold text-[#0A0A0A]">
-              Suspend User
-            </h3>
-            <p className="max-w-[240px] text-base font-medium text-[#0A0A0A]">
-              Are you sure you want to suspend this user?
-            </p>
-            <div className="w-full flex justify-between gap-3">
-              <button
-                onClick={() => setCreatePostModal(false)}
-                className="w-1/2 p-6 py-3.5 text-base font-semibold btn border border-violet-800 text-violet-800  dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg"
-              >
-                Cancel
-              </button>
-              <button className="w-1/2 py-3.5 text-base font-semibold btn bg-orange-800 text-white hover:bg-orange-800/90 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white cursor-pointer rounded-lg">
-                Suspend
-              </button>
-            </div>
-          </div> */}
         </ModalBlank>
       </div>
     </div>
