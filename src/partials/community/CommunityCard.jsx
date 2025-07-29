@@ -6,9 +6,9 @@ import bgImage from "./../../images/bg-image.png";
 function CommunityCard(props) {
   const navigate = useNavigate();
   return (
-    <div className="col-span-full sm:col-span-6 xl:col-span-3 bg-white shadow-xs rounded-xl">
+    <div className="col-span-full sm:col-span-6 xl:col-span-3 bg-white rounded-xl">
       <div
-        className="flex flex-col h-80 cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out"
+        className="flex flex-col h-80 cursor-pointer  transition-shadow duration-300 ease-in-out"
         onClick={() => {
           navigate(`/communities/${props.id}`, {
             // state: {

@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import ImagePlaceholder from "../../assets/images/image-placeholder.png";
-
-import SearchForm from "../../partials/actions/SearchForm";
 import CommunityCard from "../../partials/community/CommunityCard";
-import PaginationNumeric from "../../components/PaginationNumeric";
 
 import Image01 from "../../images/user-64-01.jpg";
 import Image02 from "../../images/user-64-02.jpg";
@@ -565,14 +562,14 @@ function CommunityListing() {
                 <button
                   onClick={closeModal}
                   disabled={isSubmitting}
-                  className="bg-violet-800/20 text-violet-800 px-6 py-2 rounded-lg hover:bg-purple-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-violet-800/20 text-violet-800 px-6 py-2 rounded-lg hover:bg-purple-200 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className="bg-violet-800 text-white px-6 py-2 rounded-lg hover:bg-violet-800/90 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="bg-violet-800 text-white px-6 py-2 rounded-lg hover:bg-violet-800/90 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-2"
                 >
                   {isSubmitting ? (
                     <>
