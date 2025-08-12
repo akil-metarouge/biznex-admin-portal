@@ -7,7 +7,7 @@ function SearchForm({ placeholder = "Search…", fullWidth }) {
       <input
         id="action-search"
         className={`form-input text-[16px] pl-11 bg-white dark:bg-gray-800 h-12 placeholder-gray-900/80 font-medium shadow-none ${
-          fullWidth ? "w-full" : "w-80"
+          fullWidth ? "w-full" : "w-full sm:w-80"
         }`}
         type="search"
         placeholder={placeholder}

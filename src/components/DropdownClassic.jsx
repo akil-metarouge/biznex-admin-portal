@@ -44,7 +44,7 @@ function DropdownClassic({ width = "w-44", label = "Status", options = [] }) {
       </label>
       <button
         ref={trigger}
-        className={`btn justify-between min-w-44 ${width}  bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-900/80  dark:text-gray-300 dark:hover:text-gray-100 px-[18px] shadow-none text-[16px] font-semibold cursor-pointer`}
+        className={`btn justify-between min-w-44 w-full sm:${width}  bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-900/80  dark:text-gray-300 dark:hover:text-gray-100 px-[18px] shadow-none text-[16px] font-semibold cursor-pointer`}
         aria-label="Select date range"
         aria-haspopup="true"
         onClick={() => setDropdownOpen(!dropdownOpen)}
